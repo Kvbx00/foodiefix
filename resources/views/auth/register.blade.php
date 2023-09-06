@@ -17,17 +17,33 @@
 
         <div class="form-group">
             <label for="lastname">lastname</label>
-            <input type="text" id="lastname" name="lastname" value="{{ old('lastname') }}" required autofocus>
+            <input type="text" id="lastname" name="lastname" value="{{ old('lastname') }}" required>
         </div>
 
         <div class="form-group">
             <label for="gender">gender</label>
-            <input type="text" id="gender" name="gender" value="{{ old('gender') }}" required autofocus>
+            <select name="gender" id="gender">
+                <option>Mężczyzna</option>
+                <option>Kobieta</option>
+            </select>
         </div>
 
         <div class="form-group">
-            <label for="height">height</label>
-            <input type="text" id="height" name="height" value="{{ old('height') }}" required autofocus>
+            <label for="height">Wzrost</label>
+            <select name="height" id="height" class="form-control">
+                @for ($i = 100; $i <= 220; $i++)
+                    <option value="{{ $i }}">{{ $i }} cm</option>
+                @endfor
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="weight">Waga</label>
+            <select name="weight" id="weight" class="form-control">
+                @for ($i = 30; $i <= 200; $i++)
+                    <option value="{{ $i }}">{{ $i }} kg</option>
+                @endfor
+            </select>
         </div>
 
         <div class="form-group">
@@ -36,18 +52,23 @@
         </div>
 
         <div class="form-group">
-            <label for="age">age</label>
-            <input type="text" id="age" name="age" value="{{ old('age') }}" required autofocus>
+            <label for="age">Wiek</label>
+            <select name="age" id="age" class="form-control">
+                @for ($i = 13; $i <= 99; $i++)
+                    <option value="{{ $i }}">{{ $i }}</option>
+                @endfor
+            </select>
         </div>
 
         <div class="form-group">
             <label for="physicalactivity">physicalactivity</label>
-            <input type="text" id="physicalactivity" name="physicalactivity" value="{{ old('physicalactivity') }}" required autofocus>
+            <input type="text" id="physicalactivity" name="physicalactivity" value="{{ old('physicalactivity') }}"
+                required>
         </div>
 
         <div class="form-group">
             <label for="goal">goal</label>
-            <input type="text" id="goal" name="goal" value="{{ old('goal') }}" required autofocus>
+            <input type="text" id="goal" name="goal" value="{{ old('goal') }}" required>
         </div>
 
         <div class="form-group">
@@ -59,6 +80,12 @@
             <label for="password_confirmation">Confirm Password</label>
             <input type="password" id="password_confirmation" name="password_confirmation" required>
         </div>
+
+        @if ($errors->any())
+            @foreach ($errors->all() as $error)
+                <div>{{ $error }}</div>
+            @endforeach
+        @endif
 
         <button type="submit">Register</button>
     </form>

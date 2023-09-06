@@ -22,6 +22,7 @@ class User extends Authenticatable
         'lastname',
         'gender',
         'height',
+        'weight',
         'email',
         'age',
         'physicalactivity',
