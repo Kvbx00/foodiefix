@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\CaloricNeed;
 
 class AuthController extends Controller
 {
@@ -50,7 +51,51 @@ class AuthController extends Controller
 
         auth()->login($user);
 
+        $bmr = $this->calculateBMR($user->weight, $user->height, $user->age, $user->gender);
+        $activityFactor = $this->calculateActivityFactor($user->physicalactivity);
+        $goalFactor = $this->calculateGoalFactor($user->goal);
+
+        $caloricNeeds = $bmr * $activityFactor * $goalFactor;
+
+        CaloricNeed::create([
+            'caloricneeds' => $caloricNeeds,
+            'date' => now(),
+            'user_id' => $user->id,
+        ]);
+
         return redirect('/home');
+    }
+
+    private function calculateActivityFactor($activity){
+        if ($activity === 'Brak treningów'){
+            return 1.2;
+        } elseif ($activity === "Niska aktywność"){
+            return 1.5;
+        } elseif ($activity === "Średnia aktywność"){
+            return 1.8;
+        } elseif ($activity === "Wysoka aktywność"){
+            return 2.1;
+        } elseif ($activity === "Bardzo wysoka aktywność"){
+            return 2.4;
+        }
+    }
+
+    private function calculateGoalFactor($goal){
+        if ($goal === 'Chcę schudnąć'){
+            return 0.8;
+        } elseif ($goal === "Chcę utrzymać wagę"){
+            return 1.0;
+        } elseif ($goal === "Chcę przytyć"){
+            return 1.2;
+        }
+    }
+
+    private function calculateBMR($weight, $height, $age, $gender){
+        if ($gender === 'Mężczyzna') {
+            return 66.47 + (13.7 * $weight) + (5.0 * $height) - (6.76 * $age);
+        } elseif ($gender === 'Kobieta') {
+            return 655.1 + (9.567 * $weight) + (1.85 * $height) - (4.68 * $age);
+        }
     }
 
     public function showLoginView(){

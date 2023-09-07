@@ -11,20 +11,20 @@
         @csrf
 
         <div class="form-group">
-            <label for="name">Name</label>
+            <label for="name">Imię</label>
             <input type="text" id="name" name="name" value="{{ old('name') }}" required autofocus>
         </div>
 
         <div class="form-group">
-            <label for="lastname">lastname</label>
+            <label for="lastname">Nazwisko</label>
             <input type="text" id="lastname" name="lastname" value="{{ old('lastname') }}" required>
         </div>
 
         <div class="form-group">
-            <label for="gender">gender</label>
+            <label for="gender">Płeć</label>
             <select name="gender" id="gender">
-                <option>Mężczyzna</option>
-                <option>Kobieta</option>
+                <option value="Mężczyzna" {{ old('gender') == 'Mężczyzna' ? 'selected' : '' }}>Mężczyzna</option>
+                <option value="Kobieta" {{ old('gender') == 'Kobieta' ? 'selected' : '' }}>Kobieta</option>
             </select>
         </div>
 
@@ -32,7 +32,7 @@
             <label for="height">Wzrost</label>
             <select name="height" id="height" class="form-control">
                 @for ($i = 100; $i <= 220; $i++)
-                    <option value="{{ $i }}">{{ $i }} cm</option>
+                    <option value="{{ $i }}" {{ old('height') == $i ? 'selected' : '' }}>{{ $i }} cm</option>
                 @endfor
             </select>
         </div>
@@ -41,7 +41,7 @@
             <label for="weight">Waga</label>
             <select name="weight" id="weight" class="form-control">
                 @for ($i = 30; $i <= 200; $i++)
-                    <option value="{{ $i }}">{{ $i }} kg</option>
+                    <option value="{{ $i }}" {{ old('weight') == $i ? 'selected' : '' }}>{{ $i }} kg</option>
                 @endfor
             </select>
         </div>
@@ -55,20 +55,29 @@
             <label for="age">Wiek</label>
             <select name="age" id="age" class="form-control">
                 @for ($i = 13; $i <= 99; $i++)
-                    <option value="{{ $i }}">{{ $i }}</option>
+                    <option value="{{ $i }}" {{ old('age') == $i ? 'selected' : '' }}>{{ $i }}</option>
                 @endfor
             </select>
         </div>
 
         <div class="form-group">
-            <label for="physicalactivity">physicalactivity</label>
-            <input type="text" id="physicalactivity" name="physicalactivity" value="{{ old('physicalactivity') }}"
-                required>
+            <label for="physicalactivity">Poziom aktywności</label>
+            <select name="physicalactivity" id="physicalactivity">
+                <option {{ old('physicalactivity') == 'Brak treningów' ? 'selected' : '' }}>Brak treningów</option>
+                <option {{ old('physicalactivity') == 'Niska aktywność' ? 'selected' : '' }}>Niska aktywność</option>
+                <option {{ old('physicalactivity') == 'Średnia aktywność' ? 'selected' : '' }}>Średnia aktywność</option>
+                <option {{ old('physicalactivity') == 'Wysoka aktywność' ? 'selected' : '' }}>Wysoka aktywność</option>
+                <option {{ old('physicalactivity') == 'Bardzo wysoka aktywność' ? 'selected' : '' }}>Bardzo wysoka aktywność</option>
+            </select>
         </div>
 
         <div class="form-group">
-            <label for="goal">goal</label>
-            <input type="text" id="goal" name="goal" value="{{ old('goal') }}" required>
+            <label for="goal">Cel diety</label>
+            <select name="goal" id="goal">
+                <option {{ old('goal') == 'Chcę schudnąć' ? 'selected' : '' }}>Chcę schudnąć</option>
+                <option {{ old('goal') == 'Chcę utrzymać wagę' ? 'selected' : '' }}>Chcę utrzymać wagę</option>
+                <option {{ old('goal') == 'Chcę przytyć' ? 'selected' : '' }}>Chcę przytyć</option>
+            </select>
         </div>
 
         <div class="form-group">
