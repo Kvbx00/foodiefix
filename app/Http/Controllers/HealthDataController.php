@@ -8,41 +8,46 @@ use Carbon\Carbon;
 
 class HealthDataController extends Controller
 {
-    public function showForm()
+    public function showUserPanelView()
     {
         $lastRecord = HealthData::where('user_id', auth()->id())
             ->latest('date')
             ->first();
 
-        $lastWeight = $lastRecord ? $lastRecord->weight : null;
+        $lastValues = [
+            'weight' => $lastRecord ? $lastRecord->weight : null,
+            'diastolicBloodPressure' => $lastRecord ? $lastRecord->diastolicBloodPressure : null,
+            'systolicBloodPressure' => $lastRecord ? $lastRecord->systolicBloodPressure : null,
+            'pulse' => $lastRecord ? $lastRecord->pulse : null,
+        ];
 
-        session(['lastWeight' => $lastWeight]);
+        session(['lastValues' => $lastValues]);
 
-        return view('user.userPanel', ['lastWeight' => $lastWeight]);
+        return view('user.userPanel', compact('lastValues'));
     }
 
     public function storeMeasurements(Request $request)
     {
-        $lastWeight = session('lastWeight');
+        $lastValues = session('lastValues');
+
+        $dataToUpdate = $request->all();
+        $dataToUpdate['user_id'] = auth()->id();
+        $dataToUpdate['date'] = Carbon::today();
 
         $existingRecord = HealthData::where('user_id', auth()->id())
             ->whereDate('date', Carbon::today())
             ->first();
 
         if ($existingRecord) {
-            $existingRecord->update($request->all());
+            $existingRecord->update($dataToUpdate);
         } else {
-            $defaultWeight = $request->input('weight', $lastWeight);
+            foreach ($lastValues as $field => $value) {
+                $dataToUpdate[$field] = $request->input($field, $value);
+            }
 
-            HealthData::create([
-                'user_id' => auth()->id(),
-                'date' => Carbon::today(),
-                'weight' => $defaultWeight,
-                'diastolicbloodpressure' => $request->input('diastolicbloodpressure'),
-                'systolicbloodpressure' => $request->input('systolicbloodpressure'),
-                'pulse' => $request->input('pulse'),
-            ]);
+            HealthData::create($dataToUpdate);
         }
+
         return redirect()->back()->with('success', 'Dane zostały zapisane.');
     }
 }
