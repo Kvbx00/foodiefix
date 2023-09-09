@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HealthDataController;
-use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,16 +21,14 @@ Route::get('/', function () {
 
 Route::get('/home', function(){
     return view('home');
-});
+})->middleware('auth');;
 
-Route::get('/register', [AuthController::class, 'showRegitrationView'])->name('register');
+Route::get('/register', [AuthController::class, 'showRegistrationView'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
 
 Route::get('/login', [AuthController::class, 'showLoginView'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/userPanel', [UserController::class, 'showUserPanelView'])->middleware('auth');;
-
-Route::get('/userPanel', [HealthDataController::class, 'showForm'])->name('health-data.form');
-Route::post('/userPanel/store', [HealthDataController::class, 'storeMeasurements'])->name('store.measurements');
+Route::get('/userPanel', [HealthDataController::class, 'showUserPanelView'])->name('userPanel')->middleware('auth');
+Route::post('/userPanel/store', [HealthDataController::class, 'storeMeasurements'])->name('storeMeasurements')->middleware('auth');
