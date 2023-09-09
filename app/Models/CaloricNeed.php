@@ -2,17 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class CaloricNeed extends Model
 {
-    use HasFactory;
-
     protected $table = 'caloric_needs';
 
     protected $fillable = [
-        'caloricneeds',
+        'caloricNeeds',
         'date',
         'user_id',
     ];

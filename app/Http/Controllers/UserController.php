@@ -7,8 +7,5 @@ use App\Models\User;
 
 class UserController extends Controller
 {
-    public function showUserPanelView(){
-        return view('user.userPanel');
-    }
 
 }

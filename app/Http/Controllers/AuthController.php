@@ -11,25 +11,25 @@ use App\Models\CaloricNeed;
 class AuthController extends Controller
 {
 
-    public function showRegitrationView(){
+    public function showRegistrationView(){
         return view('auth.register');
     }
 
     public function register(Request $request){
         $this->validate($request, [
             'name' => 'required|regex:"^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*$"|max:45',
-            'lastname' => 'required|regex:"^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*$"|max:100',
+            'lastName' => 'required|regex:"^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*$"|max:100',
             'gender' => 'required',
             'height' => 'required',
             'weight' => 'required',
             'email' => 'required|string|email|max:100|unique:users',
             'age' => 'required',
-            'physicalactivity' => 'required',
+            'physicalActivity' => 'required',
             'goal' => 'required',
             'password' => 'required|regex:"^(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,}$"|confirmed',
         ], [
             'name' => "Imię musi zaczynać się z dużej litery",
-            'lastname' => "Nazwisko musi zaczynać się z dużej litery",
+            'lastName' => "Nazwisko musi zaczynać się z dużej litery",
             'email' => "Wpisałeś nieprawidłowy email",
             'email.unique' => "Taki email już istnieje",
             'password' => "Hasło musi składać się z min. 8 znaków, min. 1 wielkiej litery, min. 1 znaku specjalnego i min. 1 cyfry",
@@ -38,13 +38,13 @@ class AuthController extends Controller
 
         $user = User::create([
             'name' => $request->name,
-            'lastname' => $request->lastname,
+            'lastName' => $request->lastName,
             'gender' => $request->gender,
             'height' => $request->height,
             'weight' => $request->weight,
             'email' => $request->email,
             'age' => $request->age,
-            'physicalactivity' => $request->physicalactivity,
+            'physicalActivity' => $request->physicalActivity,
             'goal' => $request->goal,
             'password' => Hash::make($request->password),
         ]);
@@ -52,13 +52,13 @@ class AuthController extends Controller
         auth()->login($user);
 
         $bmr = $this->calculateBMR($user->weight, $user->height, $user->age, $user->gender);
-        $activityFactor = $this->calculateActivityFactor($user->physicalactivity);
+        $activityFactor = $this->calculateActivityFactor($user->physicalActivity);
         $goalFactor = $this->calculateGoalFactor($user->goal);
 
         $caloricNeeds = $bmr * $activityFactor * $goalFactor;
 
         CaloricNeed::create([
-            'caloricneeds' => $caloricNeeds,
+            'caloricNeeds' => $caloricNeeds,
             'date' => now(),
             'user_id' => $user->id,
         ]);

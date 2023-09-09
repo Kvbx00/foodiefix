@@ -16,8 +16,8 @@
         </div>
 
         <div class="form-group">
-            <label for="lastname">Nazwisko</label>
-            <input type="text" id="lastname" name="lastname" value="{{ old('lastname') }}" required>
+            <label for="lastName">Nazwisko</label>
+            <input type="text" id="lastName" name="lastName" value="{{ old('lastName') }}" required>
         </div>
 
         <div class="form-group">
@@ -61,13 +61,13 @@
         </div>
 
         <div class="form-group">
-            <label for="physicalactivity">Poziom aktywności</label>
-            <select name="physicalactivity" id="physicalactivity">
-                <option {{ old('physicalactivity') == 'Brak treningów' ? 'selected' : '' }}>Brak treningów</option>
-                <option {{ old('physicalactivity') == 'Niska aktywność' ? 'selected' : '' }}>Niska aktywność</option>
-                <option {{ old('physicalactivity') == 'Średnia aktywność' ? 'selected' : '' }}>Średnia aktywność</option>
-                <option {{ old('physicalactivity') == 'Wysoka aktywność' ? 'selected' : '' }}>Wysoka aktywność</option>
-                <option {{ old('physicalactivity') == 'Bardzo wysoka aktywność' ? 'selected' : '' }}>Bardzo wysoka aktywność</option>
+            <label for="physicalActivity">Poziom aktywności</label>
+            <select name="physicalActivity" id="physicalActivity">
+                <option {{ old('physicalActivity') == 'Brak treningów' ? 'selected' : '' }}>Brak treningów</option>
+                <option {{ old('physicalActivity') == 'Niska aktywność' ? 'selected' : '' }}>Niska aktywność</option>
+                <option {{ old('physicalActivity') == 'Średnia aktywność' ? 'selected' : '' }}>Średnia aktywność</option>
+                <option {{ old('physicalActivity') == 'Wysoka aktywność' ? 'selected' : '' }}>Wysoka aktywność</option>
+                <option {{ old('physicalActivity') == 'Bardzo wysoka aktywność' ? 'selected' : '' }}>Bardzo wysoka aktywność</option>
             </select>
         </div>
 
