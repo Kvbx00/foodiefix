@@ -22,7 +22,7 @@ class AuthController extends Controller
             'gender' => 'required',
             'height' => 'required',
             'weight' => 'required',
-            'email' => 'required|string|email|max:100|unique:users',
+            'email' => 'required|string|email|max:100|unique:user',
             'age' => 'required',
             'physicalActivity' => 'required',
             'goal' => 'required',
