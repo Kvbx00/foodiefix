@@ -11,7 +11,7 @@
 
 <h1>Dodaj pomiary</h1>
 <!-- Formularz do wprowadzenia pomiarów -->
-<form method="POST" action="{{ route('storeMeasurements') }}">
+<form method="POST" action="{{ route('measurements.store') }}">
     @csrf
 
     <div class="form-group">
@@ -54,6 +54,38 @@
 
     <button type="submit" class="btn btn-primary">Zapisz</button>
 </form>
-</body>
 
+@if ($availableDiseases->count() > 0)
+    <h2>Wybierz Chorobę</h2>
+    <form method="post" action="{{ route('diseases.store') }}">
+        @csrf
+        <select name="diseases_id">
+            @foreach($availableDiseases as $disease)
+                <option value="{{ $disease->id }}">{{ $disease->name }}</option>
+            @endforeach
+        </select>
+        <button type="submit">Dodaj</button>
+    </form>
+@else
+    <p>Wszystkie dostępne choroby zostały już dodane.</p>
+@endif
+
+<h1>Twoje Choroby</h1>
+<ul>
+    @if(auth()->check() && auth()->user()->diseases->count() > 0)
+        @foreach(auth()->user()->diseases as $userDisease)
+            <li>
+                {{ $userDisease->name }}
+                <form action="{{ route('diseases.destroy', $userDisease->id) }}" method="post">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit">Usuń</button>
+                </form>
+            </li>
+        @endforeach
+    @else
+        <li>Brak przypisanych chorób.</li>
+    @endif
+</ul>
+</body>
 </html>
