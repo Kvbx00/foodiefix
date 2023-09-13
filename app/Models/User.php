@@ -40,4 +40,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Disease::class, 'user_diseases', 'user_id', 'diseases_id');
     }
+
+    public function ingredientPreferences()
+    {
+        return $this->belongsToMany(Ingredient::class, 'ingredient_preferences', 'user_id', 'ingredient_id');
+    }
 }

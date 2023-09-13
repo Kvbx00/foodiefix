@@ -7,6 +7,8 @@ use App\Models\HealthData;
 use Carbon\Carbon;
 use App\Models\UserDisease;
 use App\Models\Disease;
+use App\Models\Ingredient;
+use App\Models\IngredientPreference;
 
 class HealthDataController extends Controller
 {
@@ -28,7 +30,10 @@ class HealthDataController extends Controller
         $diseases = Disease::all();
         $availableDiseases = $this->getAvailableDiseases(auth()->user(), $diseases);
 
-        return view('user.userPanel', compact('lastValues', 'availableDiseases'));
+        $ingredients = Ingredient::all();
+        $availableIngredients = $this->getAvailableIngredients(auth()->user(), $ingredients);
+
+        return view('user.userPanel', compact('lastValues', 'availableDiseases', 'availableIngredients'));
     }
 
     public function storeMeasurements(Request $request)
@@ -92,4 +97,46 @@ class HealthDataController extends Controller
 
         return $availableDiseases;
     }
+
+    public function storeIngredients(Request $request)
+    {
+        $userId = auth()->user()->id;
+        $ingredientId = $request->input('ingredient_id');
+        $ingredient = Ingredient::find($ingredientId);
+
+        $ingredientCategoryId = $ingredient->category_id;
+
+        $existingUserIngredient = IngredientPreference::where('user_id', $userId)->where('ingredient_id', $ingredientId)->first();
+
+        if (!$existingUserIngredient) {
+            IngredientPreference::create([
+                'user_id' => $userId,
+                'ingredient_id' => $ingredientId,
+                'ingredient_category_id' => $ingredientCategoryId,
+            ]);
+        }
+
+        return redirect()->route('userPanel');
+    }
+
+    public function destroyIngredients($id)
+    {
+        $userId = auth()->user()->id;
+        $userIngredient = IngredientPreference::where('user_id', $userId)->where('ingredient_id', $id)->first();
+
+        if ($userIngredient) {
+            $userIngredient->delete();
+        }
+
+        return redirect()->route('userPanel')->with('success', 'Składnik został usunięty z preferencji.');
+    }
+
+    private function getAvailableIngredients($user, $allIngredients)
+    {
+        $userIngredients = $user->ingredientPreferences;
+        $availableIngredients = $allIngredients->diff($userIngredients);
+
+        return $availableIngredients;
+    }
+
 }
