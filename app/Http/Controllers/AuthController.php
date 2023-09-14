@@ -11,11 +11,13 @@ use App\Models\CaloricNeed;
 class AuthController extends Controller
 {
 
-    public function showRegistrationView(){
+    public function showRegistrationView()
+    {
         return view('auth.register');
     }
 
-    public function register(Request $request){
+    public function register(Request $request)
+    {
         $this->validate($request, [
             'name' => 'required|regex:"^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*$"|max:45',
             'lastName' => 'required|regex:"^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]*$"|max:100',
@@ -66,31 +68,34 @@ class AuthController extends Controller
         return redirect('/home');
     }
 
-    private function calculateActivityFactor($activity){
-        if ($activity === 'Brak treningów'){
+    private function calculateActivityFactor($activity)
+    {
+        if ($activity === 'Brak treningów') {
             return 1.2;
-        } elseif ($activity === "Niska aktywność"){
+        } elseif ($activity === "Niska aktywność") {
             return 1.5;
-        } elseif ($activity === "Średnia aktywność"){
+        } elseif ($activity === "Średnia aktywność") {
             return 1.8;
-        } elseif ($activity === "Wysoka aktywność"){
+        } elseif ($activity === "Wysoka aktywność") {
             return 2.1;
-        } elseif ($activity === "Bardzo wysoka aktywność"){
+        } elseif ($activity === "Bardzo wysoka aktywność") {
             return 2.4;
         }
     }
 
-    private function calculateGoalFactor($goal){
-        if ($goal === 'Chcę schudnąć'){
+    private function calculateGoalFactor($goal)
+    {
+        if ($goal === 'Chcę schudnąć') {
             return 0.8;
-        } elseif ($goal === "Chcę utrzymać wagę"){
+        } elseif ($goal === "Chcę utrzymać wagę") {
             return 1.0;
-        } elseif ($goal === "Chcę przytyć"){
+        } elseif ($goal === "Chcę przytyć") {
             return 1.2;
         }
     }
 
-    private function calculateBMR($weight, $height, $age, $gender){
+    private function calculateBMR($weight, $height, $age, $gender)
+    {
         if ($gender === 'Mężczyzna') {
             return 66.47 + (13.7 * $weight) + (5.0 * $height) - (6.76 * $age);
         } elseif ($gender === 'Kobieta') {
@@ -98,11 +103,13 @@ class AuthController extends Controller
         }
     }
 
-    public function showLoginView(){
+    public function showLoginView()
+    {
         return view('auth.login');
     }
 
-    public function login(Request $request){
+    public function login(Request $request)
+    {
 
         $request->validate([
             'email' => 'required|email',
@@ -110,14 +117,15 @@ class AuthController extends Controller
         ]);
 
         $credentials = $request->only('email', 'password');
-        if (Auth::attempt($credentials)){
+        if (Auth::attempt($credentials)) {
             return redirect()->intended('/home');
-        } else{
+        } else {
             return back()->withErrors(['email' => 'Nieprawidłowy email lub hasło']);
         }
     }
 
-    public function logout(Request $request){
+    public function logout(Request $request)
+    {
         Auth::logout();
         return redirect('/');
     }
