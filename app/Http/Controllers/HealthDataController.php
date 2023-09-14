@@ -9,6 +9,8 @@ use App\Models\UserDisease;
 use App\Models\Disease;
 use App\Models\Ingredient;
 use App\Models\IngredientPreference;
+use App\Models\User;
+use App\Models\CaloricNeed;
 
 class HealthDataController extends Controller
 {
@@ -38,11 +40,42 @@ class HealthDataController extends Controller
 
     public function storeMeasurements(Request $request)
     {
-        $lastValues = session('lastValues');
+        $user = User::find(auth()->id());
+        $weight = $request->input('weight');
+        $height = $user->height;
+        $age = $user->age;
+        $gender = $user->gender;
+        $physicalActivity = $user->physicalActivity;
+        $goal = $user->goal;
+
+        $bmr = $this->calculateBMR($weight, $height, $age, $gender);
+        $activityFactor = $this->calculateActivityFactor($physicalActivity);
+        $goalFactor = $this->calculateGoalFactor($goal);
+
+        $caloricNeeds = $bmr * $activityFactor * $goalFactor;
+
+        $existingCaloricNeed = CaloricNeed::where('user_id', auth()->id())->first();
+
+        if ($existingCaloricNeed) {
+            $existingCaloricNeed->update([
+                'caloricNeeds' => $caloricNeeds,
+                'date' => Carbon::today(),
+            ]);
+        } else {
+            CaloricNeed::create([
+                'caloricNeeds' => $caloricNeeds,
+                'date' => Carbon::today(),
+                'user_id' => auth()->id(),
+            ]);
+        }
 
         $dataToUpdate = $request->all();
         $dataToUpdate['user_id'] = auth()->id();
         $dataToUpdate['date'] = Carbon::today();
+
+        if (isset($weight)){
+            $user->update(['weight' => $weight]);
+        }
 
         $existingRecord = HealthData::where('user_id', auth()->id())
             ->whereDate('date', Carbon::today())
@@ -51,14 +84,51 @@ class HealthDataController extends Controller
         if ($existingRecord) {
             $existingRecord->update($dataToUpdate);
         } else {
-            foreach ($lastValues as $field => $value) {
-                $dataToUpdate[$field] = $request->input($field, $value);
+            foreach ($dataToUpdate as $field => $value) {
+                if (!isset($value)) {
+                    unset($dataToUpdate[$field]);
+                }
             }
 
             HealthData::create($dataToUpdate);
         }
 
         return redirect()->back()->with('success', 'Dane zostały zapisane.');
+    }
+
+    private function calculateActivityFactor($activity)
+    {
+        if ($activity === 'Brak treningów') {
+            return 1.2;
+        } elseif ($activity === "Niska aktywność") {
+            return 1.5;
+        } elseif ($activity === "Średnia aktywność") {
+            return 1.8;
+        } elseif ($activity === "Wysoka aktywność") {
+            return 2.1;
+        } elseif ($activity === "Bardzo wysoka aktywność") {
+            return 2.4;
+        }
+    }
+
+    private function calculateGoalFactor($goal)
+    {
+        if ($goal === 'Chcę schudnąć') {
+            return 0.8;
+        } elseif ($goal === "Chcę utrzymać wagę") {
+            return 1.0;
+        } elseif ($goal === "Chcę przytyć") {
+            return 1.2;
+        }
+    }
+
+    private function calculateBMR($weight, $height, $age, $gender)
+    {
+        if ($gender === 'Mężczyzna') {
+            return 66.47 + (13.7 * $weight) + (5.0 * $height) - (6.76 * $age);
+        } elseif ($gender === 'Kobieta') {
+            return 655.1 + (9.567 * $weight) + (1.85 * $height) - (4.68 * $age);
+        }
     }
 
     public function storeDiseases(Request $request)
