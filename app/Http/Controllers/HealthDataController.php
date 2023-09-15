@@ -35,7 +35,9 @@ class HealthDataController extends Controller
         $ingredients = Ingredient::all();
         $availableIngredients = $this->getAvailableIngredients(auth()->user(), $ingredients);
 
-        return view('user.userPanel', compact('lastValues', 'availableDiseases', 'availableIngredients'));
+        $userMeasurements = HealthData::where('user_id', auth()->id())->get();
+
+        return view('user.userPanel', compact('lastValues', 'availableDiseases', 'availableIngredients', 'userMeasurements'));
     }
 
     public function storeMeasurements(Request $request)

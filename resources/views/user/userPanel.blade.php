@@ -9,6 +9,26 @@
 <body>
 {{ ('Panel uzytkownika') }}
 
+<h1>Twoje wyniki zdrowia</h1>
+<table>
+    <tr>
+        <th>Data</th>
+        <th>Waga</th>
+        <th>Ciśnienie rozkurczowe</th>
+        <th>Ciśnienie skurczowe</th>
+        <th>Pulse</th>
+    </tr>
+    @foreach($userMeasurements as $measurement)
+        <tr>
+            <td>{{ $measurement->date }}</td>
+            <td>{{ $measurement->weight }}</td>
+            <td>{{ $measurement->diastolicBloodPressure }}</td>
+            <td>{{ $measurement->systolicBloodPressure }}</td>
+            <td>{{ $measurement->pulse }}</td>
+        </tr>
+    @endforeach
+</table>
+
 <h1>Dodaj pomiary</h1>
 <!-- Formularz do wprowadzenia pomiarów -->
 <form method="POST" action="{{ route('measurements.store') }}">
