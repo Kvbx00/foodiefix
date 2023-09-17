@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HealthDataController;
+use App\Http\Controllers\UserController;
 
 
 Route::get('/', function () {
@@ -29,4 +30,6 @@ Route::delete('/userPanel/destroyDiseases/{id}', [HealthDataController::class, '
 Route::post('/userPanel/storeIngredients', [HealthDataController::class, 'storeIngredients'])->name('ingredients.store')->middleware('auth');
 Route::delete('/userPanel/destroyIngredients/{id}', [HealthDataController::class, 'destroyIngredients'])->name('ingredients.destroy')->middleware('auth');
 
+Route::get('/userPanel/profile', [UserController::class, 'showProfile'])->name('user.profile');
+Route::put('/userPanel/profile/{id}', [UserController::class, 'updateProfile'])->name('user.update');
 

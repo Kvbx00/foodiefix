@@ -9,6 +9,8 @@
 <body>
 {{ ('Panel uzytkownika') }}
 
+<a href="{{ url('userPanel/profile') }}">Profil</a>
+
 <h1>Twoje wyniki zdrowia</h1>
 <table>
     <tr>
