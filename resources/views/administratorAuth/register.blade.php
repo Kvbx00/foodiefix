@@ -25,6 +25,14 @@
         <input type="password" id="password_confirmation" name="password_confirmation" required>
     </div>
 
+    <div class="form-group">
+        <label for="role">Rola</label>
+        <select name="role" id="role">
+            <option value="admin">Administrator</option>
+            <option value="dietician">Dietetyk</option>
+        </select>
+    </div>
+
     @if ($errors->any())
         @foreach ($errors->all() as $error)
             <div>{{ $error }}</div>

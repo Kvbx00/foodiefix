@@ -9,7 +9,9 @@
 <body>
 {{ ('admin dashboard') }}
 <br>
-<a href="{{ url('adminRegister') }}">Rejestracja pracownika</a>
+@if( auth()->guard('admin')->user()->role === 'admin')
+    <a href="{{ url('adminRegister') }}">Rejestracja pracownika</a>
+@endif
 
 <form method="POST" action="{{ route('admin.logout') }}">
     @csrf

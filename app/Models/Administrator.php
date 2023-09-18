@@ -16,6 +16,7 @@ class Administrator extends Authenticatable
     protected $fillable = [
         'email',
         'password',
+        'role'
     ];
 
     public $timestamps = false;
