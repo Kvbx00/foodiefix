@@ -14,6 +14,8 @@
 @endif
 <br>
 <a href="{{ url('admin/dashboard/userProfile') }}">Profil użytkownika</a>
+<br>
+<a href="{{ url('admin/dashboard/userDisease') }}">Choroby użytkownika</a>
 
 <form method="POST" action="{{ route('admin.logout') }}">
     @csrf

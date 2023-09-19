@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Disease;
+use App\Models\UserDisease;
 use Illuminate\Http\Request;
 use App\Models\User;
 
@@ -55,5 +57,52 @@ class AdministratorController extends Controller
         $user->update($validatedData);
 
         return redirect()->route('administrator.userProfile')->with('success', 'Dane użytkownika zostały zaktualizowane.');
+    }
+
+    public function showUserDisease()
+    {
+        $userDisease = UserDisease::all();
+
+        return view('administrator.userDisease', compact('userDisease'));
+    }
+
+    public function showAddUserDiseaseView()
+    {
+        $users = User::all();
+        $diseases = Disease::all();
+
+        return view('administrator.addUserDisease', compact('users', 'diseases'));
+    }
+
+    public function addUserDisease(Request $request)
+    {
+        $validatedData = $request->validate([
+            'user_id' => 'required',
+            'disease_name' => 'required',
+        ]);
+
+        $user = User::findOrFail($validatedData['user_id']);
+        $diseaseName = $validatedData['disease_name'];
+
+        $existingDisease = $user->diseases->where('name', $diseaseName)->first();
+
+        if ($existingDisease) {
+            return back()->withErrors('Użytkownik posiada już taką chorobę');
+        }
+
+        $disease = Disease::where('name', $diseaseName)->first();
+
+        $user->diseases()->attach($disease->id);
+
+        return redirect()->route('administrator.userDisease')->with('success', 'Choroba została dodana użytkownikowi.');
+    }
+
+    public function removeUserDisease($userDiseaseId)
+    {
+        $userDisease = UserDisease::find($userDiseaseId);
+
+        $userDisease->delete();
+
+        return redirect()->route('administrator.userDisease')->with('success', 'Choroba użytkownika została usunięta.');
     }
 }

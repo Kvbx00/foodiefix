@@ -12,5 +12,10 @@ class Disease extends Model
         'name',
     ];
 
+    public function userDiseases()
+    {
+        return $this->hasMany(UserDisease::class, 'diseases_id');
+    }
+
     public $timestamps = false;
 }
