@@ -12,6 +12,8 @@
 @if( auth()->guard('admin')->user()->role === 'admin')
     <a href="{{ url('adminRegister') }}">Rejestracja pracownika</a>
 @endif
+<br>
+<a href="{{ url('admin/dashboard/userProfile') }}">Profil użytkownika</a>
 
 <form method="POST" action="{{ route('admin.logout') }}">
     @csrf

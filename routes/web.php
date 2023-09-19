@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HealthDataController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdministratorAuthController;
+use App\Http\Controllers\AdministratorController;
 
 
 Route::get('/', function () {
@@ -35,8 +36,8 @@ Route::delete('/userPanel/destroyDiseases/{id}', [HealthDataController::class, '
 Route::post('/userPanel/storeIngredients', [HealthDataController::class, 'storeIngredients'])->name('ingredients.store')->middleware('auth');
 Route::delete('/userPanel/destroyIngredients/{id}', [HealthDataController::class, 'destroyIngredients'])->name('ingredients.destroy')->middleware('auth');
 
-Route::get('/userPanel/profile', [UserController::class, 'showProfile'])->name('user.profile');
-Route::put('/userPanel/profile/{id}', [UserController::class, 'updateProfile'])->name('user.update');
+Route::get('/userPanel/profile', [UserController::class, 'showProfile'])->name('user.profile')->middleware('auth');
+Route::put('/userPanel/profile/{id}', [UserController::class, 'updateProfile'])->name('user.update')->middleware('auth');
 
 Route::get('/adminLogin', [AdministratorAuthController::class, 'showAdminLoginView'])->name('admin.login');
 Route::post('/adminLogin', [AdministratorAuthController::class, 'adminLogin']);
@@ -44,3 +45,7 @@ Route::post('/adminLogout', [AdministratorAuthController::class, 'adminLogout'])
 
 Route::get('/adminRegister', [AdministratorAuthController::class, 'showAdminRegistrationView'])->name('admin.register')->middleware('admin');
 Route::post('/adminRegister', [AdministratorAuthController::class, 'adminRegister'])->middleware('admin');
+
+Route::get('/admin/dashboard/userProfile', [AdministratorController::class, 'showUserProfile'])->name('administrator.userProfile')->middleware('admin');
+Route::get('/admin/dashboard/userProfile/{id}/edit', [AdministratorController::class, 'editUserProfile'])->name('administrator.editUserProfile')->middleware('admin');
+Route::put('/admin/dashboard/userProfile/{id}', [AdministratorController::class, 'updateUserProfile'])->name('administrator.updateUserProfile')->middleware('admin');
