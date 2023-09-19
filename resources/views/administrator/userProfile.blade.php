@@ -11,6 +11,7 @@
     <table>
         <thead>
         <tr>
+            <th>Id</th>
             <th>Imię</th>
             <th>Nazwisko</th>
             <th>Email</th>
@@ -27,6 +28,7 @@
         <tbody>
         @foreach($user as $users)
             <tr>
+                <td>{{ $users->id }}</td>
                 <td>{{ $users->name }}</td>
                 <td>{{ $users->lastName }}</td>
                 <td>{{ $users->email }}</td>
