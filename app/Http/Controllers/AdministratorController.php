@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Disease;
+use App\Models\HealthData;
 use App\Models\UserDisease;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\User;
 
@@ -105,4 +107,41 @@ class AdministratorController extends Controller
 
         return redirect()->route('administrator.userDisease')->with('success', 'Choroba użytkownika została usunięta.');
     }
+
+    public function showUserHealthData()
+    {
+        $healthData = HealthData::all();
+
+        return view('administrator.userHealthData', compact('healthData'));
+    }
+
+    public function editUserHealthData($id)
+    {
+        $healthData = HealthData::findOrFail($id);
+        return view('administrator.editUserHealthData', compact('healthData'));
+    }
+
+    public function updateUserHealthData(Request $request, $id)
+    {
+        $healthData = HealthData::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'weight' => '',
+            'diastolicBloodPressure' => '',
+            'systolicBloodPressure' => '',
+            'pulse' => '',
+        ]);
+
+        $healthData->update($validatedData);
+
+        return redirect()->route('administrator.userHealthData')->with('success', 'Dane użytkownika zostały zaktualizowane.');
+    }
+
+    public function removeUserHealthData($healthDataId)
+    {
+        $healthData = HealthData::find($healthDataId);
+
+        $healthData->delete();
+
+        return redirect()->route('administrator.userHealthData')->with('success', 'Dane zdrowotne użytkownika zostały usunięte.');    }
 }

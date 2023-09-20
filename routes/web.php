@@ -55,3 +55,8 @@ Route::get('/admin/dashboard/userDisease', [AdministratorController::class, 'sho
 Route::get('/admin/dashboard/userDisease/addUserDisease', [AdministratorController::class, 'showAddUserDiseaseView'])->name('administrator.addUserDisease')->middleware('admin');
 Route::post('/admin/dashboard/addUserDisease/add', [AdministratorController::class, 'addUserDisease'])->name('administrator.saveUserDisease')->middleware('admin');
 Route::delete('/admin/dashboard/userDisease/removeUserDisease/{userDiseaseId}', [AdministratorController::class, 'removeUserDisease'])->name('administrator.removeUserDisease')->middleware('admin');
+
+Route::get('/admin/dashboard/userHealthData', [AdministratorController::class, 'showUserHealthData'])->name('administrator.userHealthData')->middleware('admin');
+Route::get('/admin/dashboard/userHealthData/{id}/edit', [AdministratorController::class, 'editUserHealthData'])->name('administrator.editUserHealthData')->middleware('admin');
+Route::put('/admin/dashboard/userHealthData/{id}', [AdministratorController::class, 'updateUserHealthData'])->name('administrator.updateUserHealthData')->middleware('admin');
+Route::delete('/admin/dashboard/userHealthData/removeUserHealthData/{healthDataId}', [AdministratorController::class, 'removeUserHealthData'])->name('administrator.removeUserHealthData')->middleware('admin');
