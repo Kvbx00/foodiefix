@@ -45,4 +45,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Ingredient::class, 'ingredient_preferences', 'user_id', 'ingredient_id');
     }
+
+    public function ingredients()
+    {
+        return $this->belongsToMany(Ingredient::class, 'ingredient_preferences');
+    }
 }

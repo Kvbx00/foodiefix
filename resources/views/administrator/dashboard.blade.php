@@ -18,6 +18,8 @@
 <a href="{{ url('admin/dashboard/userDisease') }}">Choroby użytkownika</a>
 <br>
 <a href="{{ url('admin/dashboard/userHealthData') }}">Dane zdrowotne użytkownika</a>
+<br>
+<a href="{{ url('admin/dashboard/userIngredientPreference') }}">Preferencje składników użytkownika</a>
 
 <form method="POST" action="{{ route('admin.logout') }}">
     @csrf

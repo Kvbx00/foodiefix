@@ -51,7 +51,6 @@ Route::get('/admin/dashboard/userProfile/{id}/edit', [AdministratorController::c
 Route::put('/admin/dashboard/userProfile/{id}', [AdministratorController::class, 'updateUserProfile'])->name('administrator.updateUserProfile')->middleware('admin');
 
 Route::get('/admin/dashboard/userDisease', [AdministratorController::class, 'showUserDisease'])->name('administrator.userDisease')->middleware('admin');
-
 Route::get('/admin/dashboard/userDisease/addUserDisease', [AdministratorController::class, 'showAddUserDiseaseView'])->name('administrator.addUserDisease')->middleware('admin');
 Route::post('/admin/dashboard/addUserDisease/add', [AdministratorController::class, 'addUserDisease'])->name('administrator.saveUserDisease')->middleware('admin');
 Route::delete('/admin/dashboard/userDisease/removeUserDisease/{userDiseaseId}', [AdministratorController::class, 'removeUserDisease'])->name('administrator.removeUserDisease')->middleware('admin');
@@ -60,3 +59,8 @@ Route::get('/admin/dashboard/userHealthData', [AdministratorController::class, '
 Route::get('/admin/dashboard/userHealthData/{id}/edit', [AdministratorController::class, 'editUserHealthData'])->name('administrator.editUserHealthData')->middleware('admin');
 Route::put('/admin/dashboard/userHealthData/{id}', [AdministratorController::class, 'updateUserHealthData'])->name('administrator.updateUserHealthData')->middleware('admin');
 Route::delete('/admin/dashboard/userHealthData/removeUserHealthData/{healthDataId}', [AdministratorController::class, 'removeUserHealthData'])->name('administrator.removeUserHealthData')->middleware('admin');
+
+Route::get('/admin/dashboard/userIngredientPreference', [AdministratorController::class, 'showUserIngredientPreference'])->name('administrator.userIngredientPreference')->middleware('admin');
+Route::get('/admin/dashboard/userIngredientPreference/adduserIngredientPreference', [AdministratorController::class, 'showAddUserIngredientPreferenceView'])->name('administrator.addUserIngredientPreference')->middleware('admin');
+Route::post('/admin/dashboard/addUserIngredientPreference/add', [AdministratorController::class, 'addUserIngredientPreference'])->name('administrator.saveUserIngredientPreference')->middleware('admin');
+Route::delete('/admin/dashboard/userIngredientPreference/removeUserIngredientPreference/{ingredientPreferenceId}', [AdministratorController::class, 'removeUserIngredientPreference'])->name('administrator.removeUserIngredientPreference')->middleware('admin');

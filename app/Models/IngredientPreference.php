@@ -29,5 +29,23 @@ class IngredientPreference extends Model
         return $this->belongsTo(IngredientCategory::class, 'ingredient_category_id', 'id');
     }
 
+    protected $appends = ['user_email', 'user_name', 'user_lastName',];
+
+    public function getUserEmailAttribute(){
+        return $this->user->email;
+    }
+
+    public function getUserNameAttribute(){
+        return $this->user->name;
+    }
+
+    public function getUserLastNameAttribute(){
+        return $this->user->lastName;
+    }
+
+    public function getIngredientNameAttribute(){
+        return $this->ingredient->name;
+    }
+
     public $timestamps = false;
 }

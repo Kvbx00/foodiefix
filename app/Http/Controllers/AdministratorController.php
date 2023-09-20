@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Disease;
 use App\Models\HealthData;
+use App\Models\Ingredient;
+use App\Models\IngredientPreference;
 use App\Models\UserDisease;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\User;
 
@@ -143,5 +144,55 @@ class AdministratorController extends Controller
 
         $healthData->delete();
 
-        return redirect()->route('administrator.userHealthData')->with('success', 'Dane zdrowotne użytkownika zostały usunięte.');    }
+        return redirect()->route('administrator.userHealthData')->with('success', 'Dane zdrowotne użytkownika zostały usunięte.');
+    }
+
+    public function showUserIngredientPreference()
+    {
+        $ingredientPreference = IngredientPreference::all();
+
+        return view('administrator.userIngredientPreference', compact('ingredientPreference'));
+    }
+
+    public function showAddUserIngredientPreferenceView()
+    {
+        $users = User::all();
+        $ingredients = Ingredient::all();
+
+        return view('administrator.addUserIngredientPreference', compact('ingredients', 'users'));
+    }
+
+    public function addUserIngredientPreference(Request $request)
+    {
+        $validatedData = $request->validate([
+            'user_id' => 'required',
+            'ingredient_name' => 'required',
+        ]);
+
+        $user = User::findOrFail($validatedData['user_id']);
+        $ingredientName = $validatedData['ingredient_name'];
+
+        $ingredient = Ingredient::where('name', $ingredientName)->first();
+
+        $ingredientCategory = $ingredient->category;
+
+        $existingPreference = $user->ingredientPreferences()->where('ingredient_id', $ingredient->id)->first();
+
+        if ($existingPreference) {
+            return back()->withErrors('Użytkownik już ma ten składnik w preferencjach.');
+        }
+
+        $user->ingredientPreferences()->attach($ingredient->id, ['ingredient_category_id' => $ingredientCategory->id]);
+
+        return redirect()->route('administrator.userIngredientPreference')->with('success', 'Preferencja została dodana');
+    }
+
+    public function removeUserIngredientPreference($ingredientPreferenceId)
+    {
+        $ingredientPreference = IngredientPreference::find($ingredientPreferenceId);
+
+        $ingredientPreference->delete();
+
+        return redirect()->route('administrator.userIngredientPreference')->with('success', 'Preferencja została usunięta');
+    }
 }
