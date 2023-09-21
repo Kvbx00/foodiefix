@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CaloricNeed;
 use App\Models\Disease;
 use App\Models\HealthData;
 use App\Models\Ingredient;
@@ -119,6 +120,7 @@ class AdministratorController extends Controller
     public function editUserHealthData($id)
     {
         $healthData = HealthData::findOrFail($id);
+
         return view('administrator.editUserHealthData', compact('healthData'));
     }
 
@@ -194,5 +196,43 @@ class AdministratorController extends Controller
         $ingredientPreference->delete();
 
         return redirect()->route('administrator.userIngredientPreference')->with('success', 'Preferencja została usunięta');
+    }
+
+    public function showUserCaloricNeed()
+    {
+        $caloricNeed = CaloricNeed::all();
+
+        return view('administrator.userCaloricNeed', compact('caloricNeed'));
+    }
+
+    public function editUserCaloricNeed($id)
+    {
+        $caloricNeed = CaloricNeed::findOrFail($id);
+
+        return view('administrator.editUserCaloricNeed', compact('caloricNeed'));
+    }
+
+    public function updateUserCaloricNeed(Request $request, $id)
+    {
+        $caloricNeed = CaloricNeed::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'caloricNeeds' => 'required|regex:"^(?!0{4})[1-9]\d{3}$"',
+        ], [
+            'caloricNeeds' => 'Zakres liczbowy to 1000 - 9999 kcal.'
+        ]);
+
+        $caloricNeed->update($validatedData);
+
+        return redirect()->route('administrator.userCaloricNeed')->with('success', 'Dane użytkownika zostały zaktualizowane.');
+    }
+
+    public function removeUserCaloricNeed($caloricNeedId)
+    {
+        $caloricNeed = CaloricNeed::find($caloricNeedId);
+
+        $caloricNeed->delete();
+
+        return redirect()->route('administrator.userCaloricNeed')->with('success', 'Dane użytkownika zostały usunięte.');
     }
 }

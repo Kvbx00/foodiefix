@@ -20,6 +20,8 @@
 <a href="{{ url('admin/dashboard/userHealthData') }}">Dane zdrowotne użytkownika</a>
 <br>
 <a href="{{ url('admin/dashboard/userIngredientPreference') }}">Preferencje składników użytkownika</a>
+<br>
+<a href="{{ url('admin/dashboard/userCaloricNeed') }}">Dane zdrowotne użytkownika</a>
 
 <form method="POST" action="{{ route('admin.logout') }}">
     @csrf

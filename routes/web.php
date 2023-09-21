@@ -64,3 +64,8 @@ Route::get('/admin/dashboard/userIngredientPreference', [AdministratorController
 Route::get('/admin/dashboard/userIngredientPreference/adduserIngredientPreference', [AdministratorController::class, 'showAddUserIngredientPreferenceView'])->name('administrator.addUserIngredientPreference')->middleware('admin');
 Route::post('/admin/dashboard/addUserIngredientPreference/add', [AdministratorController::class, 'addUserIngredientPreference'])->name('administrator.saveUserIngredientPreference')->middleware('admin');
 Route::delete('/admin/dashboard/userIngredientPreference/removeUserIngredientPreference/{ingredientPreferenceId}', [AdministratorController::class, 'removeUserIngredientPreference'])->name('administrator.removeUserIngredientPreference')->middleware('admin');
+
+Route::get('/admin/dashboard/userCaloricNeed', [AdministratorController::class, 'showUserCaloricNeed'])->name('administrator.userCaloricNeed')->middleware('admin');
+Route::get('/admin/dashboard/userCaloricNeed/{id}/edit', [AdministratorController::class, 'editUserCaloricNeed'])->name('administrator.editUserCaloricNeed')->middleware('admin');
+Route::put('/admin/dashboard/userCaloricNeed/{id}', [AdministratorController::class, 'updateUserCaloricNeed'])->name('administrator.updateUserCaloricNeed')->middleware('admin');
+Route::delete('/admin/dashboard/userCaloricNeed/removeUserCaloricNeed/{caloricNeedId}', [AdministratorController::class, 'removeUserCaloricNeed'])->name('administrator.removeUserCaloricNeed')->middleware('admin');
