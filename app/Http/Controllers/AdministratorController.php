@@ -235,4 +235,64 @@ class AdministratorController extends Controller
 
         return redirect()->route('administrator.userCaloricNeed')->with('success', 'Dane użytkownika zostały usunięte.');
     }
+
+    public function showDisease()
+    {
+        $disease = Disease::all();
+
+        return view('administrator.disease', compact('disease'));
+    }
+
+    public function editDisease($id)
+    {
+        $disease = Disease::findOrFail($id);
+
+        return view('administrator.editDisease', compact('disease'));
+    }
+
+    public function updateDisease(Request $request, $id)
+    {
+        $disease = Disease::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'name' => 'required|regex:"^([a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+ )*[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$"|max:70',
+        ],[
+            'name' => 'Maksymalna długość choroby to 70 znaków. Cyfry i znaki specjalne niedozwolone.',
+            'name.required' => 'Pole nie może być puste',
+        ]);
+
+        $disease->update($validatedData);
+
+        return redirect()->route('administrator.disease')->with('success', 'Choroba została zaktualizowana.');
+    }
+
+    public function removeDisease($diseaseId)
+    {
+        $disease = Disease::find($diseaseId);
+
+        $disease->delete();
+
+        return redirect()->route('administrator.disease')->with('success', 'Choroba została usunięta.');
+    }
+
+    public function showAddDiseaseView()
+    {
+        return view('administrator.addDisease');
+    }
+
+    public function addDisease(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|regex:"^([a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+ )*[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$"|max:70',
+        ], [
+            'name' => 'Maksymalna długość choroby to 70 znaków. Cyfry i znaki specjalne niedozwolone.',
+            'name.required' => 'Pole nie może być puste',
+        ]);
+
+        $disease = Disease::create([
+           'name' => $request->name,
+        ]);
+
+        return redirect()->route('administrator.disease')->with('success', 'Choroba została dodana.');
+    }
 }

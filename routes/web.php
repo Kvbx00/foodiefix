@@ -69,3 +69,10 @@ Route::get('/admin/dashboard/userCaloricNeed', [AdministratorController::class, 
 Route::get('/admin/dashboard/userCaloricNeed/{id}/edit', [AdministratorController::class, 'editUserCaloricNeed'])->name('administrator.editUserCaloricNeed')->middleware('admin');
 Route::put('/admin/dashboard/userCaloricNeed/{id}', [AdministratorController::class, 'updateUserCaloricNeed'])->name('administrator.updateUserCaloricNeed')->middleware('admin');
 Route::delete('/admin/dashboard/userCaloricNeed/removeUserCaloricNeed/{caloricNeedId}', [AdministratorController::class, 'removeUserCaloricNeed'])->name('administrator.removeUserCaloricNeed')->middleware('admin');
+
+Route::get('/admin/dashboard/disease', [AdministratorController::class, 'showDisease'])->name('administrator.disease')->middleware('admin');
+Route::get('/admin/dashboard/disease/{id}/edit', [AdministratorController::class, 'editDisease'])->name('administrator.editDisease')->middleware('admin');
+Route::put('/admin/dashboard/disease/{id}', [AdministratorController::class, 'updateDisease'])->name('administrator.updateDisease')->middleware('admin');
+Route::delete('/admin/dashboard/disease/removeDisease/{diseaseId}', [AdministratorController::class, 'removeDisease'])->name('administrator.removeDisease')->middleware('admin');
+Route::get('/admin/dashboard/disease/addDisease', [AdministratorController::class, 'showAddDiseaseView'])->name('administrator.addDisease')->middleware('admin');
+Route::post('/admin/dashboard/disease/add', [AdministratorController::class, 'addDisease'])->name('administrator.saveDisease')->middleware('admin');
