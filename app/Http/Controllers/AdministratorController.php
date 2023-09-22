@@ -7,6 +7,7 @@ use App\Models\Disease;
 use App\Models\HealthData;
 use App\Models\Ingredient;
 use App\Models\IngredientPreference;
+use App\Models\MealCategory;
 use App\Models\UserDisease;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -256,7 +257,7 @@ class AdministratorController extends Controller
 
         $validatedData = $request->validate([
             'name' => 'required|regex:"^([a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+ )*[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$"|max:70',
-        ],[
+        ], [
             'name' => 'Maksymalna długość choroby to 70 znaków. Cyfry i znaki specjalne niedozwolone.',
             'name.required' => 'Pole nie może być puste',
         ]);
@@ -289,10 +290,75 @@ class AdministratorController extends Controller
             'name.required' => 'Pole nie może być puste',
         ]);
 
-        $disease = Disease::create([
-           'name' => $request->name,
+        Disease::create([
+            'name' => $request->name,
         ]);
 
         return redirect()->route('administrator.disease')->with('success', 'Choroba została dodana.');
     }
+
+    public function showMealCategory()
+    {
+        $mealCategory = MealCategory::all();
+
+        return view('administrator.mealCategory', compact('mealCategory'));
+    }
+
+    public function editMealCategory($id)
+    {
+        $mealCategory = MealCategory::findOrFail($id);
+
+        return view('administrator.editMealCategory', compact('mealCategory'));
+    }
+
+    public function updateMealCategory(Request $request, $id)
+    {
+        $mealCategory = MealCategory::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'name' => 'required|regex:"^([a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+ )*[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$"|max:60',
+        ], [
+            'name' => 'Maksymalna długość kategorii to 60 znaków. Cyfry i znaki specjalne niedozwolone.',
+            'name.required' => 'Pole nie może być puste',
+        ]);
+
+        $mealCategory->update($validatedData);
+
+        return redirect()->route('administrator.mealCategory')->with('success', 'Kategoria została zaktualizowana.');
+    }
+
+    public function removeMealCategory($mealCategoryId)
+    {
+        $mealCategory = MealCategory::find($mealCategoryId);
+
+        if ($mealCategory->meals()->count() > 0) {
+            return redirect()->route('administrator.mealCategory')->with('error', 'Nie można usunąć kategorii dań z przypisanymi daniami.');
+        }
+
+        $mealCategory->delete();
+
+        return redirect()->route('administrator.mealCategory')->with('success', 'Kategoria została usunięta.');
+    }
+
+    public function showAddMealCategoryView()
+    {
+        return view('administrator.addMealCategory');
+    }
+
+    public function addMealCategory(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|regex:"^([a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+ )*[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$"|max:60',
+        ], [
+            'name' => 'Maksymalna długość kategorii to 60 znaków. Cyfry i znaki specjalne niedozwolone.',
+            'name.required' => 'Pole nie może być puste',
+        ]);
+
+        MealCategory::create([
+           'name' => $request->name,
+        ]);
+
+        return redirect()->route('administrator.mealCategory')->with('success', 'Kategoria została dodana.');
+    }
+
 }

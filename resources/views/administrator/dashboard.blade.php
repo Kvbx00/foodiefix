@@ -24,6 +24,8 @@
 <a href="{{ url('admin/dashboard/userCaloricNeed') }}">Dane zdrowotne użytkownika</a>
 <br>
 <a href="{{ url('admin/dashboard/disease') }}">Choroby</a>
+<br>
+<a href="{{ url('admin/dashboard/mealCategory') }}">Kategorie dań</a>
 
 <form method="POST" action="{{ route('admin.logout') }}">
     @csrf
