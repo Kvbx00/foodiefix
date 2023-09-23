@@ -26,6 +26,8 @@
 <a href="{{ url('admin/dashboard/disease') }}">Choroby</a>
 <br>
 <a href="{{ url('admin/dashboard/mealCategory') }}">Kategorie dań</a>
+<br>
+<a href="{{ url('admin/dashboard/meal') }}">Dania</a>
 
 <form method="POST" action="{{ route('admin.logout') }}">
     @csrf

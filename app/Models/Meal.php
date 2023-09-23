@@ -40,4 +40,11 @@ class Meal extends Model
 	{
 		return $this->hasMany(Nutritionalvalue::class);
 	}
+
+    protected $appends = ['meal_category_name',];
+
+    public function getMealCategoryNameAttribute()
+    {
+        return $this->meal_category->name;
+    }
 }

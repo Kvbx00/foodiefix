@@ -83,3 +83,10 @@ Route::put('/admin/dashboard/mealCategory/{id}', [AdministratorController::class
 Route::delete('/admin/dashboard/mealCategory/removeMealCategory/{mealCategoryId}', [AdministratorController::class, 'removeMealCategory'])->name('administrator.removeMealCategory')->middleware('admin');
 Route::get('/admin/dashboard/mealCategory/addMealCategory', [AdministratorController::class, 'showAddMealCategoryView'])->name('administrator.addMealCategory')->middleware('admin');
 Route::post('/admin/dashboard/mealCategory/add', [AdministratorController::class, 'addMealCategory'])->name('administrator.saveMealCategory')->middleware('admin');
+
+Route::get('/admin/dashboard/meal', [AdministratorController::class, 'showMeal'])->name('administrator.meal')->middleware('admin');
+Route::get('/admin/dashboard/meal/{id}/edit', [AdministratorController::class, 'editMeal'])->name('administrator.editMeal')->middleware('admin');
+Route::put('/admin/dashboard/meal/{id}', [AdministratorController::class, 'updateMeal'])->name('administrator.updateMeal')->middleware('admin');
+Route::delete('/admin/dashboard/meal/removeMeal/{mealId}', [AdministratorController::class, 'removeMeal'])->name('administrator.removeMeal')->middleware('admin');
+Route::get('/admin/dashboard/meal/addMeal', [AdministratorController::class, 'showAddMealView'])->name('administrator.addMeal')->middleware('admin');
+Route::post('/admin/dashboard/meal/add', [AdministratorController::class, 'addMeal'])->name('administrator.saveMeal')->middleware('admin');

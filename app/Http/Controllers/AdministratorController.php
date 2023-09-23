@@ -7,6 +7,7 @@ use App\Models\Disease;
 use App\Models\HealthData;
 use App\Models\Ingredient;
 use App\Models\IngredientPreference;
+use App\Models\Meal;
 use App\Models\MealCategory;
 use App\Models\UserDisease;
 use Illuminate\Http\Request;
@@ -355,10 +356,135 @@ class AdministratorController extends Controller
         ]);
 
         MealCategory::create([
-           'name' => $request->name,
+            'name' => $request->name,
         ]);
 
         return redirect()->route('administrator.mealCategory')->with('success', 'Kategoria została dodana.');
     }
+
+    public function showMeal()
+    {
+        $meal = Meal::all();
+
+        return view('administrator.meal', compact('meal'));
+    }
+
+    public function editMeal($id)
+    {
+        $meal = Meal::findOrFail($id);
+        $mealCategory = MealCategory::all();
+
+        return view('administrator.editMeal', compact('meal', 'mealCategory'));
+    }
+
+    public function updateMeal(Request $request, $id)
+    {
+        $meal = Meal::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'name' => 'required|regex:"^([a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+ )*[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$"|max:300',
+            'recipe' => 'required|regex:"^([a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+ )*[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$"|max:5000',
+            'meal_category_name' => '',
+        ], [
+            'name' => 'Maksymalna długość dania to 300 znaków. Cyfry i znaki specjalne niedozwolone.',
+            'name.required' => 'Pole nie może być puste',
+            'recipe' => 'Maksymalna długość przepisu to 5000 znaków. Cyfry i znaki specjalne niedozwolone.',
+            'recipe.required' => 'Pole nie może być puste',
+        ]);
+
+        if ($request->has('name')) {
+            $newMealName = $validatedData['name'];
+            if ($newMealName !== $meal->name) {
+                $existingMeal = Meal::where('name', $newMealName)->first();
+                if ($existingMeal) {
+                    return redirect()->route('administrator.meal')->with('error', 'Danie o podanej nazwie już istnieje.');
+                }
+            }
+        }
+
+        if ($request->has('name')) {
+            $meal->name = $validatedData['name'];
+        }
+
+        if ($request->has('recipe')) {
+            $meal->recipe = $validatedData['recipe'];
+        }
+
+        if ($request->has('meal_category_name')) {
+            $mealCategoryName = $validatedData['meal_category_name'];
+            $mealCategory = MealCategory::where('name', $mealCategoryName)->first();
+            if ($mealCategory) {
+                $meal->meal_category_id = $mealCategory->id;
+            }
+        }
+
+        $meal->save();
+
+        return redirect()->route('administrator.meal')->with('success', 'Danie zostało zaktualizowane.');
+    }
+
+    public function showAddMealView()
+    {
+        $mealCategory = MealCategory::all();
+
+        return view('administrator.addMeal', compact('mealCategory'));
+    }
+
+    public function addMeal(Request $request)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|regex:"^([a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+ )*[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$"|max:300',
+            'recipe' => 'required|regex:"^([a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+ )*[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$"|max:5000',
+            'meal_category_name' => '',
+        ], [
+            'name' => 'Maksymalna długość dania to 300 znaków. Cyfry i znaki specjalne niedozwolone.',
+            'name.required' => 'Pole nie może być puste',
+            'recipe' => 'Maksymalna długość przepisu to 5000 znaków. Cyfry i znaki specjalne niedozwolone.',
+            'recipe.required' => 'Pole nie może być puste',
+        ]);
+
+        $mealName = $validatedData['name'];
+        $mealRecipe = $validatedData['recipe'];
+        $mealCategoryName = $validatedData['meal_category_name'];
+
+        $existingMeal = Meal::where('name', $mealName)->first();
+
+        if ($existingMeal) {
+            return redirect()->route('administrator.meal')->with('error', 'Danie o podanej nazwie już istnieje.');
+        }
+
+        $mealCategory = MealCategory::where('name', $mealCategoryName)->first();
+
+        $meal = new Meal();
+        $meal->name = $mealName;
+        $meal->recipe = $mealRecipe;
+        $meal->meal_category_id = $mealCategory->id;
+
+        $meal->save();
+
+        return redirect()->route('administrator.meal')->with('success', 'Danie zostało dodane.');
+    }
+
+    public function removeMeal($mealId)
+    {
+        $meal = Meal::find($mealId);
+
+        if ($meal->ingredients()->count() > 0) {
+            return redirect()->route('administrator.meal')->with('error', 'Nie można usunąć dania z przypisanymi składnikami.');
+        }
+
+        if ($meal->menus()->count() > 0) {
+            return redirect()->route('administrator.meal')->with('error', 'Nie można usunąć dania przypisanego do menu użytkownika.');
+        }
+
+        if ($meal->nutritionalvalues()->count() > 0) {
+            return redirect()->route('administrator.meal')->with('error', 'Nie można usunąć dania z przypisanymi wartościami odżywczymi.');
+        }
+
+        $meal->delete();
+
+        return redirect()->route('administrator.meal')->with('success', 'Danie zostało usunięte.');
+    }
+
 
 }
