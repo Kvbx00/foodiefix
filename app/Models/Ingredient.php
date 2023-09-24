@@ -2,31 +2,35 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 class Ingredient extends Model
 {
-    protected $table = "ingredient";
+	protected $table = 'ingredient';
+	public $timestamps = false;
 
-    protected $fillable = [
-        'name',
-        'category_id',
-    ];
+	protected $casts = [
+		'category_id' => 'int'
+	];
 
-    public function category()
-    {
-        return $this->belongsTo(IngredientCategory::class, 'category_id', 'id');
-    }
+	protected $fillable = [
+		'name'
+	];
 
-    public function preferences()
-    {
-        return $this->hasMany(IngredientPreference::class, 'ingredient_id', 'id');
-    }
+	public function ingredient_category()
+	{
+		return $this->belongsTo(IngredientCategory::class, 'category_id');
+	}
 
-    public function user()
-    {
-        return $this->belongsToMany(User::class, 'ingredient_preferences', 'ingredient_id', 'user_id');
-    }
+	public function ingredient_preferences()
+	{
+		return $this->hasMany(IngredientPreference::class);
+	}
 
-    public $timestamps = false;
+	public function meals()
+	{
+		return $this->belongsToMany(Meal::class, 'meal_ingredient')
+					->withPivot('quantity', 'unit');
+	}
 }

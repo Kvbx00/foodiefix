@@ -178,7 +178,7 @@ class AdministratorController extends Controller
 
         $ingredient = Ingredient::where('name', $ingredientName)->first();
 
-        $ingredientCategory = $ingredient->category;
+        $ingredientCategory = $ingredient->ingredient_category;
 
         $existingPreference = $user->ingredientPreferences()->where('ingredient_id', $ingredient->id)->first();
 
