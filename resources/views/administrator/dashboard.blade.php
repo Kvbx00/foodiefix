@@ -28,6 +28,8 @@
 <a href="{{ url('admin/dashboard/mealCategory') }}">Kategorie dań</a>
 <br>
 <a href="{{ url('admin/dashboard/meal') }}">Dania</a>
+<br>
+<a href="{{ url('admin/dashboard/mealIngredient') }}">Składniki w daniach</a>
 
 <form method="POST" action="{{ route('admin.logout') }}">
     @csrf

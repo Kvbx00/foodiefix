@@ -9,6 +9,7 @@ use App\Models\Ingredient;
 use App\Models\IngredientPreference;
 use App\Models\Meal;
 use App\Models\MealCategory;
+use App\Models\MealIngredient;
 use App\Models\UserDisease;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -383,12 +384,12 @@ class AdministratorController extends Controller
 
         $validatedData = $request->validate([
             'name' => 'required|regex:"^([a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+ )*[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$"|max:300',
-            'recipe' => 'required|regex:"^([a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+ )*[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$"|max:5000',
+            'recipe' => 'required|max:5000',
             'meal_category_name' => '',
         ], [
             'name' => 'Maksymalna długość dania to 300 znaków. Cyfry i znaki specjalne niedozwolone.',
             'name.required' => 'Pole nie może być puste',
-            'recipe' => 'Maksymalna długość przepisu to 5000 znaków. Cyfry i znaki specjalne niedozwolone.',
+            'recipe' => 'Maksymalna długość przepisu to 5000 znaków.',
             'recipe.required' => 'Pole nie może być puste',
         ]);
 
@@ -434,12 +435,12 @@ class AdministratorController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|regex:"^([a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+ )*[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$"|max:300',
-            'recipe' => 'required|regex:"^([a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+ )*[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$"|max:5000',
+            'recipe' => 'required|max:5000',
             'meal_category_name' => '',
         ], [
             'name' => 'Maksymalna długość dania to 300 znaków. Cyfry i znaki specjalne niedozwolone.',
             'name.required' => 'Pole nie może być puste',
-            'recipe' => 'Maksymalna długość przepisu to 5000 znaków. Cyfry i znaki specjalne niedozwolone.',
+            'recipe' => 'Maksymalna długość przepisu to 5000 znaków.',
             'recipe.required' => 'Pole nie może być puste',
         ]);
 
@@ -486,5 +487,118 @@ class AdministratorController extends Controller
         return redirect()->route('administrator.meal')->with('success', 'Danie zostało usunięte.');
     }
 
+    public function showMealIngredient()
+    {
+        $mealIngredient = MealIngredient::all();
+
+        return view('administrator.mealIngredient', compact('mealIngredient'));
+    }
+
+    public function editMealIngredient($id)
+    {
+        $mealIngredient = MealIngredient::findOrFail($id);
+        $ingredient = Ingredient::all();
+
+        return view('administrator.editMealIngredient', compact('mealIngredient', 'ingredient'));
+    }
+
+    public function updateMealIngredient(Request $request, $id)
+    {
+        $mealIngredient = MealIngredient::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'quantity' => 'required|regex:"^(?!0+$)[0-9]{1,4}$"',
+            'unit' => '',
+            'ingredient_name' => '',
+        ], [
+            'quantity' => 'Pole ilość dopuszcza tylko cyrfy oraz nie może się składać z samych zer. Maksymalna długość to 4 znaki.',
+            'quantity.required' => 'Pole nie może być puste.'
+        ]);
+
+        if ($request->has('quantity')) {
+            $mealIngredient->quantity = $validatedData['quantity'];
+        }
+
+        if ($request->has('unit')) {
+            $mealIngredient->unit = $validatedData['unit'];
+        }
+
+        if ($request->has('ingredient_name')) {
+            $ingredientName = $validatedData['ingredient_name'];
+            $ingredient = Ingredient::where('name', $ingredientName)->first();
+            if ($ingredient) {
+                $existingMealIngredient = MealIngredient::where('meal_id', $mealIngredient->meal_id)
+                    ->where('ingredient_id', $ingredient->id)
+                    ->where('id', '!=', $id)
+                    ->first();
+
+                if ($existingMealIngredient) {
+                    return redirect()->route('administrator.mealIngredient')->with('error', 'Ten składnik już istnieje w danym daniu.');
+                }
+
+                $mealIngredient->ingredient_id = $ingredient->id;
+            }
+        }
+
+        $mealIngredient->save();
+
+        return redirect()->route('administrator.mealIngredient')->with('success', 'Składnik w daniu został zaktualizowany.');
+    }
+
+    public function showAddMealIngredientView()
+    {
+        $ingredient = Ingredient::all();
+        $meal = Meal::all();
+
+        return view('administrator.addMealIngredient', compact('ingredient', 'meal'));
+    }
+
+    public function addMealIngredient(Request $request)
+    {
+        $validatedData = $request->validate([
+            'quantity' => 'required|regex:"^(?!0+$)[0-9]{1,4}$"',
+            'unit' => '',
+            'ingredient_name' => '',
+            'meal_name' => '',
+        ], [
+            'quantity' => 'Pole ilość dopuszcza tylko cyrfy oraz nie może się składać z samych zer. Maksymalna długość to 4 znaki.',
+            'quantity.required' => 'Pole nie może być puste.'
+        ]);
+
+        $ingredientQuantity = $validatedData['quantity'];
+        $ingredientUnit = $validatedData['unit'];
+        $ingredientName = $validatedData['ingredient_name'];
+        $mealName = $validatedData['meal_name'];
+
+        $ingredient = Ingredient::where('name', $ingredientName)->first();
+        $meal = Meal::where('name', $mealName)->first();
+
+        $existingMealIngredient = MealIngredient::where('meal_id', $meal->id)
+            ->where('ingredient_id', $ingredient->id)
+            ->first();
+
+        if ($existingMealIngredient) {
+            return redirect()->route('administrator.mealIngredient')->with('error', 'Ten składnik już istnieje w danym daniu.');
+        }
+
+        $mealIngredient = new MealIngredient();
+        $mealIngredient->quantity = $ingredientQuantity;
+        $mealIngredient->unit = $ingredientUnit;
+        $mealIngredient->ingredient_id = $ingredient->id;
+        $mealIngredient->meal_id = $meal->id;
+
+        $mealIngredient->save();
+
+        return redirect()->route('administrator.mealIngredient')->with('success', 'Składnik został dodany do dania.');
+    }
+
+    public function removeMealIngredient($mealIngredientId)
+    {
+        $mealIngredient = MealIngredient::find($mealIngredientId);
+
+        $mealIngredient->delete();
+
+        return redirect()->route('administrator.mealIngredient')->with('success', 'Składnik został usunięty z dania.');
+    }
 
 }
