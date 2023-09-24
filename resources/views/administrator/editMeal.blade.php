@@ -17,7 +17,7 @@
         <label for="meal_category_name">Wybierz kategorię:</label>
         <select name="meal_category_name" id="meal_category_name">
             @foreach($mealCategory as $mealCategories)
-                <option value="{{ $mealCategories->name }}">{{ $mealCategories->name }}</option>
+                <option value="{{ $mealCategories->name }}" @if($mealCategories->id == $meal->meal_category_id) selected @endif>{{ $mealCategories->name }}</option>
             @endforeach
         </select>
 
