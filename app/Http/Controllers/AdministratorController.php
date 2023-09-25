@@ -10,6 +10,7 @@ use App\Models\IngredientPreference;
 use App\Models\Meal;
 use App\Models\MealCategory;
 use App\Models\MealIngredient;
+use App\Models\Nutritionalvalue;
 use App\Models\UserDisease;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -599,6 +600,124 @@ class AdministratorController extends Controller
         $mealIngredient->delete();
 
         return redirect()->route('administrator.mealIngredient')->with('success', 'Składnik został usunięty z dania.');
+    }
+
+    public function showNutritionalvalue()
+    {
+        $nutritionalvalue = Nutritionalvalue::all();
+
+        return view('administrator.nutritionalvalue', compact('nutritionalvalue'));
+    }
+
+    public function editNutritionalvalue($id)
+    {
+        $nutritionalvalue = Nutritionalvalue::findOrFail($id);
+        $meal = Meal::all();
+
+        return view('administrator.editNutritionalvalue', compact('nutritionalvalue', 'meal'));
+    }
+
+    public function updateNutritionalvalue(Request $request, $id)
+    {
+        $nutritionalvalue = Nutritionalvalue::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'calories' => 'required|regex:"^(?!0{2,})[0-9]{1,4}$"',
+            'protein' => 'required|regex:"^\d{1,3}(\.\d{1,2})?$"',
+            'fats' => 'required|regex:"^\d{1,3}(\.\d{1,2})?$"',
+            'carbohydrates' => 'required|regex:"^\d{1,3}(\.\d{1,2})?$"',
+            'meal_name' => '',
+        ], [
+            'calories' => 'Maksymalna długość kalorii to 4 znaki. Litery są niedozwolone.',
+            'calories.required' => 'Pole nie może być puste',
+            'protein' => 'Pole to składa się z maksymalnie 6 cyfr z czego maksymalnie dwie po przecinku. Litery są niedozwolone.',
+            'protein.required' => 'Pole nie może być puste',
+            'fats' => 'Pole to składa się z maksymalnie 6 cyfr z czego maksymalnie dwie po przecinku. Litery są niedozwolone.',
+            'fats.required' => 'Pole nie może być puste',
+            'carbohydrates' => 'Pole to składa się z maksymalnie 6 cyfr z czego maksymalnie dwie po przecinku. Litery są niedozwolone.',
+            'carbohydrates.required' => 'Pole nie może być puste',
+        ]);
+
+        if ($request->has('calories')) {
+            $nutritionalvalue->calories = $validatedData['calories'];
+        }
+
+        if ($request->has('protein')) {
+            $nutritionalvalue->protein = $validatedData['protein'];
+        }
+
+        if ($request->has('fats')) {
+            $nutritionalvalue->fats = $validatedData['fats'];
+        }
+
+        if ($request->has('carbohydrates')) {
+            $nutritionalvalue->carbohydrates = $validatedData['carbohydrates'];
+        }
+
+        $nutritionalvalue->save();
+
+        return redirect()->route('administrator.nutritionalvalue')->with('success', 'Wartości odżywcze zostały dodane.');
+
+    }
+
+    public function showAddNutritionalvalueView()
+    {
+        $meal = Meal::all();
+
+        return view('administrator.addNutritionalvalue', compact('meal'));
+    }
+
+    public function addNutritionalvalue(Request $request)
+    {
+        $validatedData = $request->validate([
+            'calories' => 'required|regex:"^(?!0{2,})[0-9]{1,4}$"',
+            'protein' => 'required|regex:"^\d{1,3}(\.\d{1,2})?$"',
+            'fats' => 'required|regex:"^\d{1,3}(\.\d{1,2})?$"',
+            'carbohydrates' => 'required|regex:"^\d{1,3}(\.\d{1,2})?$"',
+            'meal_name' => '',
+        ], [
+            'calories' => 'Maksymalna długość kalorii to 4 znaki. Litery są niedozwolone.',
+            'calories.required' => 'Pole nie może być puste',
+            'protein' => 'Pole to składa się z maksymalnie 6 cyfr z czego maksymalnie dwie po przecinku. Litery są niedozwolone.',
+            'protein.required' => 'Pole nie może być puste',
+            'fats' => 'Pole to składa się z maksymalnie 6 cyfr z czego maksymalnie dwie po przecinku. Litery są niedozwolone.',
+            'fats.required' => 'Pole nie może być puste',
+            'carbohydrates' => 'Pole to składa się z maksymalnie 6 cyfr z czego maksymalnie dwie po przecinku. Litery są niedozwolone.',
+            'carbohydrates.required' => 'Pole nie może być puste',
+        ]);
+
+        $nutritionalvalueCalories = $validatedData['calories'];
+        $nutritionalvalueProtein = $validatedData['protein'];
+        $nutritionalvalueFats = $validatedData['fats'];
+        $nutritionalvalueCarbohydrates = $validatedData['carbohydrates'];
+        $mealName = $validatedData['meal_name'];
+
+        $meal = Meal::where('name', $mealName)->first();
+        $existingNutritionalvalue = Nutritionalvalue::where('meal_id', $meal->id)->first();
+
+        if ($existingNutritionalvalue) {
+            return redirect()->route('administrator.nutritionalvalue')->with('error', 'Wartość odżywcza dla danego dania już istnieje.');
+        }
+
+        $nutritionalvalue = new Nutritionalvalue();
+        $nutritionalvalue->calories = $nutritionalvalueCalories;
+        $nutritionalvalue->protein = $nutritionalvalueProtein;
+        $nutritionalvalue->fats = $nutritionalvalueFats;
+        $nutritionalvalue->carbohydrates = $nutritionalvalueCarbohydrates;
+        $nutritionalvalue->meal_id = $meal->id;
+
+        $nutritionalvalue->save();
+
+        return redirect()->route('administrator.nutritionalvalue')->with('success', 'Wartości odżywcze zostały zmienione.');
+    }
+
+    public function removeNutritionalvalue($nutritionalvalueId)
+    {
+        $nutritonalvalue = Nutritionalvalue::find($nutritionalvalueId);
+
+        $nutritonalvalue->delete();
+
+        return redirect()->route('administrator.nutritionalvalue')->with('success', 'Wartości odżywcze zostały usunięte.');
     }
 
 }
