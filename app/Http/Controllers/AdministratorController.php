@@ -6,6 +6,7 @@ use App\Models\CaloricNeed;
 use App\Models\Disease;
 use App\Models\HealthData;
 use App\Models\Ingredient;
+use App\Models\IngredientCategory;
 use App\Models\IngredientPreference;
 use App\Models\Meal;
 use App\Models\MealCategory;
@@ -718,6 +719,70 @@ class AdministratorController extends Controller
         $nutritonalvalue->delete();
 
         return redirect()->route('administrator.nutritionalvalue')->with('success', 'Wartości odżywcze zostały usunięte.');
+    }
+
+    public function showIngredientCategory()
+    {
+        $ingredientCategory = IngredientCategory::all();
+
+        return view('administrator.ingredientCategory', compact('ingredientCategory'));
+    }
+
+    public function editIngredientCategory($id)
+    {
+        $ingredientCategory = IngredientCategory::findOrFail($id);
+
+        return view('administrator.editIngredientCategory', compact('ingredientCategory'));
+    }
+
+    public function updateIngredientCategory(Request $request, $id)
+    {
+        $ingredientCategory = IngredientCategory::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'name' => 'required|regex:"^([a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+ )*[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$"|max:60',
+        ], [
+            'name' => 'Maksymalna długość kategorii to 60 znaków. Cyfry i znaki specjalne niedozwolone.',
+            'name.required' => 'Pole nie może być puste',
+        ]);
+
+        $ingredientCategory->update($validatedData);
+
+        return redirect()->route('administrator.ingredientCategory')->with('success', 'Kategoria została zaktualizowana.');
+    }
+
+    public function showAddIngredientCategoryView()
+    {
+        return view('administrator.addIngredientCategory');
+    }
+
+    public function addIngredientCategory(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|regex:"^([a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+ )*[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$"|max:60',
+        ], [
+            'name' => 'Maksymalna długość kategorii to 60 znaków. Cyfry i znaki specjalne niedozwolone.',
+            'name.required' => 'Pole nie może być puste',
+        ]);
+
+        IngredientCategory::create([
+            'name' => $request->name,
+        ]);
+
+        return redirect()->route('administrator.ingredientCategory')->with('success', 'Kategoria została dodana.');
+    }
+
+    public function removeIngredientCategory($ingredientCategoryId)
+    {
+        $ingredientCategory = IngredientCategory::find($ingredientCategoryId);
+
+        if ($ingredientCategory->ingredients()->count() > 0){
+            return redirect()->route('administrator.ingredientCategory')->with('error', 'Nie można usunąć kategorii z przypisanymi składnikami.');
+        }
+
+        $ingredientCategory->delete();
+
+        return redirect()->route('administrator.ingredientCategory')->with('success', 'Kategoria została usunięta.');
     }
 
 }

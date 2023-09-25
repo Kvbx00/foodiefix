@@ -32,6 +32,8 @@
 <a href="{{ url('admin/dashboard/mealIngredient') }}">Składniki w daniach</a>
 <br>
 <a href="{{ url('admin/dashboard/nutritionalvalue') }}">Wartości odżywcze w daniach</a>
+<br>
+<a href="{{ url('admin/dashboard/ingredientCategory') }}">Kategorie składików</a>
 
 <form method="POST" action="{{ route('admin.logout') }}">
     @csrf

@@ -2,16 +2,20 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 class IngredientCategory extends Model
 {
-    protected $table = "ingredient_category";
+	protected $table = 'ingredient_category';
+	public $timestamps = false;
 
-    protected $fillable = [
-        'name',
-    ];
+	protected $fillable = [
+		'name'
+	];
 
-    public $timestamps = false;
+	public function ingredients()
+	{
+		return $this->hasMany(Ingredient::class, 'category_id');
+	}
 }

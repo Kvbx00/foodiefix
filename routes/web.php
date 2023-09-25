@@ -104,3 +104,10 @@ Route::put('/admin/dashboard/nutritionalvalue/{id}', [AdministratorController::c
 Route::delete('/admin/dashboard/nutritionalvalue/removeNutritionalvalue/{nutritionalvalueId}', [AdministratorController::class, 'removeNutritionalvalue'])->name('administrator.removeNutritionalvalue')->middleware('admin');
 Route::get('/admin/dashboard/nutritionalvalue/addNutritionalvalue', [AdministratorController::class, 'showAddNutritionalvalueView'])->name('administrator.addNutritionalvalue')->middleware('admin');
 Route::post('/admin/dashboard/nutritionalvalue/add', [AdministratorController::class, 'addNutritionalvalue'])->name('administrator.saveNutritionalvalue')->middleware('admin');
+
+Route::get('/admin/dashboard/ingredientCategory', [AdministratorController::class, 'showIngredientCategory'])->name('administrator.ingredientCategory')->middleware('admin');
+Route::get('/admin/dashboard/ingredientCategory/{id}/edit', [AdministratorController::class, 'editIngredientCategory'])->name('administrator.editIngredientCategory')->middleware('admin');
+Route::put('/admin/dashboard/ingredientCategory/{id}', [AdministratorController::class, 'updateIngredientCategory'])->name('administrator.updateIngredientCategory')->middleware('admin');
+Route::delete('/admin/dashboard/ingredientCategory/removeIngredientCategory/{ingredientCategoryId}', [AdministratorController::class, 'removeIngredientCategory'])->name('administrator.removeIngredientCategory')->middleware('admin');
+Route::get('/admin/dashboard/ingredientCategory/addIngredientCategory', [AdministratorController::class, 'showAddIngredientCategoryView'])->name('administrator.addIngredientCategory')->middleware('admin');
+Route::post('/admin/dashboard/ingredientCategory/add', [AdministratorController::class, 'addIngredientCategory'])->name('administrator.saveIngredientCategory')->middleware('admin');
