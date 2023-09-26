@@ -111,3 +111,10 @@ Route::put('/admin/dashboard/ingredientCategory/{id}', [AdministratorController:
 Route::delete('/admin/dashboard/ingredientCategory/removeIngredientCategory/{ingredientCategoryId}', [AdministratorController::class, 'removeIngredientCategory'])->name('administrator.removeIngredientCategory')->middleware('admin');
 Route::get('/admin/dashboard/ingredientCategory/addIngredientCategory', [AdministratorController::class, 'showAddIngredientCategoryView'])->name('administrator.addIngredientCategory')->middleware('admin');
 Route::post('/admin/dashboard/ingredientCategory/add', [AdministratorController::class, 'addIngredientCategory'])->name('administrator.saveIngredientCategory')->middleware('admin');
+
+Route::get('/admin/dashboard/ingredient', [AdministratorController::class, 'showIngredient'])->name('administrator.ingredient')->middleware('admin');
+Route::get('/admin/dashboard/ingredient/{id}/edit', [AdministratorController::class, 'editIngredient'])->name('administrator.editIngredient')->middleware('admin');
+Route::put('/admin/dashboard/ingredient/{id}', [AdministratorController::class, 'updateIngredient'])->name('administrator.updateIngredient')->middleware('admin');
+Route::delete('/admin/dashboard/ingredient/removeIngredient/{ingredientId}', [AdministratorController::class, 'removeIngredient'])->name('administrator.removeIngredient')->middleware('admin');
+Route::get('/admin/dashboard/ingredient/addIngredient', [AdministratorController::class, 'showAddIngredientView'])->name('administrator.addIngredient')->middleware('admin');
+Route::post('/admin/dashboard/ingredient/add', [AdministratorController::class, 'addIngredient'])->name('administrator.saveIngredient')->middleware('admin');

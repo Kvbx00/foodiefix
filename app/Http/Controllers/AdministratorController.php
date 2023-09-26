@@ -785,4 +785,112 @@ class AdministratorController extends Controller
         return redirect()->route('administrator.ingredientCategory')->with('success', 'Kategoria została usunięta.');
     }
 
+    public function showIngredient()
+    {
+        $ingredient = Ingredient::all();
+
+        return view('administrator.ingredient', compact('ingredient'));
+    }
+
+    public function editIngredient($id)
+    {
+        $ingredient = Ingredient::findOrFail($id);
+        $ingredientCategory = IngredientCategory::all();
+
+        return view('administrator.editIngredient', compact('ingredient', 'ingredientCategory'));
+    }
+
+    public function updateIngredient(Request $request, $id)
+    {
+        $ingredient = Ingredient::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'name' => 'required|regex:"^([a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+ )*[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$"|max:60',
+            'ingredient_category_name' => '',
+        ], [
+            'name' => 'Maksymalna długość składnika to 60 znaków. Cyfry i znaki specjalne niedozwolone.',
+            'name.required' => 'Pole nie może być puste',
+        ]);
+
+        if ($request->has('name')) {
+            $newIngredientName = $validatedData['name'];
+            if ($newIngredientName !== $ingredient->name) {
+                $existingIngredient = Ingredient::where('name', $newIngredientName)->first();
+                if ($existingIngredient) {
+                    return redirect()->route('administrator.ingredient')->with('error', 'Składnik o podanej nazwie już istnieje.');
+                }
+            }
+        }
+
+        if ($request->has('name')) {
+            $ingredient->name = $validatedData['name'];
+        }
+
+        if ($request->has('ingredient_category_name')) {
+            $ingredientCategoryName = $validatedData['ingredient_category_name'];
+            $ingredientCategory = IngredientCategory::where('name', $ingredientCategoryName)->first();
+            if ($ingredientCategory) {
+                $ingredient->category_id = $ingredientCategory->id;
+            }
+        }
+
+        $ingredient->save();
+
+        return redirect()->route('administrator.ingredient')->with('success', 'Składnik został zaktualizowany.');
+    }
+
+    public function showAddIngredientView()
+    {
+        $ingredientCategory = IngredientCategory::all();
+
+        return view('administrator.addIngredient', compact('ingredientCategory'));
+    }
+
+    public function addIngredient(Request $request)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|regex:"^([a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+ )*[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]+$"|max:60',
+            'ingredient_category_name' => '',
+        ], [
+            'name' => 'Maksymalna długość składnika to 60 znaków. Cyfry i znaki specjalne niedozwolone.',
+            'name.required' => 'Pole nie może być puste',
+        ]);
+
+        $ingredientName = $validatedData['name'];
+        $ingredientCategoryName = $validatedData['ingredient_category_name'];
+
+        $existingIngredient = Ingredient::where('name', $ingredientName)->first();
+
+        if ($existingIngredient) {
+            return redirect()->route('administrator.ingredient')->with('error', 'Składnik o podanej nazwie już istnieje.');
+        }
+
+        $ingredientCategory = IngredientCategory::where('name', $ingredientCategoryName)->first();
+
+        $ingredient = new Ingredient();
+        $ingredient->name = $ingredientName;
+        $ingredient->category_id = $ingredientCategory->id;
+
+        $ingredient->save();
+
+        return redirect()->route('administrator.ingredient')->with('success', 'Składnik został dodany.');
+    }
+
+    public function removeIngredient($ingredientId)
+    {
+        $ingredient = Ingredient::find($ingredientId);
+
+        if ($ingredient->ingredient_preferences()->count() > 0) {
+            return redirect()->route('administrator.ingredient')->with('error', 'Nie można usunąć składnika przypisanego do preferencji użytkownika.');
+        }
+
+        if ($ingredient->meals()->count() > 0) {
+            return redirect()->route('administrator.ingredient')->with('error', 'Nie można usunąć składnika przypisanego do dania.');
+        }
+
+        $ingredient->delete();
+
+        return redirect()->route('administrator.ingredient')->with('success', 'Składnik został usunięty.');
+    }
+
 }

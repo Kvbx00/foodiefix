@@ -33,4 +33,11 @@ class Ingredient extends Model
 		return $this->belongsToMany(Meal::class, 'meal_ingredient')
 					->withPivot('quantity', 'unit');
 	}
+
+    protected $appends = ['ingredient_category_name',];
+
+    public function getIngredientCategoryNameAttribute()
+    {
+        return $this->ingredient_category->name;
+    }
 }
