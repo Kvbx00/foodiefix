@@ -41,6 +41,11 @@
                 <td>{{ $users->created_at }}</td>
                 <td>
                     <a href="{{ route('administrator.editUserProfile', $users->id) }}">Edytuj</a>
+                    <form action="{{ route('administrator.removeUserProfile', $users->id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit">Usuń</button>
+                    </form>
                 </td>
             </tr>
         @endforeach

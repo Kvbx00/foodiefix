@@ -68,6 +68,35 @@ class AdministratorController extends Controller
         return redirect()->route('administrator.userProfile')->with('success', 'Dane użytkownika zostały zaktualizowane.');
     }
 
+    public function removeUserProfile($userId)
+    {
+        $user = User::find($userId);
+
+        if ($user->caloric_needs()->count() > 0){
+            return redirect()->route('administrator.userProfile')->with('error', 'Nie można usunąć użytkownika z przypisanym zapotrzebowaniem kalorycznym.');
+        }
+
+        if ($user->health_data()->count() > 0){
+            return redirect()->route('administrator.userProfile')->with('error', 'Nie można usunąć użytkownika z przypisanym danymi zdrowotnymi.');
+        }
+
+        if ($user->ingredient_preferences()->count() > 0){
+            return redirect()->route('administrator.userProfile')->with('error', 'Nie można usunąć użytkownika z przypisanym preferencjami składników.');
+        }
+
+        if ($user->menus()->count() > 0){
+            return redirect()->route('administrator.userProfile')->with('error', 'Nie można usunąć użytkownika z przypisanym jadłospisem.');
+        }
+
+        if ($user->diseases()->count() > 0){
+            return redirect()->route('administrator.userProfile')->with('error', 'Nie można usunąć użytkownika z przypisanymi chorobami.');
+        }
+
+        $user->delete();
+
+        return redirect()->route('administrator.userProfile')->with('success', 'Użytkownik został usunięty.');
+    }
+
     public function showUserDisease()
     {
         $userDisease = UserDisease::all();

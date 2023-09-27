@@ -36,18 +36,34 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    public function caloric_needs()
+    {
+        return $this->hasMany(CaloricNeed::class);
+    }
+
+    public function health_data()
+    {
+        return $this->hasMany(HealthData::class);
+    }
+
+    public function ingredient_preferences()
+    {
+        return $this->hasMany(IngredientPreference::class);
+    }
+
+    public function menus()
+    {
+        return $this->hasMany(Menu::class);
+    }
+
     public function diseases()
     {
-        return $this->belongsToMany(Disease::class, 'user_diseases', 'user_id', 'diseases_id');
+        return $this->belongsToMany(Disease::class, 'user_diseases', 'user_id', 'diseases_id')
+                    ->withPivot('id');
     }
 
     public function ingredientPreferences()
     {
         return $this->belongsToMany(Ingredient::class, 'ingredient_preferences', 'user_id', 'ingredient_id');
-    }
-
-    public function ingredients()
-    {
-        return $this->belongsToMany(Ingredient::class, 'ingredient_preferences');
     }
 }
