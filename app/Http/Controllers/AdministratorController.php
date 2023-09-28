@@ -987,4 +987,46 @@ class AdministratorController extends Controller
         return redirect('/admin/dashboard');
     }
 
+    public function showJuniorProfile()
+    {
+        if (Auth::guard('admin')->check() && Auth::guard('admin')->user()->role !== 'admin') {
+            $administrator = Auth::guard('admin')->user();
+
+            return view('administrator.juniorProfile', compact('administrator'));
+        }
+
+        return redirect('/admin/dashboard');
+    }
+
+    public function updateJuniorProfile(Request $request, $id)
+    {
+        if (Auth::guard('admin')->check() && Auth::guard('admin')->user()->role !== 'admin') {
+            $administrator = Administrator::findOrFail($id);
+
+            $validatedData = $request->validate([
+                'email' => 'required|string|email|max:100|unique:administrator,email,' . $id,
+            ], [
+                'email' => "Wpisałeś nieprawidłowy email",
+                'email.unique' => "Taki email już istnieje",
+            ]);
+
+            if (!empty($request->password)) {
+                $request->validate([
+                    'password' => 'regex:"^(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,}$"|confirmed',
+                ], [
+                    'password' => 'Hasło musi składać się z min. 8 znaków, min. 1 wielkiej litery, min. 1 znaku specjalnego i min. 1 cyfry.',
+                    'password.confirmed' => 'Hasła się nie zgadzają.',
+                ]);
+
+                $administrator->password = bcrypt($request->password);
+            }
+
+            $administrator->update($validatedData);
+
+            return redirect()->route('administrator.juniorProfile')->with('success', 'Profil został zaktualizowany.');
+        }
+        return redirect('/admin/dashboard');
+
+    }
+
 }

@@ -125,3 +125,6 @@ Route::get('/admin/dashboard/adminProfile', [AdministratorController::class, 'sh
 Route::get('/admin/dashboard/adminProfile/{id}/edit', [AdministratorController::class, 'editAdminProfile'])->name('administrator.editAdminProfile')->middleware('admin');
 Route::put('/admin/dashboard/adminProfile/{id}', [AdministratorController::class, 'updateAdminProfile'])->name('administrator.updateAdminProfile')->middleware('admin');
 Route::delete('/admin/dashboard/adminProfile/removeAdminProfile/{adminId}', [AdministratorController::class, 'removeAdminProfile'])->name('administrator.removeAdminProfile')->middleware('admin');
+
+Route::get('/admin/dashboard/juniorProfile', [AdministratorController::class, 'showJuniorProfile'])->name('administrator.juniorProfile')->middleware('admin');
+Route::put('/admin/dashboard/juniorProfile/{id}', [AdministratorController::class, 'updateJuniorProfile'])->name('administrator.updateJuniorProfile')->middleware('admin');
