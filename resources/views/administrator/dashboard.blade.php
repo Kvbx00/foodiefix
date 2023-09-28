@@ -11,6 +11,7 @@
 <br>
 @if( auth()->guard('admin')->user()->role === 'admin')
     <a href="{{ url('adminRegister') }}">Rejestracja pracownika</a>
+    <a href="{{ url('admin/dashboard/adminProfile') }}">Zarządzanie pracownikami</a>
 @endif
 <br>
 <a href="{{ url('admin/dashboard/userProfile') }}">Profil użytkownika</a>

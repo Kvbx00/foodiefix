@@ -120,3 +120,8 @@ Route::put('/admin/dashboard/ingredient/{id}', [AdministratorController::class, 
 Route::delete('/admin/dashboard/ingredient/removeIngredient/{ingredientId}', [AdministratorController::class, 'removeIngredient'])->name('administrator.removeIngredient')->middleware('admin');
 Route::get('/admin/dashboard/ingredient/addIngredient', [AdministratorController::class, 'showAddIngredientView'])->name('administrator.addIngredient')->middleware('admin');
 Route::post('/admin/dashboard/ingredient/add', [AdministratorController::class, 'addIngredient'])->name('administrator.saveIngredient')->middleware('admin');
+
+Route::get('/admin/dashboard/adminProfile', [AdministratorController::class, 'showAdminProfile'])->name('administrator.adminProfile')->middleware('admin');
+Route::get('/admin/dashboard/adminProfile/{id}/edit', [AdministratorController::class, 'editAdminProfile'])->name('administrator.editAdminProfile')->middleware('admin');
+Route::put('/admin/dashboard/adminProfile/{id}', [AdministratorController::class, 'updateAdminProfile'])->name('administrator.updateAdminProfile')->middleware('admin');
+Route::delete('/admin/dashboard/adminProfile/removeAdminProfile/{adminId}', [AdministratorController::class, 'removeAdminProfile'])->name('administrator.removeAdminProfile')->middleware('admin');

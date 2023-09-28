@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Administrator;
 use App\Models\CaloricNeed;
 use App\Models\Disease;
 use App\Models\HealthData;
@@ -15,6 +16,7 @@ use App\Models\Nutritionalvalue;
 use App\Models\UserDisease;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class AdministratorController extends Controller
 {
@@ -72,23 +74,23 @@ class AdministratorController extends Controller
     {
         $user = User::find($userId);
 
-        if ($user->caloric_needs()->count() > 0){
+        if ($user->caloric_needs()->count() > 0) {
             return redirect()->route('administrator.userProfile')->with('error', 'Nie można usunąć użytkownika z przypisanym zapotrzebowaniem kalorycznym.');
         }
 
-        if ($user->health_data()->count() > 0){
+        if ($user->health_data()->count() > 0) {
             return redirect()->route('administrator.userProfile')->with('error', 'Nie można usunąć użytkownika z przypisanym danymi zdrowotnymi.');
         }
 
-        if ($user->ingredient_preferences()->count() > 0){
+        if ($user->ingredient_preferences()->count() > 0) {
             return redirect()->route('administrator.userProfile')->with('error', 'Nie można usunąć użytkownika z przypisanym preferencjami składników.');
         }
 
-        if ($user->menus()->count() > 0){
+        if ($user->menus()->count() > 0) {
             return redirect()->route('administrator.userProfile')->with('error', 'Nie można usunąć użytkownika z przypisanym jadłospisem.');
         }
 
-        if ($user->diseases()->count() > 0){
+        if ($user->diseases()->count() > 0) {
             return redirect()->route('administrator.userProfile')->with('error', 'Nie można usunąć użytkownika z przypisanymi chorobami.');
         }
 
@@ -805,7 +807,7 @@ class AdministratorController extends Controller
     {
         $ingredientCategory = IngredientCategory::find($ingredientCategoryId);
 
-        if ($ingredientCategory->ingredients()->count() > 0){
+        if ($ingredientCategory->ingredients()->count() > 0) {
             return redirect()->route('administrator.ingredientCategory')->with('error', 'Nie można usunąć kategorii z przypisanymi składnikami.');
         }
 
@@ -920,6 +922,69 @@ class AdministratorController extends Controller
         $ingredient->delete();
 
         return redirect()->route('administrator.ingredient')->with('success', 'Składnik został usunięty.');
+    }
+
+    public function showAdminProfile()
+    {
+        if (Auth::guard('admin')->check() && Auth::guard('admin')->user()->role === 'admin') {
+            $administrator = Administrator::all();
+
+            return view('administrator.adminProfile', compact('administrator'));
+        }
+
+        return redirect('/admin/dashboard');
+    }
+
+    public function editAdminProfile($id)
+    {
+        if (Auth::guard('admin')->check() && Auth::guard('admin')->user()->role === 'admin') {
+            $administrator = Administrator::findOrFail($id);
+
+            return view('administrator.editAdminProfile', compact('administrator'));
+        }
+
+        return redirect('/admin/dashboard');
+    }
+
+    public function updateAdminProfile(Request $request, $id)
+    {
+        if (Auth::guard('admin')->check() && Auth::guard('admin')->user()->role === 'admin') {
+            $administrator = Administrator::findOrFail($id);
+
+            $validatedData = $request->validate([
+                'role' => '',
+            ]);
+
+            if (!empty($request->password)) {
+                $request->validate([
+                    'password' => 'regex:"^(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,}$"|confirmed',
+                ], [
+                    'password' => 'Hasło musi składać się z min. 8 znaków, min. 1 wielkiej litery, min. 1 znaku specjalnego i min. 1 cyfry.',
+                    'password.confirmed' => 'Hasła się nie zgadzają.',
+                ]);
+
+                $administrator->password = bcrypt($request->password);
+            }
+
+            $administrator->update($validatedData);
+
+            return redirect()->route('administrator.adminProfile')->with('success', 'Dane pracownika zostały zaktualizowane.');
+        }
+
+        return redirect('/admin/dashboard');
+    }
+
+    public function removeAdminProfile($adminId)
+    {
+        if (Auth::guard('admin')->check() && Auth::guard('admin')->user()->role === 'admin') {
+            $administrator = Administrator::find($adminId);
+
+            $administrator->delete();
+
+            return redirect()->route('administrator.adminProfile')->with('success', 'Pracownik został usunięty.');
+        }
+
+        return redirect('/admin/dashboard');
     }
 
 }
