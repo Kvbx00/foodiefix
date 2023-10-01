@@ -6,6 +6,7 @@ use App\Http\Controllers\HealthDataController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdministratorAuthController;
 use App\Http\Controllers\AdministratorController;
+use App\Http\Controllers\MenuController;
 
 
 Route::get('/', function () {
@@ -29,6 +30,9 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/userPanel', [HealthDataController::class, 'showUserPanelView'])->name('userPanel')->middleware('auth');
 Route::post('/userPanel/storeMeasurements', [HealthDataController::class, 'storeMeasurements'])->name('measurements.store')->middleware('auth');
+
+Route::get('/user/menu', [MenuController::class, 'showMenu'])->name('menu.show');
+Route::post('/user/menu/create', [MenuController::class, 'createMenu'])->name('menu.create');
 
 Route::post('/userPanel/storeDiseases', [HealthDataController::class, 'storeDiseases'])->name('diseases.store')->middleware('auth');
 Route::delete('/userPanel/destroyDiseases/{id}', [HealthDataController::class, 'destroyDiseases'])->name('diseases.destroy')->middleware('auth');

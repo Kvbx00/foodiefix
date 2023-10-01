@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 class Menu extends Model
 {
 	protected $table = 'menu';
-	public $timestamps = false;
 
 	protected $casts = [
 		'date' => 'datetime',
@@ -26,9 +25,8 @@ class Menu extends Model
 		return $this->belongsTo(User::class);
 	}
 
-	public function meals()
+	public function menuMeals()
 	{
-		return $this->belongsToMany(Meal::class, 'menu_meal')
-					->withPivot('id', 'meal_meal_category_id');
+        return $this->hasMany(MenuMeal::class);
 	}
 }

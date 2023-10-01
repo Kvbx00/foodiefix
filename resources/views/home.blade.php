@@ -10,6 +10,8 @@
     {{ ('Witaj na stronie domowej') }}
 
     <a href="{{ url('userPanel') }}">Panel użytkownika</a>
+    <br>
+    <a href="{{ url('user/menu') }}">Menu</a>
 
     <form method="POST" action="{{ route('logout') }}">
         @csrf
