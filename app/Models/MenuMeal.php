@@ -17,9 +17,7 @@ class MenuMeal extends Model
 
 	public function meal()
 	{
-		return $this->belongsTo(Meal::class)
-					->where('meal.id', '=', 'menu_meal.meal_id')
-					->where('meal.meal_category_id', '=', 'menu_meal.meal_meal_category_id');
+		return $this->belongsTo(Meal::class,  'meal_id', 'id');
 	}
 
 	public function menu()

@@ -41,6 +41,11 @@ class Meal extends Model
 		return $this->hasMany(Nutritionalvalue::class);
 	}
 
+    public function menuMeals()
+    {
+        return $this->hasMany(MenuMeal::class, 'meal_id', 'id');
+    }
+
     protected $appends = ['meal_category_name',];
 
     public function getMealCategoryNameAttribute()

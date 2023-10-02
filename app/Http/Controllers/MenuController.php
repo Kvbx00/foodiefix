@@ -12,10 +12,24 @@ class MenuController extends Controller
 {
     public function showMenu()
     {
-        $user = auth()->user();
-        $allMenu = Menu::where('user_id', $user->id)->get();
+    $user = auth()->user();
+    $daysOfWeek = [
+        'Poniedziałek',
+        'Wtorek',
+        'Środa',
+        'Czwartek',
+        'Piątek',
+        'Sobota',
+        'Niedziela'
+    ];
 
-        return view('user.menu', compact('allMenu', 'user'));
+    $menus = Menu::where('user_id', $user->id)->whereIn('dayOfTheWeek', $daysOfWeek)->get();
+
+    $menuMeals = MenuMeal::whereIn('menu_id', $menus->pluck('id'))->with('meal')->get();
+
+    $groupedMenuMeals = $menuMeals->groupBy('menu.dayOfTheWeek');
+
+    return view('user.menu', compact('groupedMenuMeals', 'user'));
     }
 
     public function createMenu()
