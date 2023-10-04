@@ -2,13 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CaloricNeed;
 use App\Models\Meal;
-use App\Models\MealCategory;
 use App\Models\Menu;
 use App\Models\MenuMeal;
-use App\Models\Nutritionalvalue;
-use Carbon\Carbon;
 
 class MenuController extends Controller
 {
@@ -27,56 +23,67 @@ class MenuController extends Controller
 
         $menus = Menu::where('user_id', $user->id)->whereIn('dayOfTheWeek', $daysOfWeek)->get();
 
-        $menuMeals = MenuMeal::whereIn('menu_id', $menus->pluck('id'))->with('meal')->get();
+        $groupedMenuMeals = [];
 
-        $groupedMenuMeals = $menuMeals->groupBy('menu.dayOfTheWeek');
+        foreach ($daysOfWeek as $day) {
+            $groupedMenuMeals[$day] = MenuMeal::whereIn('menu_id', $menus->pluck('id'))
+                ->whereHas('menu', function ($query) use ($day) {
+                    $query->where('dayOfTheWeek', $day);
+                })
+                ->with('meal')
+                ->get();
+        }
 
-        return view('user.menu', compact('groupedMenuMeals', 'user'));
+        return view('user.menu', compact('groupedMenuMeals', 'daysOfWeek'));
     }
 
     public function createMenu()
     {
         $user = auth()->user();
-
         $caloricNeeds = $user->caloric_needs()->first();
-
         $caloricNeedsValue = $caloricNeeds->caloricNeeds;
 
+        $daysOfWeek = [
+            'Poniedziałek',
+            'Wtorek',
+            'Środa',
+            'Czwartek',
+            'Piątek',
+            'Sobota',
+            'Niedziela'
+        ];
+
         $maxTries = 100;
-        $tries = 0;
-        $menu = null;
 
-        while ($tries < $maxTries) {
-            $meals = Meal::inRandomOrder()->limit(5)->get();
+        foreach ($daysOfWeek as $day) {
+            $tries = 0;
 
-            $totalCalories = $meals->sum(function ($meal) {
-                return $meal->nutritionalvalues->calories;
-            });
+            while ($tries < $maxTries) {
+                $meals = Meal::inRandomOrder()->limit(5)->get();
 
-            if (abs($totalCalories - $caloricNeedsValue) <= $caloricNeedsValue * 0.1) {
-                $menu = new Menu();
-                $menu->date = now();
-                $menu->user_id = $user->id;
-                $menu->save();
+                $totalCalories = $meals->sum(function ($meal) {
+                    return $meal->nutritionalvalues->calories;
+                });
 
-                foreach ($meals as $meal) {
-                    $menuMeal = new MenuMeal();
-                    $menuMeal->menu_id = $menu->id;
-                    $menuMeal->meal_id = $meal->id;
-                    $menuMeal->meal_meal_category_id = $meal->meal_category_id;
-                    $menuMeal->save();
+                if (abs($totalCalories - $caloricNeedsValue) <= $caloricNeedsValue * 0.1) {
+                    $menu = new Menu();
+                    $menu->date = now();
+                    $menu->dayOfTheWeek = $day;
+                    $menu->user_id = $user->id;
+                    $menu->save();
+
+                    foreach ($meals as $meal) {
+                        $menuMeal = new MenuMeal();
+                        $menuMeal->menu_id = $menu->id;
+                        $menuMeal->meal_id = $meal->id;
+                        $menuMeal->meal_meal_category_id = $meal->meal_category_id;
+                        $menuMeal->save();
+                    }
+                    break;
                 }
-
-                break;
+                $tries++;
             }
-
-            $tries++;
         }
-
-        if (!$menu) {
-            return response()->json(['error' => 'Nie udało się utworzyć odpowiedniego menu.'], 500);
-        }
-
-        return response()->json(['success' => 'Menu zostało utworzone pomyślnie.']);
+        return redirect()->route('menu.show');
     }
 }

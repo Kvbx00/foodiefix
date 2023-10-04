@@ -17,26 +17,21 @@
 <table>
     <thead>
     <tr>
-        @foreach($groupedMenuMeals as $dayOfWeek => $meals)
-            <th>{{ $dayOfWeek }}</th>
+        @foreach($daysOfWeek as $day)
+            <th>{{ $day }}</th>
         @endforeach
     </tr>
     </thead>
     <tbody>
-    @foreach($meals as $menuMeal)
-        <tr>
-            @foreach($groupedMenuMeals as $dayOfWeek => $meals)
-                <td>
-                    @foreach($meals as $dayMeal)
-                        @if($dayMeal->meal->meal_category_id == $menuMeal->meal->meal_category_id)
-                            <div>{{ $dayMeal->meal->meal_category_name }}</div>
-                            <div>{{ $dayMeal->meal->name }}</div>
-                        @endif
-                    @endforeach
-                </td>
-            @endforeach
-        </tr>
-    @endforeach
+    <tr>
+        @foreach($daysOfWeek as $day)
+            <td>
+                @foreach($groupedMenuMeals[$day] as $menuMeal)
+                    {{ $menuMeal->meal->name }}<br>
+                @endforeach
+            </td>
+        @endforeach
+    </tr>
     </tbody>
 </table>
 </body>
