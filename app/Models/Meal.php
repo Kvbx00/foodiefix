@@ -38,7 +38,7 @@ class Meal extends Model
 
 	public function nutritionalvalues()
 	{
-		return $this->hasMany(Nutritionalvalue::class);
+		return $this->hasOne(Nutritionalvalue::class);
 	}
 
     public function menuMeals()

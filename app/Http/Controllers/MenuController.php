@@ -2,90 +2,81 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CaloricNeed;
 use App\Models\Meal;
 use App\Models\MealCategory;
 use App\Models\Menu;
 use App\Models\MenuMeal;
+use App\Models\Nutritionalvalue;
 use Carbon\Carbon;
 
 class MenuController extends Controller
 {
     public function showMenu()
     {
-    $user = auth()->user();
-    $daysOfWeek = [
-        'Poniedziałek',
-        'Wtorek',
-        'Środa',
-        'Czwartek',
-        'Piątek',
-        'Sobota',
-        'Niedziela'
-    ];
+        $user = auth()->user();
+        $daysOfWeek = [
+            'Poniedziałek',
+            'Wtorek',
+            'Środa',
+            'Czwartek',
+            'Piątek',
+            'Sobota',
+            'Niedziela'
+        ];
 
-    $menus = Menu::where('user_id', $user->id)->whereIn('dayOfTheWeek', $daysOfWeek)->get();
+        $menus = Menu::where('user_id', $user->id)->whereIn('dayOfTheWeek', $daysOfWeek)->get();
 
-    $menuMeals = MenuMeal::whereIn('menu_id', $menus->pluck('id'))->with('meal')->get();
+        $menuMeals = MenuMeal::whereIn('menu_id', $menus->pluck('id'))->with('meal')->get();
 
-    $groupedMenuMeals = $menuMeals->groupBy('menu.dayOfTheWeek');
+        $groupedMenuMeals = $menuMeals->groupBy('menu.dayOfTheWeek');
 
-    return view('user.menu', compact('groupedMenuMeals', 'user'));
+        return view('user.menu', compact('groupedMenuMeals', 'user'));
     }
 
     public function createMenu()
     {
         $user = auth()->user();
 
-        $existingMenu = Menu::where('user_id', $user->id)
-            ->whereDate('date', '>=', Carbon::now()->startOfWeek())
-            ->whereDate('date', '<=', Carbon::now()->endOfWeek())
-            ->first();
+        $caloricNeeds = $user->caloric_needs()->first();
 
-        if (!$existingMenu) {
-            Menu::where('user_id', $user->id)
-                ->get()
-                ->each(function ($menu) {
-                    $menu->menuMeals()->delete();
-                    $menu->delete();
-                });
+        $caloricNeedsValue = $caloricNeeds->caloricNeeds;
 
-            $englishToPolishDays = [
-                'Monday' => 'Poniedziałek',
-                'Tuesday' => 'Wtorek',
-                'Wednesday' => 'Środa',
-                'Thursday' => 'Czwartek',
-                'Friday' => 'Piątek',
-                'Saturday' => 'Sobota',
-                'Sunday' => 'Niedziela',
-            ];
+        $maxTries = 100;
+        $tries = 0;
+        $menu = null;
 
-            foreach ($englishToPolishDays as $englishDay => $polishDay) {
-                $currentDate = Carbon::now()->startOfWeek();
+        while ($tries < $maxTries) {
+            $meals = Meal::inRandomOrder()->limit(5)->get();
 
-                while ($currentDate->englishDayOfWeek != $englishDay) {
-                    $currentDate->addDay();
-                }
+            $totalCalories = $meals->sum(function ($meal) {
+                return $meal->nutritionalvalues->calories;
+            });
 
+            if (abs($totalCalories - $caloricNeedsValue) <= $caloricNeedsValue * 0.1) {
                 $menu = new Menu();
-                $menu->date = $currentDate;
-                $menu->dayOfTheWeek = $polishDay;
+                $menu->date = now();
                 $menu->user_id = $user->id;
                 $menu->save();
 
-                $categories = MealCategory::all();
-
-                foreach ($categories as $category) {
-                    $meal = Meal::where('meal_category_id', $category->id)->inRandomOrder()->first();
-
+                foreach ($meals as $meal) {
                     $menuMeal = new MenuMeal();
                     $menuMeal->menu_id = $menu->id;
                     $menuMeal->meal_id = $meal->id;
-                    $menuMeal->meal_meal_category_id = $category->id;
+                    $menuMeal->meal_meal_category_id = $meal->meal_category_id;
                     $menuMeal->save();
                 }
+
+                break;
             }
+
+            $tries++;
         }
 
-        return redirect()->route('menu.show');
+        if (!$menu) {
+            return response()->json(['error' => 'Nie udało się utworzyć odpowiedniego menu.'], 500);
+        }
+
+        return response()->json(['success' => 'Menu zostało utworzone pomyślnie.']);
     }
 }
