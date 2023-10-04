@@ -26,12 +26,16 @@ class MenuController extends Controller
         $groupedMenuMeals = [];
 
         foreach ($daysOfWeek as $day) {
-            $groupedMenuMeals[$day] = MenuMeal::whereIn('menu_id', $menus->pluck('id'))
+            $menuMeals = MenuMeal::whereIn('menu_id', $menus->pluck('id'))
                 ->whereHas('menu', function ($query) use ($day) {
                     $query->where('dayOfTheWeek', $day);
                 })
                 ->with('meal')
                 ->get();
+
+            $groupedMenuMeals[$day] = $menuMeals;
+
+            $groupedMenuMeals[$day]['totalCalories'] = $this->calculateTotalCalories($menuMeals);
         }
 
         return view('user.menu', compact('groupedMenuMeals', 'daysOfWeek'));
@@ -85,5 +89,19 @@ class MenuController extends Controller
             }
         }
         return redirect()->route('menu.show');
+    }
+
+    //funkcja do zliczania kalorii z danego dnia
+    public function calculateTotalCalories($menuMeals)
+    {
+        $totalCalories = 0;
+
+        foreach ($menuMeals as $menuMeal) {
+            if (isset($menuMeal->meal)) {
+                $totalCalories += $menuMeal->meal->nutritionalvalues->calories;
+            }
+        }
+
+        return $totalCalories;
     }
 }

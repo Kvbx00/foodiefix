@@ -27,8 +27,11 @@
         @foreach($daysOfWeek as $day)
             <td>
                 @foreach($groupedMenuMeals[$day] as $menuMeal)
-                    {{ $menuMeal->meal->name }}<br>
+                    @if(isset($menuMeal->meal))
+                        {{ $menuMeal->meal->name }}<br>
+                    @endif
                 @endforeach
+                    <strong>Total Calories: {{ $groupedMenuMeals[$day]['totalCalories'] }}</strong>
             </td>
         @endforeach
     </tr>
