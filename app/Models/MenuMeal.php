@@ -24,4 +24,11 @@ class MenuMeal extends Model
 	{
 		return $this->belongsTo(Menu::class);
 	}
+
+    protected $appends = ['mealCategory_name'];
+
+    public function getMealCategoryNameAttribute()
+    {
+        return $this->mealCategory->name;
+    }
 }

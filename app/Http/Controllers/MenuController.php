@@ -30,6 +30,7 @@ class MenuController extends Controller
                 ->whereHas('menu', function ($query) use ($day) {
                     $query->where('dayOfTheWeek', $day);
                 })
+                ->orderBy('meal_meal_category_id', 'asc')
                 ->with('meal')
                 ->get();
 
@@ -57,26 +58,32 @@ class MenuController extends Controller
             'Niedziela'
         ];
 
-        $maxTries = 100;
+        $maxTries = 500;
 
         foreach ($daysOfWeek as $day) {
             $tries = 0;
 
             while ($tries < $maxTries) {
-                $meals = Meal::inRandomOrder()->limit(5)->get();
+                $mealsByCategory = Meal::inRandomOrder()->get()->groupBy('meal_category_id');
 
-                $totalCalories = $meals->sum(function ($meal) {
+                $selectedMeals = collect();
+
+                foreach ($mealsByCategory as $categoryMeals) {
+                    $selectedMeals = $selectedMeals->merge($categoryMeals->take(1));
+                }
+
+                $totalCalories = $selectedMeals->sum(function ($meal) {
                     return $meal->nutritionalvalues->calories;
                 });
 
-                if (abs($totalCalories - $caloricNeedsValue) <= $caloricNeedsValue * 0.1) {
+                if (abs($totalCalories - $caloricNeedsValue) <= $caloricNeedsValue * 0.05) {
                     $menu = new Menu();
                     $menu->date = now();
                     $menu->dayOfTheWeek = $day;
                     $menu->user_id = $user->id;
                     $menu->save();
 
-                    foreach ($meals as $meal) {
+                    foreach ($selectedMeals as $meal) {
                         $menuMeal = new MenuMeal();
                         $menuMeal->menu_id = $menu->id;
                         $menuMeal->meal_id = $meal->id;

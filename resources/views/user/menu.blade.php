@@ -28,6 +28,7 @@
             <td>
                 @foreach($groupedMenuMeals[$day] as $menuMeal)
                     @if(isset($menuMeal->meal))
+                        {{ $menuMeal->meal->mealCategory_name }}<br>
                         {{ $menuMeal->meal->name }}<br>
                     @endif
                 @endforeach
