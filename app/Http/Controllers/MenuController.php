@@ -62,9 +62,13 @@ class MenuController extends Controller
 
         foreach ($daysOfWeek as $day) {
             $tries = 0;
+            $usedMeals = [];
 
             while ($tries < $maxTries) {
-                $mealsByCategory = Meal::inRandomOrder()->get()->groupBy('meal_category_id');
+                $mealsByCategory = Meal::whereNotIn('id', $usedMeals)
+                    ->inRandomOrder()
+                    ->get()
+                    ->groupBy('meal_category_id');
 
                 $selectedMeals = collect();
 
@@ -88,7 +92,10 @@ class MenuController extends Controller
                         $menuMeal->menu_id = $menu->id;
                         $menuMeal->meal_id = $meal->id;
                         $menuMeal->meal_meal_category_id = $meal->meal_category_id;
+                        $menuMeal->used = true;
                         $menuMeal->save();
+
+                        $usedMeals[] = $meal->id;
                     }
                     break;
                 }
