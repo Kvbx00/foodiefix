@@ -29,7 +29,7 @@
                 @foreach($groupedMenuMeals[$day] as $menuMeal)
                     @if(isset($menuMeal->meal))
                         {{ $menuMeal->meal->mealCategory_name }}<br>
-                        {{ $menuMeal->meal->name }}<br>
+                        <a href="{{ route('meal.show', ['id' => $menuMeal->meal->id]) }}">{{ $menuMeal->meal->name }}</a><br>
                     @endif
                 @endforeach
                     <strong>Total Calories: {{ $groupedMenuMeals[$day]['totalCalories'] }}</strong>
