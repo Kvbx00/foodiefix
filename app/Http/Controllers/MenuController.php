@@ -45,6 +45,24 @@ class MenuController extends Controller
     public function createMenu()
     {
         $user = auth()->user();
+
+        $existingMenu = Menu::where('user_id', $user->id)
+            ->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()])
+            ->first();
+
+        if ($existingMenu) {
+            return redirect()->route('menu.show')->with('error', 'Masz już utworzone menu na ten tydzień.');
+        }
+
+        Menu::where('user_id', $user->id)
+            ->whereBetween('created_at', [now()->startOfWeek()->subWeek(), now()->endOfWeek()->subWeek()])
+            ->get()
+            ->each(function ($menu){
+                $menu->menuMeals()->delete();
+                $menu->delete();
+            });
+
+
         $caloricNeeds = $user->caloric_needs()->first();
         $caloricNeedsValue = $caloricNeeds->caloricNeeds;
 
