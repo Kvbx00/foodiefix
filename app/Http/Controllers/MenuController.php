@@ -62,10 +62,14 @@ class MenuController extends Controller
 
         foreach ($daysOfWeek as $day) {
             $tries = 0;
-            $usedMeals = [];
 
             while ($tries < $maxTries) {
-                $mealsByCategory = Meal::whereNotIn('id', $usedMeals)
+                $mealsByCategory = Meal::whereDoesntHave('ingredients', function ($query) use ($user) {
+                    $query->whereIn('ingredient_id', $user->ingredient_preferences->pluck('ingredient_id'));
+                })
+                    ->whereDoesntHave('menus', function ($query) use ($day) {
+                        $query->where('dayOfTheWeek', $day);
+                    })
                     ->inRandomOrder()
                     ->get()
                     ->groupBy('meal_category_id');
@@ -92,10 +96,8 @@ class MenuController extends Controller
                         $menuMeal->menu_id = $menu->id;
                         $menuMeal->meal_id = $meal->id;
                         $menuMeal->meal_meal_category_id = $meal->meal_category_id;
-                        $menuMeal->used = true;
+                        $menuMeal->used = 1;
                         $menuMeal->save();
-
-                        $usedMeals[] = $meal->id;
                     }
                     break;
                 }
