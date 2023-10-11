@@ -12,6 +12,7 @@ use App\Models\IngredientPreference;
 use App\Models\Meal;
 use App\Models\MealCategory;
 use App\Models\MealIngredient;
+use App\Models\Menu;
 use App\Models\Nutritionalvalue;
 use App\Models\UserDisease;
 use Illuminate\Http\Request;
@@ -1027,6 +1028,26 @@ class AdministratorController extends Controller
         }
         return redirect('/admin/dashboard');
 
+    }
+
+    public function showUserMenu()
+    {
+        $menu = Menu::all();
+
+        return view('administrator.userMenu', compact('menu'));
+    }
+
+    public function removeUserMenu($menuId)
+    {
+        $menu = Menu::find($menuId);
+
+        if ($menu->menuMeals()->count() > 0) {
+            return redirect()->route('administrator.userMenu')->with('error', 'Nie można usunąć jadłospisu z przypisanymi daniami.');
+        }
+
+        $menu->delete();
+
+        return redirect()->route('administrator.userMenu')->with('success', 'Menu zostało usunięte');
     }
 
 }

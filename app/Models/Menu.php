@@ -29,4 +29,18 @@ class Menu extends Model
 	{
         return $this->hasMany(MenuMeal::class);
 	}
+
+    protected $appends = ['user_email', 'user_name', 'user_lastName',];
+
+    public function getUserEmailAttribute(){
+        return $this->user->email;
+    }
+
+    public function getUserNameAttribute(){
+        return $this->user->name;
+    }
+
+    public function getUserLastNameAttribute(){
+        return $this->user->lastName;
+    }
 }

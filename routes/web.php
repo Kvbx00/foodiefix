@@ -135,3 +135,6 @@ Route::delete('/admin/dashboard/adminProfile/removeAdminProfile/{adminId}', [Adm
 
 Route::get('/admin/dashboard/juniorProfile', [AdministratorController::class, 'showJuniorProfile'])->name('administrator.juniorProfile')->middleware('admin');
 Route::put('/admin/dashboard/juniorProfile/{id}', [AdministratorController::class, 'updateJuniorProfile'])->name('administrator.updateJuniorProfile')->middleware('admin');
+
+Route::get('/admin/dashboard/userMenu', [AdministratorController::class, 'showUserMenu'])->name('administrator.userMenu')->middleware('admin');
+Route::delete('/admin/dashboard/userMenu/removeUserMenu/{menuId}', [AdministratorController::class, 'removeUserMenu'])->name('administrator.removeUserMenu')->middleware('admin');

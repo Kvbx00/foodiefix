@@ -40,6 +40,8 @@
 <a href="{{ url('admin/dashboard/ingredientCategory') }}">Kategorie składików</a>
 <br>
 <a href="{{ url('admin/dashboard/ingredient') }}">Składniki</a>
+<br>
+<a href="{{ url('admin/dashboard/userMenu') }}">Jadłospisy</a>
 
 <form method="POST" action="{{ route('admin.logout') }}">
     @csrf
