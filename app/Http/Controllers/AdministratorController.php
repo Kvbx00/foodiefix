@@ -13,6 +13,7 @@ use App\Models\Meal;
 use App\Models\MealCategory;
 use App\Models\MealIngredient;
 use App\Models\Menu;
+use App\Models\MenuMeal;
 use App\Models\Nutritionalvalue;
 use App\Models\UserDisease;
 use Illuminate\Http\Request;
@@ -1048,6 +1049,180 @@ class AdministratorController extends Controller
         $menu->delete();
 
         return redirect()->route('administrator.userMenu')->with('success', 'Menu zostało usunięte');
+    }
+
+    public function editUserMenu($id)
+    {
+        $menu = Menu::findOrFail($id);
+        $users = User::all();
+
+        return view('administrator.editUserMenu', compact('menu', 'users'));
+    }
+
+    public function updateUserMenu(Request $request, $id)
+    {
+        $menu = Menu::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'date' => 'required',
+            'dayOfTheWeek' => 'required',
+        ]);
+
+        if ($request->has('date')) {
+            $menu->date = $validatedData['date'];
+        }
+
+        if ($request->has('dayOfTheWeek')) {
+            $menu->dayOfTheWeek = $validatedData['dayOfTheWeek'];
+        }
+
+        $dayOfTheWeek = $validatedData['dayOfTheWeek'];
+        $existingMenu = Menu::where('dayOfTheWeek', $dayOfTheWeek)
+            ->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()])
+            ->where('id', '!=', $id)
+            ->exists();
+
+        if ($existingMenu) {
+            return redirect()->route('administrator.userMenu')->with('error', 'Użytkownik ma już menu dla tego dnia w tym tygodniu.');
+        }
+
+        $menu->save();
+
+        return redirect()->route('administrator.userMenu')->with('success', 'Menu zostało zaktualizowane.');
+    }
+
+    public function showAddUserMenuView()
+    {
+        $users = User::all();
+
+        return view('administrator.addUserMenu', compact('users'));
+    }
+
+    public function addUserMenu(Request $request)
+    {
+        $validatedData = $request->validate([
+            'user_id' => 'required',
+            'date' => 'required',
+            'dayOfTheWeek' => 'required',
+        ]);
+
+        $date = $validatedData['date'];
+        $dayOfTheWeek = $validatedData['dayOfTheWeek'];
+        $user = User::findOrFail($validatedData['user_id']);
+
+        $existingMenu = Menu::where('dayOfTheWeek', $dayOfTheWeek)
+            ->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()])
+            ->exists();
+
+        if ($existingMenu) {
+            return redirect()->route('administrator.userMenu')->with('error', 'Użytkownik ma już menu dla tego dnia w tym tygodniu.');
+        }
+
+        $menu = new Menu();
+        $menu->date = $date;
+        $menu->dayOfTheWeek = $dayOfTheWeek;
+        $menu->user_id = $user->id;
+
+        $menu->save();
+
+        return redirect()->route('administrator.userMenu')->with('success', 'Menu zostało dodane.');
+    }
+
+    public function showUserMenuMeal()
+    {
+        $menuMeal = MenuMeal::all();
+
+        return view('administrator.userMenuMeal', compact('menuMeal'));
+    }
+
+    public function removeUserMenuMeal($menuMealId)
+    {
+        $menuMeal = MenuMeal::find($menuMealId);
+
+        $menuMeal->delete();
+
+        return redirect()->route('administrator.userMenuMeal')->with('success', 'Danie z Menu zostało usunięte');
+    }
+
+    public function editUserMenuMeal($id)
+    {
+        $menuMeal = MenuMeal::findOrFail($id);
+        $meal = Meal::all();
+
+        return view('administrator.editUserMenuMeal', compact('menuMeal', 'meal'));
+    }
+
+    public function updateUserMenuMeal(Request $request, $id)
+    {
+        $menuMeal = MenuMeal::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'meal_name' => 'required',
+        ]);
+
+        if ($request->has('meal_name')) {
+            $mealName = $validatedData['meal_name'];
+            $meal = Meal::where('name', $mealName)->first();
+            if ($meal) {
+                $existingMenuMeals = MenuMeal::where('menu_id', $menuMeal->menu_id)
+                    ->where('id', '!=', $id)
+                    ->get();
+
+                foreach ($existingMenuMeals as $existingMenuMeal) {
+                    $existingMeal = $existingMenuMeal->meal;
+                    if ($existingMeal->meal_category_id === $meal->meal_category_id) {
+                        return redirect()->route('administrator.userMenuMeal')->with('error', 'Istnieje już danie z tej samej kategorii w tym menu.');
+                    }
+                }
+
+                $menuMeal->meal_id = $meal->id;
+            }
+        }
+
+        $menuMeal->save();
+
+        return redirect()->route('administrator.userMenuMeal')->with('success', 'Danie zostało zmienione w menu.');
+    }
+
+    public function showAddUserMenuMealView()
+    {
+        $meal = Meal::all();
+        $menu = Menu::all();
+
+        return view('administrator.addUserMenuMeal', compact('meal', 'menu'));
+    }
+
+    public function addUserMenuMeal(Request $request)
+    {
+        $validatedData = $request->validate([
+            'menu_id' => 'required',
+            'meal_name' => 'required',
+        ]);
+
+        $menu = Menu::findOrFail($validatedData['menu_id']);
+        $mealName = $validatedData['meal_name'];
+
+        $meal = Meal::where('name', $mealName)->first();
+
+        $existingMenuMeal = MenuMeal::where('menu_id', $menu->id)
+            ->whereHas('meal', function ($query) use ($meal) {
+                $query->where('meal_category_id', $meal->meal_category_id);
+            })
+            ->first();
+
+        if ($existingMenuMeal) {
+            return redirect()->route('administrator.userMenuMeal')->with('error', 'Istnieje już danie z tej samej kategorii w tym menu.');
+        }
+
+        $menuMeal = new MenuMeal();
+        $menuMeal->menu_id = $menu->id;
+        $menuMeal->meal_id = $meal->id;
+        $menuMeal->meal_meal_category_id = $meal->meal_category_id;
+        $menuMeal->used = 1;
+
+        $menuMeal->save();
+
+        return redirect()->route('administrator.userMenuMeal')->with('success', 'Danie zostało dodane do menu.');
     }
 
 }

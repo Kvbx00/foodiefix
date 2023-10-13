@@ -25,7 +25,7 @@
 <br>
 <a href="{{ url('admin/dashboard/userIngredientPreference') }}">Preferencje składników użytkownika</a>
 <br>
-<a href="{{ url('admin/dashboard/userCaloricNeed') }}">Dane zdrowotne użytkownika</a>
+<a href="{{ url('admin/dashboard/userCaloricNeed') }}">Zapotrzebowanie kaloryczne użytkownika</a>
 <br>
 <a href="{{ url('admin/dashboard/disease') }}">Choroby</a>
 <br>
@@ -41,7 +41,9 @@
 <br>
 <a href="{{ url('admin/dashboard/ingredient') }}">Składniki</a>
 <br>
-<a href="{{ url('admin/dashboard/userMenu') }}">Jadłospisy</a>
+<a href="{{ url('admin/dashboard/userMenu') }}">Menu</a>
+<br>
+<a href="{{ url('admin/dashboard/userMenuMeal') }}">Dania w Menu</a>
 
 <form method="POST" action="{{ route('admin.logout') }}">
     @csrf

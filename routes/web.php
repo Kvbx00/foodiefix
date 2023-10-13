@@ -138,3 +138,14 @@ Route::put('/admin/dashboard/juniorProfile/{id}', [AdministratorController::clas
 
 Route::get('/admin/dashboard/userMenu', [AdministratorController::class, 'showUserMenu'])->name('administrator.userMenu')->middleware('admin');
 Route::delete('/admin/dashboard/userMenu/removeUserMenu/{menuId}', [AdministratorController::class, 'removeUserMenu'])->name('administrator.removeUserMenu')->middleware('admin');
+Route::get('/admin/dashboard/userMenu/addUserMenu', [AdministratorController::class, 'showAddUserMenuView'])->name('administrator.addUserMenu')->middleware('admin');
+Route::post('/admin/dashboard/userMenu/add', [AdministratorController::class, 'addUserMenu'])->name('administrator.saveUserMenu')->middleware('admin');
+Route::get('/admin/dashboard/userMenu/{id}/edit', [AdministratorController::class, 'editUserMenu'])->name('administrator.editUserMenu')->middleware('admin');
+Route::put('/admin/dashboard/userMenu/{id}', [AdministratorController::class, 'updateUserMenu'])->name('administrator.updateUserMenu')->middleware('admin');
+
+Route::get('/admin/dashboard/userMenuMeal', [AdministratorController::class, 'showUserMenuMeal'])->name('administrator.userMenuMeal')->middleware('admin');
+Route::delete('/admin/dashboard/userMenuMeal/removeUserMenuMeal/{menuMealId}', [AdministratorController::class, 'removeUserMenuMeal'])->name('administrator.removeUserMenuMeal')->middleware('admin');
+Route::get('/admin/dashboard/userMenuMeal/{id}/edit', [AdministratorController::class, 'editUserMenuMeal'])->name('administrator.editUserMenuMeal')->middleware('admin');
+Route::put('/admin/dashboard/userMenuMeal/{id}', [AdministratorController::class, 'updateUserMenuMeal'])->name('administrator.updateUserMenuMeal')->middleware('admin');
+Route::get('/admin/dashboard/userMenuMeal/addUserMenuMeal', [AdministratorController::class, 'showAddUserMenuMealView'])->name('administrator.addUserMenuMeal')->middleware('admin');
+Route::post('/admin/dashboard/userMenuMeal/add', [AdministratorController::class, 'addUserMenuMeal'])->name('administrator.saveUserMenuMeal')->middleware('admin');
