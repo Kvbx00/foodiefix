@@ -4,6 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <title>FoodieFix</title>
+    <script src="{{ asset('jquery/jquery.min.js') }}"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </head>
 
 <body>
@@ -88,7 +91,7 @@
     <h2>Wybierz Chorobę</h2>
     <form method="post" action="{{ route('diseases.store') }}">
         @csrf
-        <select name="diseases_id">
+        <select name="diseases_id" id="disease_name">
             @foreach($availableDiseases as $disease)
                 <option value="{{ $disease->id }}">{{ $disease->name }}</option>
             @endforeach
@@ -121,7 +124,7 @@
     <h2>Wybierz Składniki</h2>
     <form method="post" action="{{ route('ingredients.store') }}">
         @csrf
-        <select name="ingredient_id">
+        <select name="ingredient_id" id="ingredient_name">
             @foreach($availableIngredients as $ingredient)
                 <option value="{{ $ingredient->id }}">{{ $ingredient->name }}</option>
             @endforeach
@@ -151,4 +154,13 @@
 </ul>
 </body>
 </html>
-
+<script>
+    $(document).ready(function() {
+        $('#weight').select2();
+        $('#diastolicBloodPressure').select2();
+        $('#systolicBloodPressure').select2();
+        $('#pulse').select2();
+        $('#disease_name').select2();
+        $('#ingredient_name').select2();
+    });
+</script>

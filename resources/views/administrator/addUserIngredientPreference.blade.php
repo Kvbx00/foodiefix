@@ -1,3 +1,15 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>FoodieFix</title>
+    <script src="{{ asset('jquery/jquery.min.js') }}"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+</head>
+
+<body>
 <form action="{{ route('administrator.saveUserIngredientPreference') }}" method="POST">
     @csrf
     <label for="user_id">Wybierz użytkownika:</label>
@@ -22,3 +34,12 @@
         @endforeach
     @endif
 </form>
+</body>
+
+</html>
+<script>
+    $(document).ready(function() {
+        $('#user_id').select2();
+        $('#ingredient_name').select2();
+    });
+</script>

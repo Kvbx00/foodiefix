@@ -1,3 +1,15 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>FoodieFix</title>
+    <script src="{{ asset('jquery/jquery.min.js') }}"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+</head>
+
+<body>
 <div class="container">
     <h1>Edytuj profil użytkownika</h1>
     <form method="POST" action="{{ route('administrator.updateUserProfile', $user->id) }}">
@@ -54,3 +66,12 @@
         @endif
     </form>
 </div>
+</body>
+
+</html>
+<script>
+    $(document).ready(function() {
+        $('#height').select2();
+        $('#age').select2();
+    });
+</script>
