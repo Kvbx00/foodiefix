@@ -23,11 +23,26 @@ use Illuminate\Support\Facades\Auth;
 class AdministratorController extends Controller
 {
 
-    public function showUserProfile()
+    public function showUserProfile(Request $request)
     {
-        $user = User::all();
+        $search = request('search');
+        $sort = $request->input('sort', 'id');
+        $order = $request->input('order', 'asc');
 
-        return view('administrator.userProfile', compact('user'));
+        $user = User::orderBy($sort, $order);
+
+        if ($search) {
+            $user->where(function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('id', $search)
+                    ->orWhere('lastName', 'like', '%' . $search . '%')
+                    ->orWhere('email', 'like', '%' . $search . '%');
+            });
+        }
+
+        $user = $user->paginate(10);
+
+        return view('administrator.userProfile', compact('user', 'search', 'sort', 'order'));
     }
 
     public function editUserProfile($id)
@@ -101,11 +116,32 @@ class AdministratorController extends Controller
         return redirect()->route('administrator.userProfile')->with('success', 'Użytkownik został usunięty.');
     }
 
-    public function showUserDisease()
+    public function showUserDisease(Request $request)
     {
-        $userDisease = UserDisease::all();
+        $search = request('search');
+        $sort = $request->input('sort', 'id');
+        $order = $request->input('order', 'asc');
 
-        return view('administrator.userDisease', compact('userDisease'));
+        $userDisease = UserDisease::with(['user', 'disease'])
+            ->orderBy($sort, $order);
+
+        if ($search) {
+            $userDisease->where(function ($query) use ($search) {
+                $query->whereHas('user', function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%')
+                        ->orWhere('lastName', 'like', '%' . $search . '%')
+                        ->orWhere('email', 'like', '%' . $search . '%')
+                        ->orWhere('id', $search);
+                })->orWhereHas('disease', function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%');
+                })->orWhere('id', $search)
+                    ->orWhere('diseases_id', $search);
+            });
+        }
+
+        $userDisease = $userDisease->paginate(10);
+
+        return view('administrator.userDisease', compact('userDisease', 'search', 'sort', 'order'));
     }
 
     public function showAddUserDiseaseView()
@@ -148,11 +184,24 @@ class AdministratorController extends Controller
         return redirect()->route('administrator.userDisease')->with('success', 'Choroba użytkownika została usunięta.');
     }
 
-    public function showUserHealthData()
+    public function showUserHealthData(Request $request)
     {
-        $healthData = HealthData::all();
+        $search = request('search');
+        $sort = $request->input('sort', 'id');
+        $order = $request->input('order', 'asc');
 
-        return view('administrator.userHealthData', compact('healthData'));
+        $healthData = HealthData::orderBy($sort, $order);
+
+        if ($search) {
+            $healthData->where(function ($query) use ($search) {
+                $query->where('user_id', $search)
+                    ->orWhere('id', $search);
+            });
+        }
+
+        $healthData = $healthData->paginate(10);
+
+        return view('administrator.userHealthData', compact('healthData', 'search', 'sort', 'order'));
     }
 
     public function editUserHealthData($id)
@@ -187,11 +236,32 @@ class AdministratorController extends Controller
         return redirect()->route('administrator.userHealthData')->with('success', 'Dane zdrowotne użytkownika zostały usunięte.');
     }
 
-    public function showUserIngredientPreference()
+    public function showUserIngredientPreference(Request $request)
     {
-        $ingredientPreference = IngredientPreference::all();
+        $search = request('search');
+        $sort = $request->input('sort', 'id');
+        $order = $request->input('order', 'asc');
 
-        return view('administrator.userIngredientPreference', compact('ingredientPreference'));
+        $ingredientPreference = IngredientPreference::with(['user', 'ingredient'])
+            ->orderBy($sort, $order);
+
+        if ($search) {
+            $ingredientPreference->where(function ($query) use ($search) {
+                $query->whereHas('user', function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%')
+                        ->orWhere('lastName', 'like', '%' . $search . '%')
+                        ->orWhere('email', 'like', '%' . $search . '%')
+                        ->orWhere('id', $search);
+                })->orWhereHas('ingredient', function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%');
+                })->orWhere('id', $search)
+                    ->orWhere('ingredient_id', $search);
+            });
+        }
+
+        $ingredientPreference = $ingredientPreference->paginate(10);
+
+        return view('administrator.userIngredientPreference', compact('ingredientPreference', 'search', 'sort', 'order'));
     }
 
     public function showAddUserIngredientPreferenceView()
@@ -236,11 +306,24 @@ class AdministratorController extends Controller
         return redirect()->route('administrator.userIngredientPreference')->with('success', 'Preferencja została usunięta');
     }
 
-    public function showUserCaloricNeed()
+    public function showUserCaloricNeed(Request $request)
     {
-        $caloricNeed = CaloricNeed::all();
+        $search = request('search');
+        $sort = $request->input('sort', 'id');
+        $order = $request->input('order', 'asc');
 
-        return view('administrator.userCaloricNeed', compact('caloricNeed'));
+        $caloricNeed = CaloricNeed::orderBy($sort, $order);
+
+        if ($search) {
+            $caloricNeed->where(function ($query) use ($search) {
+                $query->where('user_id', $search)
+                    ->orWhere('id', $search);
+            });
+        }
+
+        $caloricNeed = $caloricNeed->paginate(10);
+
+        return view('administrator.userCaloricNeed', compact('caloricNeed', 'search', 'sort', 'order'));
     }
 
     public function editUserCaloricNeed($id)
@@ -274,11 +357,24 @@ class AdministratorController extends Controller
         return redirect()->route('administrator.userCaloricNeed')->with('success', 'Dane użytkownika zostały usunięte.');
     }
 
-    public function showDisease()
+    public function showDisease(Request $request)
     {
-        $disease = Disease::all();
+        $search = request('search');
+        $sort = $request->input('sort', 'id');
+        $order = $request->input('order', 'asc');
 
-        return view('administrator.disease', compact('disease'));
+        $disease = Disease::orderBy($sort, $order);
+
+        if ($search) {
+            $disease->where(function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('id', $search);
+            });
+        }
+
+        $disease = $disease->paginate(10);
+
+        return view('administrator.disease', compact('disease', 'search', 'sort', 'order'));
     }
 
     public function editDisease($id)
@@ -334,11 +430,24 @@ class AdministratorController extends Controller
         return redirect()->route('administrator.disease')->with('success', 'Choroba została dodana.');
     }
 
-    public function showMealCategory()
+    public function showMealCategory(Request $request)
     {
-        $mealCategory = MealCategory::all();
+        $search = request('search');
+        $sort = $request->input('sort', 'id');
+        $order = $request->input('order', 'asc');
 
-        return view('administrator.mealCategory', compact('mealCategory'));
+        $mealCategory = MealCategory::orderBy($sort, $order);
+
+        if ($search) {
+            $mealCategory->where(function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('id', $search);
+            });
+        }
+
+        $mealCategory = $mealCategory->paginate(10);
+
+        return view('administrator.mealCategory', compact('mealCategory', 'search', 'sort', 'order'));
     }
 
     public function editMealCategory($id)
@@ -398,11 +507,24 @@ class AdministratorController extends Controller
         return redirect()->route('administrator.mealCategory')->with('success', 'Kategoria została dodana.');
     }
 
-    public function showMeal()
+    public function showMeal(Request $request)
     {
-        $meal = Meal::all();
+        $search = request('search');
+        $sort = $request->input('sort', 'id');
+        $order = $request->input('order', 'asc');
 
-        return view('administrator.meal', compact('meal'));
+        $meal = Meal::orderBy($sort, $order);
+
+        if ($search) {
+            $meal->where(function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('id', $search);
+            });
+        }
+
+        $meal = $meal->paginate(10);
+
+        return view('administrator.meal', compact('meal', 'search', 'sort', 'order'));
     }
 
     public function editMeal($id)
@@ -522,11 +644,31 @@ class AdministratorController extends Controller
         return redirect()->route('administrator.meal')->with('success', 'Danie zostało usunięte.');
     }
 
-    public function showMealIngredient()
+    public function showMealIngredient(Request $request)
     {
-        $mealIngredient = MealIngredient::all();
+        $search = request('search');
+        $sort = $request->input('sort', 'id');
+        $order = $request->input('order', 'asc');
 
-        return view('administrator.mealIngredient', compact('mealIngredient'));
+        $mealIngredient = MealIngredient::with(['meal', 'ingredient'])
+            ->orderBy($sort, $order);
+
+        if ($search) {
+            $mealIngredient->where(function ($query) use ($search) {
+                $query->whereHas('meal', function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%');
+                })->orWhereHas('ingredient', function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%');
+                })->orWhere('id', $search)
+                    ->orWhere('ingredient_id', $search)
+                    ->orWhere('meal_id', $search)
+                    ->orWhere('unit', $search);
+            });
+        }
+
+        $mealIngredient = $mealIngredient->paginate(10);
+
+        return view('administrator.mealIngredient', compact('mealIngredient', 'search', 'sort', 'order'));
     }
 
     public function editMealIngredient($id)
@@ -636,11 +778,27 @@ class AdministratorController extends Controller
         return redirect()->route('administrator.mealIngredient')->with('success', 'Składnik został usunięty z dania.');
     }
 
-    public function showNutritionalvalue()
+    public function showNutritionalvalue(Request $request)
     {
-        $nutritionalvalue = Nutritionalvalue::all();
+        $search = request('search');
+        $sort = $request->input('sort', 'id');
+        $order = $request->input('order', 'asc');
 
-        return view('administrator.nutritionalvalue', compact('nutritionalvalue'));
+        $nutritionalvalue = Nutritionalvalue::with('meal')
+            ->orderBy($sort, $order);
+
+        if ($search) {
+            $nutritionalvalue->where(function ($query) use ($search) {
+                $query->whereHas('meal', function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%');
+                })->orWhere('id', $search)
+                    ->orWhere('meal_id', $search);
+            });
+        }
+
+        $nutritionalvalue = $nutritionalvalue->paginate(10);
+
+        return view('administrator.nutritionalvalue', compact('nutritionalvalue', 'search', 'sort', 'order'));
     }
 
     public function editNutritionalvalue($id)
@@ -754,11 +912,24 @@ class AdministratorController extends Controller
         return redirect()->route('administrator.nutritionalvalue')->with('success', 'Wartości odżywcze zostały usunięte.');
     }
 
-    public function showIngredientCategory()
+    public function showIngredientCategory(Request $request)
     {
-        $ingredientCategory = IngredientCategory::all();
+        $search = request('search');
+        $sort = $request->input('sort', 'id');
+        $order = $request->input('order', 'asc');
 
-        return view('administrator.ingredientCategory', compact('ingredientCategory'));
+        $ingredientCategory = IngredientCategory::orderBy($sort, $order);
+
+        if ($search) {
+            $ingredientCategory->where(function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('id', $search);
+            });
+        }
+
+        $ingredientCategory = $ingredientCategory->paginate(10);
+
+        return view('administrator.ingredientCategory', compact('ingredientCategory', 'search', 'sort', 'order'));
     }
 
     public function editIngredientCategory($id)
@@ -818,11 +989,28 @@ class AdministratorController extends Controller
         return redirect()->route('administrator.ingredientCategory')->with('success', 'Kategoria została usunięta.');
     }
 
-    public function showIngredient()
+    public function showIngredient(Request $request)
     {
-        $ingredient = Ingredient::all();
+        $search = request('search');
+        $sort = $request->input('sort', 'id');
+        $order = $request->input('order', 'asc');
 
-        return view('administrator.ingredient', compact('ingredient'));
+        $ingredient = Ingredient::with('ingredient_category')
+            ->orderBy($sort, $order);
+
+        if ($search) {
+            $ingredient->where(function ($query) use ($search) {
+                $query->whereHas('ingredient_category', function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%');
+                })->orWhere('id', $search)
+                    ->orWhere('category_id', $search)
+                    ->orWhere('name', 'like', '%' . $search . '%');
+            });
+        }
+
+        $ingredient = $ingredient->paginate(10);
+
+        return view('administrator.ingredient', compact('ingredient', 'search', 'sort', 'order'));
     }
 
     public function editIngredient($id)
@@ -926,12 +1114,27 @@ class AdministratorController extends Controller
         return redirect()->route('administrator.ingredient')->with('success', 'Składnik został usunięty.');
     }
 
-    public function showAdminProfile()
+    public function showAdminProfile(Request $request)
     {
         if (Auth::guard('admin')->check() && Auth::guard('admin')->user()->role === 'admin') {
-            $administrator = Administrator::all();
 
-            return view('administrator.adminProfile', compact('administrator'));
+            $search = request('search');
+            $sort = $request->input('sort', 'id');
+            $order = $request->input('order', 'asc');
+
+            $administrator = Administrator::orderBy($sort, $order);
+
+            if ($search) {
+                $administrator->where(function ($query) use ($search) {
+                    $query->where('email', 'like', '%' . $search . '%')
+                        ->orWhere('role', 'like', '%' . $search . '%')
+                        ->orWhere('id', $search);
+                });
+            }
+
+            $administrator = $administrator->paginate(10);
+
+            return view('administrator.adminProfile', compact('administrator', 'search', 'sort', 'order'));
         }
 
         return redirect('/admin/dashboard');
@@ -1031,11 +1234,30 @@ class AdministratorController extends Controller
 
     }
 
-    public function showUserMenu()
+    public function showUserMenu(Request $request)
     {
-        $menu = Menu::all();
+        $search = request('search');
+        $sort = $request->input('sort', 'id');
+        $order = $request->input('order', 'asc');
 
-        return view('administrator.userMenu', compact('menu'));
+        $menu = Menu::with('user')
+            ->orderBy($sort, $order);
+
+        if ($search) {
+            $menu->where(function ($query) use ($search) {
+                $query->whereHas('user', function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%')
+                        ->orWhere('lastName', 'like', '%' . $search . '%')
+                        ->orWhere('email', 'like', '%' . $search . '%');
+                })->orWhere('id', $search)
+                    ->orWhere('user_id', $search)
+                    ->orWhere('dayOfTheWeek', 'like', '%' . $search . '%');
+            });
+        }
+
+        $menu = $menu->paginate(10);
+
+        return view('administrator.userMenu', compact('menu', 'search', 'sort', 'order'));
     }
 
     public function removeUserMenu($menuId)
@@ -1128,11 +1350,31 @@ class AdministratorController extends Controller
         return redirect()->route('administrator.userMenu')->with('success', 'Menu zostało dodane.');
     }
 
-    public function showUserMenuMeal()
+    public function showUserMenuMeal(Request $request)
     {
-        $menuMeal = MenuMeal::all();
+        $search = request('search');
+        $sort = $request->input('sort', 'id');
+        $order = $request->input('order', 'asc');
 
-        return view('administrator.userMenuMeal', compact('menuMeal'));
+        $menuMeal = MenuMeal::with(['meal', 'mealCategory'])
+            ->orderBy($sort, $order);
+
+        if ($search) {
+            $menuMeal->where(function ($query) use ($search) {
+                $query->whereHas('meal', function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%');
+                })->orWhereHas('mealCategory', function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%');
+                })->orWhere('id', $search)
+                    ->orWhere('menu_id', $search)
+                    ->orWhere('meal_id', $search)
+                    ->orWhere('meal_meal_category_id', $search);
+            });
+        }
+
+        $menuMeal = $menuMeal->paginate(10);
+
+        return view('administrator.userMenuMeal', compact('menuMeal', 'search', 'sort', 'order'));
     }
 
     public function removeUserMenuMeal($menuMealId)

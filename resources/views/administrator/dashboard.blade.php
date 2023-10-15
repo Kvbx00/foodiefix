@@ -37,7 +37,7 @@
 <br>
 <a href="{{ url('admin/dashboard/nutritionalvalue') }}">Wartości odżywcze w daniach</a>
 <br>
-<a href="{{ url('admin/dashboard/ingredientCategory') }}">Kategorie składików</a>
+<a href="{{ url('admin/dashboard/ingredientCategory') }}">Kategorie składników</a>
 <br>
 <a href="{{ url('admin/dashboard/ingredient') }}">Składniki</a>
 <br>

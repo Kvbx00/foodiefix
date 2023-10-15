@@ -3,7 +3,7 @@
     <label for="user_id">Wybierz użytkownika:</label>
     <select name="user_id" id="user_id">
         @foreach($users as $user)
-            <option value="{{ $user->id }}">{{ $user->name }} {{ $user->lastName }}</option>
+            <option value="{{ $user->id }}">id:{{ $user->id }} | {{ $user->name }} {{ $user->lastName }}</option>
         @endforeach
     </select>
 

@@ -8,13 +8,29 @@
 
 <body>
 <h1>ZAPOTRZEBOWANIE KALORYCZNE UŻYTKOWNIKÓW</h1>
+<form action="{{ route('administrator.userCaloricNeed') }}" method="GET">
+    <input type="text" name="search" placeholder="Szukaj" value="{{ request('search') }}">
+    <button type="submit">Szukaj</button>
+</form>
 <table>
     <thead>
     <tr>
-        <th>Id</th>
-        <th>Zapotrzebowanie</th>
-        <th>Data</th>
-        <th>Id użytkownika</th>
+        <th>
+            <a href="{{ route('administrator.userCaloricNeed', ['sort' => 'id', 'order' => $order === 'asc' ? 'desc' : 'asc']) }}">
+                Id
+            </a></th>
+        <th>
+            <a href="{{ route('administrator.userCaloricNeed', ['sort' => 'caloricNeeds', 'order' => $order === 'asc' ? 'desc' : 'asc']) }}">
+                Zapotrzebowanie
+            </a></th>
+        <th>
+            <a href="{{ route('administrator.userCaloricNeed', ['sort' => 'date', 'order' => $order === 'asc' ? 'desc' : 'asc']) }}">
+                Data
+            </a></th>
+        <th>
+            <a href="{{ route('administrator.userCaloricNeed', ['sort' => 'user_id', 'order' => $order === 'asc' ? 'desc' : 'asc']) }}">
+                Id użytkownika
+            </a></th>
         <th>Akcja</th>
     </tr>
     </thead>
@@ -37,6 +53,28 @@
     @endforeach
     </tbody>
 </table>
+<div class="pagination">
+    @if ($caloricNeed->onFirstPage())
+        <span class="disabled">&laquo;</span>
+        <span class="disabled">&lsaquo;</span>
+    @else
+        <a href="{{ $caloricNeed->url(1) }}&sort={{ $sort }}&order={{ $order }}&search={{ $search }}">&laquo;</a>
+        <a href="{{ $caloricNeed->previousPageUrl() }}&sort={{ $sort }}&order={{ $order }}&search={{ $search }}"
+           rel="prev">&lsaquo;</a>
+    @endif
+
+    <span>Strona {{ $caloricNeed->currentPage() }} z {{ $caloricNeed->lastPage() }}</span>
+
+    @if ($caloricNeed->hasMorePages())
+        <a href="{{ $caloricNeed->nextPageUrl() }}&sort={{ $sort }}&order={{ $order }}&search={{ $search }}"
+           rel="next">&rsaquo;</a>
+        <a href="{{ $caloricNeed->url($caloricNeed->lastPage()) }}&sort={{ $sort }}&order={{ $order }}&search={{ $search }}">&raquo;</a>
+    @else
+        <span class="disabled">&rsaquo;</span>
+        <span class="disabled">&raquo;</span>
+    @endif
+</div>
+
 </body>
 
 </html>

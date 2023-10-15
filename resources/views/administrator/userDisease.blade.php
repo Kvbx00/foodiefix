@@ -9,16 +9,29 @@
 <body>
 <h1>CHOROBY UŻYTKOWNIKÓW</h1>
 <a href="{{ route('administrator.addUserDisease') }}">Dodaj chorobę użytkownikowi</a>
+<form action="{{ route('administrator.userDisease') }}" method="GET">
+    <input type="text" name="search" placeholder="Szukaj" value="{{ request('search') }}">
+    <button type="submit">Szukaj</button>
+</form>
 <table>
     <thead>
     <tr>
-        <th>Id</th>
+        <th>
+            <a href="{{ route('administrator.userDisease', ['sort' => 'id', 'order' => $order === 'asc' ? 'desc' : 'asc']) }}">
+                Id
+            </a></th>
         <th>Nazwa choroby</th>
-        <th>Id choroby</th>
+        <th>
+            <a href="{{ route('administrator.userDisease', ['sort' => 'diseases_id', 'order' => $order === 'asc' ? 'desc' : 'asc']) }}">
+                Id choroby
+            </a></th>
         <th>Imię</th>
         <th>Nazwisko</th>
         <th>Email</th>
-        <th>Id użytkownika</th>
+        <th>
+            <a href="{{ route('administrator.userDisease', ['sort' => 'user_id', 'order' => $order === 'asc' ? 'desc' : 'asc']) }}">
+                Id użytkownika
+            </a></th>
         <th>Akcja</th>
     </tr>
     </thead>
@@ -43,6 +56,25 @@
     @endforeach
     </tbody>
 </table>
+<div class="pagination">
+    @if ($userDisease->onFirstPage())
+        <span class="disabled">&laquo;</span>
+        <span class="disabled">&lsaquo;</span>
+    @else
+        <a href="{{ $userDisease->url(1) }}&sort={{ $sort }}&order={{ $order }}&search={{ $search }}">&laquo;</a>
+        <a href="{{ $userDisease->previousPageUrl() }}&sort={{ $sort }}&order={{ $order }}&search={{ $search }}" rel="prev">&lsaquo;</a>
+    @endif
+
+    <span>Strona {{ $userDisease->currentPage() }} z {{ $userDisease->lastPage() }}</span>
+
+    @if ($userDisease->hasMorePages())
+        <a href="{{ $userDisease->nextPageUrl() }}&sort={{ $sort }}&order={{ $order }}&search={{ $search }}" rel="next">&rsaquo;</a>
+        <a href="{{ $userDisease->url($userDisease->lastPage()) }}&sort={{ $sort }}&order={{ $order }}&search={{ $search }}">&raquo;</a>
+    @else
+        <span class="disabled">&rsaquo;</span>
+        <span class="disabled">&raquo;</span>
+    @endif
+</div>
 </body>
 
 </html>
