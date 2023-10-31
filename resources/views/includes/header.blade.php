@@ -1,0 +1,76 @@
+<nav class="navbar navbar-expand-lg fixed-top">
+    <a class="navbar-brand ms-4" href="/">
+        <img src="{{ asset('images/logo.png') }}" alt="logo" width="50" height="44">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 fw-semibold">
+            <li class="nav-item ms-5">
+                <a class="nav-link active" aria-current="page" href="/">Strona główna</a>
+            </li>
+            <li class="nav-item ms-5">
+                <a class="nav-link" href="#">Przepisy</a>
+            </li>
+            <li class="nav-item ms-5">
+                <a class="nav-link" href="#">O nas</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
+            <li class="nav-item me-5 ms-5" id="login-button">
+                @if(auth()->check())
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="nav-link active fw-bold d-inline">Wyloguj się</button>
+                    </form>
+                @else
+                    <a class="nav-link active fw-bold" href="/login">Zaloguj się</a>
+                @endif
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<style>
+    .navbar {
+        background-color: white;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .2);
+    }
+
+    #login-button {
+        background-color: #fdcc56;
+        border-radius: 30px;
+        width: 120px;
+        text-align: center;
+        transition: 0.3s;
+        letter-spacing: 1px;
+    }
+
+    #login-button:hover {
+        box-shadow: 0px 5px 20px rgba(253, 204, 86, 0.4);
+        background-color: #fdc056;
+        transform: translateY(-5px);
+    }
+
+    @media (max-width: 991px) {
+
+        .navbar-nav .nav-item {
+            margin: 0;
+        }
+
+        #login-button {
+            background-color: transparent;
+            border: none;
+            width: 0;
+            font-weight: 600;
+            color: #000000 !important;
+            letter-spacing: 0;
+        }
+
+        #login-button:hover {
+            transform: none;
+        }
+    }
+</style>
