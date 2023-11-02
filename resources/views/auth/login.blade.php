@@ -5,7 +5,8 @@
 
 <body>
 
-<div class="container-fluid vh-100" style="background-color: #E4DBB1;">
+<div class="container-fluid min-vh-100 d-flex justify-content-center align-items-center"
+     style="background-color: #E4DBB1;">
 
     @include('includes.error')
 
