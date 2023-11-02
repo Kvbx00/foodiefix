@@ -6,7 +6,7 @@
 <body>
 
 <div class="container-fluid min-vh-100 d-flex justify-content-center align-items-center"
-     style="background-color: #E4DBB1;">
+     style="background-color: #d8f3dc;">
 
     @include('includes.error')
 
@@ -20,7 +20,7 @@
                                  alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;"/>
                         </div>
                         <div class="col-md-6 col-lg-7 d-flex align-items-center">
-                            <div class="card-body p-4 p-lg-5 text-black">
+                            <div class="card-body p-4 p-lg-5">
                                 <form method="POST" action="{{ route('login') }}">
                                     @csrf
                                     <div class="d-flex align-items-center mb-3 pb-1">
