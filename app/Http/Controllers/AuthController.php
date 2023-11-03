@@ -65,7 +65,7 @@ class AuthController extends Controller
             'user_id' => $user->id,
         ]);
 
-        return redirect('/home');
+        return redirect('/userPanel');
     }
 
     private function calculateActivityFactor($activity)
@@ -118,7 +118,7 @@ class AuthController extends Controller
 
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
-            return redirect()->intended('/home');
+            return redirect()->intended('/userPanel');
         } else {
             return back()->withErrors(['email' => 'Nieprawidłowy email lub hasło']);
         }
