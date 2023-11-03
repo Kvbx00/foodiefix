@@ -19,11 +19,18 @@
             </li>
         </ul>
         <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
+            <li class="nav-item ms-5">
+                @if(auth()->check())
+                    <a class="nav-link active p-0" href="/userPanel" id="user-icon"><img src="{{ asset('images/user-icon.png') }}"
+                                                                          alt="icon" height="40px"></a>
+                    <a class="nav-link active p-0" href="/userPanel" id="user-account">Twoje konto</a>
+                @endif
+            </li>
             <li class="nav-item me-5 ms-5" id="login-button">
                 @if(auth()->check())
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit" class="nav-link active fw-bold d-inline">Wyloguj się</button>
+                        <button type="submit" class="nav-link active fw-semibold d-inline">Wyloguj się</button>
                     </form>
                 @else
                     <a class="nav-link active fw-bold" href="/login">Zaloguj się</a>
@@ -54,6 +61,12 @@
         transform: translateY(-5px);
     }
 
+    #user-account{
+        visibility: hidden;
+        height: 0;
+        width: 0;
+    }
+
     @media (max-width: 991px) {
 
         .navbar-nav .nav-item {
@@ -63,14 +76,27 @@
         #login-button {
             background-color: transparent;
             border: none;
-            width: 0;
             font-weight: 600;
-            color: #000000 !important;
             letter-spacing: 0;
+            text-align: left;
+            transition: 0s;
         }
 
         #login-button:hover {
             transform: none;
+            box-shadow: none;
+            background-color: transparent;
+        }
+
+        #user-icon{
+            display: none;
+        }
+
+        #user-account{
+            visibility: visible;
+            font-weight: 600;
+            height: auto;
+            width: auto;
         }
     }
 </style>
