@@ -7,7 +7,7 @@
 
 @include('includes.header')
 
-<div class="container-fluid gx-0">
+<div class="container-fluid">
 
     <div class="row min-vh-100 align-items-center" id="first-main">
         <div class="col-6 d-flex flex-column" id="first-sub-main">
