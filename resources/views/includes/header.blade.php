@@ -19,11 +19,17 @@
             </li>
         </ul>
         <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
-            <li class="nav-item ms-5">
+            <li class="nav-item dropdown ms-5">
                 @if(auth()->check())
-                    <a class="nav-link active p-0" href="/userPanel" id="user-icon"><img src="{{ asset('images/user-icon.png') }}"
-                                                                          alt="icon" height="40px"></a>
-                    <a class="nav-link active p-0" href="/userPanel" id="user-account">Twoje konto</a>
+                    <a class="nav-link active p-0 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="user-icon">
+                        <img src="{{ asset('images/user-icon.png') }}" alt="icon" height="40px">
+                    </a>
+                    <a class="nav-link active p-0 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="user-account">Twoje konto</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/userPanel">Profil</a></li>
+                        <li><a class="dropdown-item" href="/user/menu">Menu</a></li>
+                        <li><a class="dropdown-item" href="/userPanel/profile">Ustawienia konta</a></li>
+                    </ul>
                 @endif
             </li>
             <li class="nav-item me-5 ms-5" id="login-button">
@@ -65,6 +71,23 @@
         visibility: hidden;
         height: 0;
         width: 0;
+    }
+
+    .dropdown-menu{
+        border: none;
+    }
+
+    .dropdown-item:hover{
+        background-color: transparent;
+    }
+
+    .dropdown-toggle::after{
+        margin: 0;
+        transition: 1s;
+    }
+
+    .dropdown-toggle:hover::after{
+        transform: translateY(13px);
     }
 
     @media (max-width: 991px) {
