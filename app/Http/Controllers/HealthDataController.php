@@ -37,7 +37,17 @@ class HealthDataController extends Controller
 
         $userMeasurements = HealthData::where('user_id', auth()->id())->paginate(5);
 
-        return view('user.userPanel', compact('lastValues', 'availableDiseases', 'availableIngredients', 'userMeasurements'));
+        $userMeasurementsForChart = HealthData::where('user_id', auth()->id())->latest('date')->get()->reverse();
+
+        $chartData = [
+            'labels' => $userMeasurementsForChart->pluck('date'),
+            'weight' => $userMeasurementsForChart->pluck('weight'),
+            'pulse' => $userMeasurementsForChart->pluck('pulse'),
+            'diastolicBloodPressure' => $userMeasurementsForChart->pluck('diastolicBloodPressure'),
+            'systolicBloodPressure' => $userMeasurementsForChart->pluck('systolicBloodPressure'),
+        ];
+
+        return view('user.userPanel', compact('lastValues', 'availableDiseases', 'availableIngredients', 'userMeasurements', 'chartData'));
     }
 
     public function storeMeasurements(Request $request)
