@@ -13,7 +13,7 @@
 
         <div class="row ps-5 pe-5 d-flex justify-content-center">
             <div class="col-12 d-flex justify-content-center mb-2">
-                <p class="fw-normal" style="font-size:40px; letter-spacing: 1px">Dane zdrowotne</p>
+                <p class="fw-normal text-center" style="font-size:40px; letter-spacing: 1px">Dane zdrowotne</p>
             </div>
             <div class="card col-md-8 mb-5">
                 <canvas class="m-5" id="health-chart"></canvas>
@@ -143,13 +143,13 @@
 
         <div class="row ps-5 pe-5 justify-content-center">
             <div class="col-12 d-flex justify-content-center mb-2">
-                <p class="fw-normal" style="font-size:40px; letter-spacing: 1px">Choroby</p>
+                <p class="fw-normal text-center" style="font-size:40px; letter-spacing: 1px">Choroby</p>
             </div>
             <div class="card col-md-9 d-flex flex-row justify-content-center align-items-center">
                 <div class="col-5 d-flex flex-column justify-content-center align-items-center mt-5 mb-5">
                     @if ($availableDiseases->count() > 0)
                         <div class="d-flex">
-                            <p class="fw-normal" style="font-size:30px; letter-spacing: 1px">Dostępne choroby</p>
+                            <p class="fw-normal text-center" style="font-size:30px; letter-spacing: 1px">Dostępne choroby</p>
                         </div>
                         <form method="post" action="{{ route('diseases.store') }}">
                             <div class="d-flex mt-3">
@@ -170,7 +170,7 @@
                 </div>
                 <div class="col-5 d-flex flex-column justify-content-center align-items-center mt-5 mb-5">
                     <div>
-                        <p class="fw-normal" style="font-size:30px; letter-spacing: 1px">Twoje choroby</p>
+                        <p class="fw-normal text-center" style="font-size:30px; letter-spacing: 1px">Twoje choroby</p>
                     </div>
                     <div class="d-flex flex-column mt-3">
                         @if(auth()->check() && auth()->user()->diseases->count() > 0)
@@ -198,13 +198,13 @@
 
         <div class="row mb-5 ps-5 pe-5 justify-content-center">
             <div class="col-12 d-flex justify-content-center mb-2">
-                <p class="fw-normal" style="font-size:40px; letter-spacing: 1px">Preferencje składników</p>
+                <p class="fw-normal text-center" style="font-size:40px; letter-spacing: 1px">Preferencje składników</p>
             </div>
             <div class="card col-md-9 d-flex flex-row justify-content-center align-items-center">
                 <div class="col-5 d-flex flex-column justify-content-center align-items-center mt-5 mb-5">
                     @if (auth()->user()->ingredientPreferences->count() < 5)
                         <div class="d-flex">
-                            <p class="fw-normal" style="font-size:30px; letter-spacing: 1px">Dostępne składniki</p>
+                            <p class="fw-normal text-center" style="font-size:30px; letter-spacing: 1px">Dostępne składniki</p>
                         </div>
                         <form method="post" action="{{ route('ingredients.store') }}">
                             <div class="d-flex mt-3">
@@ -226,7 +226,7 @@
                 </div>
                 <div class="col-5 d-flex flex-column justify-content-center align-items-center mt-5 mb-5">
                     <div>
-                        <p class="fw-normal" style="font-size:30px; letter-spacing: 1px">Wybrane składniki</p>
+                        <p class="fw-normal text-center" style="font-size:30px; letter-spacing: 1px">Wybrane składniki</p>
                     </div>
                     <div class="d-flex flex-column mt-3">
                         @if(auth()->check() && auth()->user()->ingredientPreferences->count() > 0)
