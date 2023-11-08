@@ -1,161 +1,273 @@
 <!doctype html>
-<html>
+<html lang="pl">
 
-<head>
-    <meta charset="UTF-8">
-    <title>FoodieFix</title>
-    <script src="{{ asset('jquery/jquery.min.js') }}"></script>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-</head>
+@include('includes.head')
 
-<body>
-{{ ('Panel uzytkownika') }}
+<body class="pt-5">
 
-<a href="{{ url('userPanel/profile') }}">Profil</a>
+@include('includes.header')
 
-<h1>Twoje wyniki zdrowia</h1>
-<table>
-    <tr>
-        <th>Data</th>
-        <th>Waga</th>
-        <th>Ciśnienie rozkurczowe</th>
-        <th>Ciśnienie skurczowe</th>
-        <th>Pulse</th>
-    </tr>
-    @foreach($userMeasurements as $measurement)
-        <tr>
-            <td>{{ $measurement->date }}</td>
-            <td>{{ $measurement->weight }}</td>
-            <td>{{ $measurement->diastolicBloodPressure }}</td>
-            <td>{{ $measurement->systolicBloodPressure }}</td>
-            <td>{{ $measurement->pulse }}</td>
-        </tr>
-    @endforeach
-</table>
+<div class="container-fluid">
 
-<h1>Dodaj pomiary</h1>
-<!-- Formularz do wprowadzenia pomiarów -->
-<form method="POST" action="{{ route('measurements.store') }}">
-    @csrf
+    <div class="mt-5">
 
-    <div class="form-group">
-        <label for="weight">Waga</label>
-        <select name="weight" id="weight" class="form-control">
-            @for ($i = 30; $i <= 200; $i++)
-                <option value="{{ $i }}" {{ old('weight', $lastValues['weight']) == $i ? 'selected' : '' }}>{{ $i }}
-                    kg
-                </option>
-            @endfor
-        </select>
+        <div class="row ps-5 pe-5 d-flex justify-content-center">
+            <div class="col-12 d-flex justify-content-center mb-2">
+                <p class="fw-normal" style="font-size:40px; letter-spacing: 1px">Dane zdrowotne</p>
+            </div>
+            <div class="card col-md-8 mb-5">
+                <canvas class="m-5" id="health-chart"></canvas>
+            </div>
+            <div class="col-md-6 d-flex flex-column justify-content-center align-items-center">
+                <div class="card col-10 d-flex h-100 align-items-center justify-content-center">
+                    <form class="col-10" method="POST" action="{{ route('measurements.store') }}">
+                        @csrf
+                        <div class="d-flex align-items-center justify-content-center mb-2 mt-4">
+                            <div class="col-6 d-flex justify-content-center">
+                                <label for="weight">Waga</label>
+                            </div>
+                            <div class="col-6 d-flex justify-content-center">
+                                <select name="weight" id="weight" class="select2" data-select-search="true">
+                                    @for ($i = 30; $i <= 200; $i++)
+                                        <option
+                                            value="{{ $i }}" {{ old('weight', $lastValues['weight']) == $i ? 'selected' : '' }}>{{ $i }}
+                                            kg
+                                        </option>
+                                    @endfor
+                                </select>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-center mb-2">
+                            <div class="col-6 d-flex justify-content-center">
+                                <label for="diastolicBloodPressure">Rozkurczowe ciśnienie krwi</label>
+                            </div>
+                            <div class="col-6 d-flex justify-content-center">
+                                <select name="diastolicBloodPressure" id="diastolicBloodPressure" class="select2"
+                                        data-select-search="true">
+                                    @for ($i = 70; $i <= 160; $i++)
+                                        <option
+                                            value="{{ $i }}" {{ old('diastolicBloodPressure', $lastValues['diastolicBloodPressure']) == $i ? 'selected' : '' }}>{{ $i }}
+                                            mmHG
+                                        </option>
+                                    @endfor
+                                </select>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-center mb-2">
+                            <div class="col-6 d-flex justify-content-center">
+                                <label for="systolicBloodPressure">Skurczowe ciśnienie krwi</label>
+                            </div>
+                            <div class="col-6 d-flex justify-content-center">
+                                <select name="systolicBloodPressure" id="systolicBloodPressure" class="select2"
+                                        data-select-search="true">
+                                    @for ($i = 50; $i <= 110; $i++)
+                                        <option
+                                            value="{{ $i }}" {{ old('systolicBloodPressure', $lastValues['systolicBloodPressure']) == $i ? 'selected' : '' }}>{{ $i }}
+                                            mmHG
+                                        </option>
+                                    @endfor
+                                </select>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-center">
+                            <div class="col-6 d-flex justify-content-center">
+                                <label for="pulse">Puls</label>
+                            </div>
+                            <div class="col-6 d-flex justify-content-center">
+                                <select name="pulse" id="pulse" class="select2" data-select-search="true">
+                                    @for ($i = 40; $i <= 100; $i++)
+                                        <option
+                                            value="{{ $i }}" {{ old('pulse', $lastValues['pulse']) == $i ? 'selected' : '' }}>{{ $i }}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end pt-3 mb-4">
+                            <button class="btn btn-dark btn-block" type="submit"
+                                    style="background-color: #6FAD55; border: none">Zapisz
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-md-6 d-flex align-items-center justify-content-center" id="health-table">
+                <div class="table-responsive card d-flex col-10">
+                    <table class="table table-borderless text-center">
+                        <thead>
+                        <tr class="d-flex">
+                            <th class="col-2">Data</th>
+                            <th class="col-2">Waga</th>
+                            <th class="col-3">Ciśnienie roz.</th>
+                            <th class="col-3">Ciśnienie skur.</th>
+                            <th class="col-2">Puls</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($userMeasurements as $measurement)
+                            <tr class="d-flex">
+                                <td class="col-2">{{ $measurement->date }}</td>
+                                <td class="col-2">{{ $measurement->weight }}</td>
+                                <td class="col-3">{{ $measurement->diastolicBloodPressure }}</td>
+                                <td class="col-3">{{ $measurement->systolicBloodPressure }}</td>
+                                <td class="col-2">{{ $measurement->pulse }}</td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                    <div class="pagination d-flex justify-content-center mb-3">
+                        @if ($userMeasurements->onFirstPage())
+                            <span>&laquo;</span>
+                            <span>&lsaquo;</span>
+                        @else
+                            <a href="{{ $userMeasurements->url(1) }}">&laquo;</a>
+                            <a href="{{ $userMeasurements->previousPageUrl() }}" rel="prev">&lsaquo;</a>
+                        @endif
+
+                        <span
+                            class="pagination-middle">{{ $userMeasurements->currentPage() }} z {{ $userMeasurements->lastPage() }}</span>
+
+                        @if ($userMeasurements->hasMorePages())
+                            <a href="{{ $userMeasurements->nextPageUrl() }}" rel="next">&rsaquo;</a>
+                            <a href="{{ $userMeasurements->url($userMeasurements->lastPage()) }}">&raquo;</a>
+                        @else
+                            <span>&rsaquo;</span>
+                            <span>&raquo;</span>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr class="m-5">
+
+        <div class="row ps-5 pe-5 justify-content-center">
+            <div class="col-12 d-flex justify-content-center mb-2">
+                <p class="fw-normal" style="font-size:40px; letter-spacing: 1px">Choroby</p>
+            </div>
+            <div class="card col-md-9 d-flex flex-row justify-content-center align-items-center">
+                <div class="col-5 d-flex flex-column justify-content-center align-items-center mt-5 mb-5">
+                    @if ($availableDiseases->count() > 0)
+                        <div class="d-flex">
+                            <p class="fw-normal" style="font-size:30px; letter-spacing: 1px">Dostępne choroby</p>
+                        </div>
+                        <form method="post" action="{{ route('diseases.store') }}">
+                            <div class="d-flex mt-3">
+                                @csrf
+                                <select name="diseases_id" id="disease_name" class="select2">
+                                    @foreach($availableDiseases as $disease)
+                                        <option value="{{ $disease->id }}">{{ $disease->name }}</option>
+                                    @endforeach
+                                </select>
+                                <button class="btn btn-dark btn-block ms-3" type="submit"
+                                        style="background-color: #6FAD55; border: none">Zapisz
+                                </button>
+                            </div>
+                        </form>
+                    @else
+                        <p>Wszystkie dostępne choroby zostały już dodane.</p>
+                    @endif
+                </div>
+                <div class="col-5 d-flex flex-column justify-content-center align-items-center mt-5 mb-5">
+                    <div>
+                        <p class="fw-normal" style="font-size:30px; letter-spacing: 1px">Twoje choroby</p>
+                    </div>
+                    <div class="d-flex flex-column mt-3">
+                        @if(auth()->check() && auth()->user()->diseases->count() > 0)
+                            @foreach(auth()->user()->diseases as $userDisease)
+                                <div class="d-flex flex-row mt-3 justify-content-between align-items-center">
+                                    &#x2022; {{ $userDisease->name }}
+                                    <form action="{{ route('diseases.destroy', $userDisease->id) }}" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-dark btn-block ms-3" type="submit"
+                                                style="background-color: #FF0A54; border: none">Usuń
+                                        </button>
+                                    </form>
+                                </div>
+                            @endforeach
+                        @else
+                            <p>Brak przypisanych chorób.</p>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr class="m-5">
+
+        <div class="row mb-5 ps-5 pe-5 justify-content-center">
+            <div class="col-12 d-flex justify-content-center mb-2">
+                <p class="fw-normal" style="font-size:40px; letter-spacing: 1px">Preferencje składników</p>
+            </div>
+            <div class="card col-md-9 d-flex flex-row justify-content-center align-items-center">
+                <div class="col-5 d-flex flex-column justify-content-center align-items-center mt-5 mb-5">
+                    @if (auth()->user()->ingredientPreferences->count() < 5)
+                        <div class="d-flex">
+                            <p class="fw-normal" style="font-size:30px; letter-spacing: 1px">Dostępne składniki</p>
+                        </div>
+                        <form method="post" action="{{ route('ingredients.store') }}">
+                            <div class="d-flex mt-3">
+                                @csrf
+                                <select name="ingredient_id" id="ingredient_name" class="select2"
+                                        style="width: auto !important;">
+                                    @foreach($availableIngredients as $ingredient)
+                                        <option value="{{ $ingredient->id }}">{{ $ingredient->name }}</option>
+                                    @endforeach
+                                </select>
+                                <button class="btn btn-dark btn-block ms-3" type="submit"
+                                        style="background-color: #6FAD55; border: none">Zapisz
+                                </button>
+                            </div>
+                        </form>
+                    @else
+                        <p>Osiągnąłeś limit wybranych składników (maksymalnie 5).</p>
+                    @endif
+                </div>
+                <div class="col-5 d-flex flex-column justify-content-center align-items-center mt-5 mb-5">
+                    <div>
+                        <p class="fw-normal" style="font-size:30px; letter-spacing: 1px">Wybrane składniki</p>
+                    </div>
+                    <div class="d-flex flex-column mt-3">
+                        @if(auth()->check() && auth()->user()->ingredientPreferences->count() > 0)
+                            @foreach(auth()->user()->ingredientPreferences as $userIngredient)
+                                <div class="d-flex flex-row mt-3 justify-content-between align-items-center">
+                                    &#x2022; {{ $userIngredient->name }}
+                                    <form action="{{ route('ingredients.destroy', $userIngredient->id) }}"
+                                          method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-dark btn-block ms-3" type="submit"
+                                                style="background-color: #FF0A54; border: none">Usuń
+                                        </button>
+                                    </form>
+                                </div>
+                            @endforeach
+                        @else
+                            <p>Brak przypisanych składników.</p>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <div class="form-group">
-        <label for="diastolicBloodPressure">Rozkurczowe ciśnienie krwi</label>
-        <select name="diastolicBloodPressure" id="diastolicBloodPressure" class="form-control">
-            @for ($i = 70; $i <= 160; $i++)
-                <option
-                    value="{{ $i }}" {{ old('diastolicBloodPressure', $lastValues['diastolicBloodPressure']) == $i ? 'selected' : '' }}>{{ $i }}
-                    mmHG
-                </option>
-            @endfor
-        </select>
-    </div>
+</div>
 
-    <div class="form-group">
-        <label for="systolicBloodPressure">Skurczowe ciśnienie krwi</label>
-        <select name="systolicBloodPressure" id="systolicBloodPressure" class="form-control">
-            @for ($i = 50; $i <= 110; $i++)
-                <option
-                    value="{{ $i }}" {{ old('systolicBloodPressure', $lastValues['systolicBloodPressure']) == $i ? 'selected' : '' }}>{{ $i }}
-                    mmHG
-                </option>
-            @endfor
-        </select>
-    </div>
+@include('includes.footer')
 
-    <div class="form-group">
-        <label for="pulse">Puls</label>
-        <select name="pulse" id="pulse" class="form-control">
-            @for ($i = 40; $i <= 100; $i++)
-                <option
-                    value="{{ $i }}" {{ old('pulse', $lastValues['pulse']) == $i ? 'selected' : '' }}>{{ $i }}</option>
-            @endfor
-        </select>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Zapisz</button>
-</form>
-
-@if ($availableDiseases->count() > 0)
-    <h2>Wybierz Chorobę</h2>
-    <form method="post" action="{{ route('diseases.store') }}">
-        @csrf
-        <select name="diseases_id" id="disease_name">
-            @foreach($availableDiseases as $disease)
-                <option value="{{ $disease->id }}">{{ $disease->name }}</option>
-            @endforeach
-        </select>
-        <button type="submit">Dodaj</button>
-    </form>
-@else
-    <p>Wszystkie dostępne choroby zostały już dodane.</p>
-@endif
-
-<h1>Twoje Choroby</h1>
-<ul>
-    @if(auth()->check() && auth()->user()->diseases->count() > 0)
-        @foreach(auth()->user()->diseases as $userDisease)
-            <li>
-                {{ $userDisease->name }}
-                <form action="{{ route('diseases.destroy', $userDisease->id) }}" method="post">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit">Usuń</button>
-                </form>
-            </li>
-        @endforeach
-    @else
-        <li>Brak przypisanych chorób.</li>
-    @endif
-</ul>
-
-@if (auth()->user()->ingredientPreferences->count() < 5)
-    <h2>Wybierz Składniki</h2>
-    <form method="post" action="{{ route('ingredients.store') }}">
-        @csrf
-        <select name="ingredient_id" id="ingredient_name">
-            @foreach($availableIngredients as $ingredient)
-                <option value="{{ $ingredient->id }}">{{ $ingredient->name }}</option>
-            @endforeach
-        </select>
-        <button type="submit">Dodaj</button>
-    </form>
-@else
-    <p>Osiągnąłeś limit wybranych składników (maksymalnie 5).</p>
-@endif
-
-<h1>Twoje preferencje składników</h1>
-<ul>
-    @if(auth()->check() && auth()->user()->ingredientPreferences->count() > 0)
-        @foreach(auth()->user()->ingredientPreferences as $userIngredient)
-            <li>
-                {{ $userIngredient->name }}
-                <form action="{{ route('ingredients.destroy', $userIngredient->id) }}" method="post">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit">Usuń</button>
-                </form>
-            </li>
-        @endforeach
-    @else
-        <li>Brak przypisanych składników.</li>
-    @endif
-</ul>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
 </body>
 </html>
+
+<script src="{{ asset('jquery/jquery.min.js') }}"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         $('#weight').select2();
         $('#diastolicBloodPressure').select2();
         $('#systolicBloodPressure').select2();
@@ -163,4 +275,183 @@
         $('#disease_name').select2();
         $('#ingredient_name').select2();
     });
+
+    $(document).ready(function () {
+        $(".select2").select2({'allowClear': false});
+    });
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('health-chart');
+    const chartData = @json($chartData);
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: chartData.labels,
+            datasets: [{
+                label: 'Ciśnienie rozkurczowe',
+                data: chartData.diastolicBloodPressure,
+                borderColor: 'rgba(249, 220, 92, 1)',
+                backgroundColor: 'rgba(249, 220, 92, 0.5)',
+                fill: false,
+                pointStyle: 'circle',
+                pointRadius: 5,
+                pointHoverRadius: 10,
+            }, {
+                label: 'Ciśnienie skurczowe',
+                data: chartData.systolicBloodPressure,
+                borderColor: 'rgba(79, 214, 109, 1)',
+                backgroundColor: 'rgba(79, 214, 109, 0.5)',
+                fill: false,
+                pointStyle: 'circle',
+                pointRadius: 5,
+                pointHoverRadius: 10,
+            }, {
+                label: 'Waga',
+                data: chartData.weight,
+                borderColor: 'rgba(72, 202, 228, 1)',
+                backgroundColor: 'rgba(72, 202, 228, 0.5)',
+                fill: false,
+                pointStyle: 'circle',
+                pointRadius: 5,
+                pointHoverRadius: 10,
+            }, {
+                label: 'Puls',
+                data: chartData.pulse,
+                borderColor: 'rgba(255, 10, 84, 1)',
+                backgroundColor: 'rgba(255, 10, 84, 0.5)',
+                fill: false,
+                pointStyle: 'circle',
+                pointRadius: 5,
+                pointHoverRadius: 10,
+            }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    labels: {
+                        padding: 25,
+                        usePointStyle: true,
+                    },
+                    position: 'bottom',
+                }
+            }
+        }
+    });
+</script>
+
+<style>
+    .card {
+        border: none;
+        box-shadow: 0 3px 6px 0 rgba(0, 0, 0, .2);
+    }
+
+    .table > tbody > tr:nth-child(even) > td, .table-striped > tbody > tr:nth-child(even) > th {
+        background-color: rgba(167, 201, 117, 0.1);
+    }
+
+    th {
+        background-color: #6FAD55 !important;
+        color: #FFFFFF !important;
+        font-weight: 500 !important;
+        letter-spacing: 1px;
+    }
+
+    td {
+        font-weight: 400 !important;
+        color: #7F7F7F !important;
+    }
+
+    .pagination a, .pagination span {
+        height: 25px;
+        width: 25px;
+        text-align: center;
+        justify-content: center;
+        display: flex;
+        margin-left: 7px;
+        text-decoration: none;
+        color: #000000;
+    }
+
+    .pagination .pagination-middle {
+        border-radius: 20px;
+        height: 25px;
+        width: 105px;
+        background-color: rgba(167, 201, 117, 0.2);
+        font-weight: 500;
+        text-align: center;
+        margin-left: 7px;
+        color: #7F7F7F;
+    }
+
+    .select2-selection {
+        border: none !important;
+    }
+
+    .select2 {
+        width: 100% !important;
+        padding: 0.375rem 2.25rem 0.375rem 0.75rem !important;
+        -moz-padding-start: calc(0.75rem - 3px) !important;
+        font-size: 1rem !important;
+        font-weight: 400 !important;
+        line-height: 1.5 !important;
+        color: #212529 !important;
+        border: 1px solid #ced4da !important;
+        border-radius: 0.25rem !important;
+        transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out !important;
+        -webkit-appearance: none !important;
+        -moz-appearance: none !important;
+        appearance: none !important;
+    }
+
+    .select2-dropdown {
+        border: 1px solid #ced4da !important;
+        border-radius: 0.25rem !important;
+        padding: 0.375rem 0 0.375rem 0.75rem;
+    }
+
+    .select2-results__option {
+        font-weight: normal !important;
+        display: block !important;
+        min-height: 1.2em !important;
+        padding: 0 2px 1px !important;
+    }
+
+    .select2-search {
+        background-color: #fff !important;
+        -webkit-box-shadow: none !important;
+        -moz-box-shadow: none !important;
+        box-shadow: none !important;
+        border: none !important;
+        padding-right: 0.75rem;
+    }
+
+    .select2-search__field {
+        outline: none !important;
+        border: 1px solid #ced4da !important;
+        border-radius: 0.25rem !important;
+    }
+
+    .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
+        background-color: #0d6efd !important;
+        color: white !important;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 26px !important;
+        position: absolute !important;
+        top: 8px !important;
+        right: 10px !important;
+        width: 20px !important;
+    }
+
+    @media (max-width: 767px) {
+        #health-table {
+            margin-top: 50px;
+        }
+    }
+</style>
+
