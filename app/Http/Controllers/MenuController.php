@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Meal;
 use App\Models\Menu;
 use App\Models\MenuMeal;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class MenuController extends Controller
 {
@@ -35,11 +37,14 @@ class MenuController extends Controller
                 ->get();
 
             $groupedMenuMeals[$day] = $menuMeals;
-
             $groupedMenuMeals[$day]['totalCalories'] = $this->calculateTotalCalories($menuMeals);
         }
 
-        return view('user.menu', compact('groupedMenuMeals', 'daysOfWeek'));
+        $menuDates = $menus->pluck('date');
+
+        $menuCheck = Menu::where('user_id', $user->id)->exists();
+
+        return view('user.menu', compact('groupedMenuMeals', 'daysOfWeek', 'menuDates', 'menuCheck'));
     }
 
     public function createMenu()
@@ -62,9 +67,12 @@ class MenuController extends Controller
                 $menu->delete();
             });
 
+        Meal::where('used', 1)->update(['used' => 0]);
 
         $caloricNeeds = $user->caloric_needs()->first();
         $caloricNeedsValue = $caloricNeeds->caloricNeeds;
+
+        $startDate = now()->startOfWeek();
 
         $daysOfWeek = [
             'Poniedziałek',
@@ -78,16 +86,16 @@ class MenuController extends Controller
 
         $maxTries = 500;
 
-        foreach ($daysOfWeek as $day) {
+        foreach ($daysOfWeek as $index => $day) {
             $tries = 0;
+
+            $currentDate = $startDate->copy()->addDays($index);
 
             while ($tries < $maxTries) {
                 $mealsByCategory = Meal::whereDoesntHave('ingredients', function ($query) use ($user) {
                     $query->whereIn('ingredient_id', $user->ingredient_preferences->pluck('ingredient_id'));
                 })
-                    ->whereDoesntHave('menus', function ($query) use ($day) {
-                        $query->where('dayOfTheWeek', $day);
-                    })
+                    ->where('used', 0)
                     ->inRandomOrder()
                     ->get()
                     ->groupBy('meal_category_id');
@@ -104,7 +112,7 @@ class MenuController extends Controller
 
                 if (abs($totalCalories - $caloricNeedsValue) <= $caloricNeedsValue * 0.05) {
                     $menu = new Menu();
-                    $menu->date = now();
+                    $menu->date = $currentDate;
                     $menu->dayOfTheWeek = $day;
                     $menu->user_id = $user->id;
                     $menu->save();
@@ -116,6 +124,9 @@ class MenuController extends Controller
                         $menuMeal->meal_meal_category_id = $meal->meal_category_id;
                         $menuMeal->used = 1;
                         $menuMeal->save();
+
+                        $meal->used = 1;
+                        $meal->save();
                     }
                     break;
                 }
