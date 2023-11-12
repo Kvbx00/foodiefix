@@ -13,7 +13,7 @@
             <i class="bi bi-caret-left"></i>
             <form action="{{ url()->previous() }}">
                 @csrf
-                <button type="submit">Wróć do menu</button>
+                <button type="submit">Powrót</button>
             </form>
         </div>
     </div>
@@ -111,6 +111,7 @@
         height: 30px;
         text-align: center;
         margin: 0 20px 0 0;
+        font-weight: 500;
     }
 
     ol li {
