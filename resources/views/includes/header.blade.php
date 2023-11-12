@@ -12,7 +12,7 @@
                 <a class="nav-link active" aria-current="page" href="/">Strona główna</a>
             </li>
             <li class="nav-item ms-5">
-                <a class="nav-link" href="#">Przepisy</a>
+                <a class="nav-link" href="/recipes">Przepisy</a>
             </li>
             <li class="nav-item ms-5">
                 <a class="nav-link" href="#">O nas</a>
