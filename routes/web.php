@@ -14,6 +14,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/aboutus', function () {
+    return view('aboutus');
+});
+
 Route::get('/admin/dashboard', function () {
     return view('administrator.dashboard');
 })->middleware('admin');
