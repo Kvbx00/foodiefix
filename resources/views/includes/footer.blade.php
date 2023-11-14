@@ -9,7 +9,7 @@
             <div class="col-sm-2 my-2 d-flex flex-column align-items-center justify-content-center">
                 <h5>Foodie fix</h5>
                 <li><a href="/" class="nav-link px-2 text-body-secondary">Strona domowa</a></li>
-                <li><a href="#" class="nav-link px-2 text-body-secondary">Przepisy</a></li>
+                <li><a href="/recipes" class="nav-link px-2 text-body-secondary">Przepisy</a></li>
                 <li><a href="/register" class="nav-link px-2 text-body-secondary">Rejestracja</a></li>
             </div>
             <div class="col-sm-2 my-2 d-flex flex-column align-items-center justify-content-center">
@@ -20,9 +20,9 @@
             </div>
             <div class="col-sm-2 my-2 d-flex flex-column align-items-center justify-content-center">
                 <h5>O nas</h5>
-                <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">lorem ipsum</a></li>
-                <li><a href="#" class="nav-link px-2 text-body-secondary">lorem ipsum</a></li>
-                <li><a href="#" class="nav-link px-2 text-body-secondary">lorem ipsum</a></li>
+                <li class="nav-item"><a href="/aboutus#whoweare" class="nav-link px-2 text-body-secondary">Kim jesteśmy</a></li>
+                <li><a href="/aboutus#history" class="nav-link px-2 text-body-secondary">Historia</a></li>
+                <li><a href="/aboutus#development" class="nav-link px-2 text-body-secondary">Rozwój</a></li>
             </div>
             <div class="col-sm-3 my-2 d-flex flex-column align-items-center justify-content-center">
                 <div class="social-media fs-2 my-2">
@@ -33,7 +33,7 @@
             </div>
         </div>
     </div>
-    <p class="text-center text-body-secondary">© 2023 Foodie fix, Inc</p>
+    <p class="text-center text-body-secondary">© 2023 Foodie fix</p>
 </footer>
 <style>
     #footer {
