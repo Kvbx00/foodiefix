@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg fixed-top">
+<nav class="autohide navbar navbar-expand-lg fixed-top">
     <a class="navbar-brand ms-4" href="/">
         <img src="{{ asset('images/logo.png') }}" alt="logo" width="50" height="44">
     </a>
@@ -15,7 +15,7 @@
                 <a class="nav-link" href="/recipes">Przepisy</a>
             </li>
             <li class="nav-item ms-5">
-                <a class="nav-link" href="#">O nas</a>
+                <a class="nav-link" href="/aboutus">O nas</a>
             </li>
         </ul>
         <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
@@ -46,6 +46,32 @@
     </div>
 </nav>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+
+        el_autohide = document.querySelector('.autohide');
+
+        navbar_height = document.querySelector('.navbar').offsetHeight;
+        document.body.style.paddingTop = navbar_height + 'px';
+
+        if(el_autohide){
+            var last_scroll_top = 0;
+            window.addEventListener('scroll', function() {
+                let scroll_top = window.scrollY;
+                if(scroll_top < last_scroll_top) {
+                    el_autohide.classList.remove('scrolled-down');
+                    el_autohide.classList.add('scrolled-up');
+                }
+                else {
+                    el_autohide.classList.remove('scrolled-up');
+                    el_autohide.classList.add('scrolled-down');
+                }
+                last_scroll_top = scroll_top;
+            });
+        }
+    });
+</script>
+
 <style>
     .navbar {
         background-color: white;
@@ -62,7 +88,7 @@
     }
 
     #login-button:hover {
-        box-shadow: 0px 5px 20px rgba(253, 204, 86, 0.4);
+        box-shadow: 0 5px 20px rgba(253, 204, 86, 0.4);
         background-color: #fdc056;
         transform: translateY(-5px);
     }
@@ -121,5 +147,12 @@
             height: auto;
             width: auto;
         }
+    }
+
+    .scrolled-down{
+        transform:translateY(-100%); transition: all 0.3s ease-in-out;
+    }
+    .scrolled-up{
+        transform:translateY(0); transition: all 0.3s ease-in-out;
     }
 </style>
