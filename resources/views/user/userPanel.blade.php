@@ -8,9 +8,7 @@
 @include('includes.header')
 
 <div class="container-fluid">
-
     <div class="mt-5">
-
         <div class="row ps-5 pe-5 d-flex justify-content-center">
             <div class="col-12 d-flex justify-content-center mb-2">
                 <p class="fw-normal text-center" style="font-size:40px; letter-spacing: 1px">Dane zdrowotne</p>
@@ -138,23 +136,29 @@
                 </div>
             </div>
         </div>
+        <hr class="m-5" style="color: rgba(0, 0, 0, .2);">
+    </div>
+</div>
 
-        <hr class="m-5">
+<div class="container">
+    <div class="row px-5 justify-content-center">
 
-        <div class="row ps-5 pe-5 justify-content-center">
-            <div class="col-12 d-flex justify-content-center mb-2">
-                <p class="fw-normal text-center" style="font-size:40px; letter-spacing: 1px">Choroby</p>
-            </div>
-            <div class="card col-md-9 d-flex flex-row justify-content-center align-items-center">
-                <div class="col-5 d-flex flex-column justify-content-center align-items-center mt-5 mb-5">
+        <div class="col-12 d-flex justify-content-center mb-2">
+            <p class="fw-normal text-center" style="font-size:40px; letter-spacing: 1px">Choroby</p>
+        </div>
+
+        <div class="card py-5">
+            <div class="row my-3 align-items-center">
+                <div class="col-md-6 mb-5 mb-md-0 d-flex flex-column align-items-center">
                     @if ($availableDiseases->count() > 0)
-                        <div class="d-flex">
-                            <p class="fw-normal text-center" style="font-size:30px; letter-spacing: 1px">Dostępne choroby</p>
+                        <div>
+                            <p class="fw-normal text-center" style="font-size:30px; letter-spacing: 1px">Dostępne
+                                choroby</p>
                         </div>
                         <form method="post" action="{{ route('diseases.store') }}">
-                            <div class="d-flex mt-3">
+                            <div class="mt-3">
                                 @csrf
-                                <select name="diseases_id" id="disease_name" class="select2">
+                                <select name="diseases_id" id="disease_name" class="select2" style="width: 180px">
                                     @foreach($availableDiseases as $disease)
                                         <option value="{{ $disease->id }}">{{ $disease->name }}</option>
                                     @endforeach
@@ -168,11 +172,12 @@
                         <p>Wszystkie dostępne choroby zostały już dodane.</p>
                     @endif
                 </div>
-                <div class="col-5 d-flex flex-column justify-content-center align-items-center mt-5 mb-5">
+                <div class="col-md-6 d-flex flex-column align-items-center">
                     <div>
-                        <p class="fw-normal text-center" style="font-size:30px; letter-spacing: 1px">Twoje choroby</p>
+                        <p class="fw-normal text-center" style="font-size:30px; letter-spacing: 1px">Twoje
+                            choroby</p>
                     </div>
-                    <div class="d-flex flex-column mt-3">
+                    <div>
                         @if(auth()->check() && auth()->user()->diseases->count() > 0)
                             @foreach(auth()->user()->diseases as $userDisease)
                                 <div class="d-flex flex-row mt-3 justify-content-between align-items-center">
@@ -180,7 +185,7 @@
                                     <form action="{{ route('diseases.destroy', $userDisease->id) }}" method="post">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="btn btn-dark btn-block ms-3" type="submit"
+                                        <button class="btn btn-dark btn-block ms-5" type="submit"
                                                 style="background-color: #FF0A54; border: none">Usuń
                                         </button>
                                     </form>
@@ -193,24 +198,28 @@
                 </div>
             </div>
         </div>
+    </div>
 
-        <hr class="m-5">
+    <hr class="m-5" style="color: rgba(0, 0, 0, .2);">
 
-        <div class="row mb-5 ps-5 pe-5 justify-content-center">
-            <div class="col-12 d-flex justify-content-center mb-2">
-                <p class="fw-normal text-center" style="font-size:40px; letter-spacing: 1px">Preferencje składników</p>
-            </div>
-            <div class="card col-md-9 d-flex flex-row justify-content-center align-items-center">
-                <div class="col-5 d-flex flex-column justify-content-center align-items-center mt-5 mb-5">
+    <div class="row px-5 justify-content-center">
+
+        <div class="col-12 d-flex justify-content-center mb-2">
+            <p class="fw-normal text-center" style="font-size:40px; letter-spacing: 1px">Preferencje składników</p>
+        </div>
+
+        <div class="card py-5">
+            <div class="row my-3 align-items-center">
+                <div class="col-md-6 mb-5 mb-md-0 d-flex flex-column align-items-center">
                     @if (auth()->user()->ingredientPreferences->count() < 5)
-                        <div class="d-flex">
-                            <p class="fw-normal text-center" style="font-size:30px; letter-spacing: 1px">Dostępne składniki</p>
+                        <div>
+                            <p class="fw-normal text-center" style="font-size:30px; letter-spacing: 1px">Dostępne
+                                składniki</p>
                         </div>
                         <form method="post" action="{{ route('ingredients.store') }}">
-                            <div class="d-flex mt-3">
+                            <div class="mt-3">
                                 @csrf
-                                <select name="ingredient_id" id="ingredient_name" class="select2"
-                                        style="width: auto !important;">
+                                <select name="ingredient_id" id="ingredient_name" class="select2" style="width: 180px">
                                     @foreach($availableIngredients as $ingredient)
                                         <option value="{{ $ingredient->id }}">{{ $ingredient->name }}</option>
                                     @endforeach
@@ -224,11 +233,12 @@
                         <p>Osiągnąłeś limit wybranych składników (maksymalnie 5).</p>
                     @endif
                 </div>
-                <div class="col-5 d-flex flex-column justify-content-center align-items-center mt-5 mb-5">
+                <div class="col-md-6 d-flex flex-column align-items-center">
                     <div>
-                        <p class="fw-normal text-center" style="font-size:30px; letter-spacing: 1px">Wybrane składniki</p>
+                        <p class="fw-normal text-center" style="font-size:30px; letter-spacing: 1px">Wybrane
+                            składniki</p>
                     </div>
-                    <div class="d-flex flex-column mt-3">
+                    <div>
                         @if(auth()->check() && auth()->user()->ingredientPreferences->count() > 0)
                             @foreach(auth()->user()->ingredientPreferences as $userIngredient)
                                 <div class="d-flex flex-row mt-3 justify-content-between align-items-center">
@@ -237,7 +247,7 @@
                                           method="post">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="btn btn-dark btn-block ms-3" type="submit"
+                                        <button class="btn btn-dark btn-block ms-5" type="submit"
                                                 style="background-color: #FF0A54; border: none">Usuń
                                         </button>
                                     </form>
@@ -250,9 +260,7 @@
                 </div>
             </div>
         </div>
-
     </div>
-
 </div>
 
 @include('includes.footer')
@@ -392,7 +400,7 @@
     }
 
     .select2 {
-        width: 100% !important;
+        width: 180px !important;
         padding: 0.375rem 2.25rem 0.375rem 0.75rem !important;
         -moz-padding-start: calc(0.75rem - 3px) !important;
         font-size: 1rem !important;
