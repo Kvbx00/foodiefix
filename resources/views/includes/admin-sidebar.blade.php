@@ -15,7 +15,7 @@
                     <li class="nav-item mb-1">
                         <button
                             class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed fw-semibold"
-                            data-bs-toggle="collapse" data-bs-target="#worker-collapse" aria-expanded="false">
+                            data-bs-toggle="collapse" data-bs-target="#worker-collapse" aria-expanded="{{ Request::is('adminRegister') || Str::contains(Request::url(), 'admin/dashboard/adminProfile') ? 'true' : 'false' }}">
                             <i class="bi bi-person-fill-exclamation me-2"></i>
                             Pracownicy
                         </button>
@@ -39,12 +39,12 @@
                     <li class="nav-item mb-1">
                         <button
                             class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed fw-semibold"
-                            data-bs-toggle="collapse" data-bs-target="#profile-collapse" aria-expanded="false">
+                            data-bs-toggle="collapse" data-bs-target="#profile-collapse" aria-expanded="{{ Request::is('admin/dashboard/juniorProfile') ? 'true' : 'false' }}">
                             <i class="bi bi-person-circle me-2"></i>
                             Twój profil
                         </button>
                         <div
-                            class="collapse {{ Str::contains(Request::url(), ['adminRegister', 'admin/dashboard/juniorProfile']) ? 'show' : '' }}"
+                            class="collapse {{ Request::is('admin/dashboard/juniorProfile') ? 'show' : '' }}"
                             id="profile-collapse">
                             <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small ms-3">
                                 <li><a href="{{ url('admin/dashboard/juniorProfile') }}"
@@ -57,7 +57,7 @@
                 <li class="nav-item mb-1">
                     <button
                         class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed fw-semibold"
-                        data-bs-toggle="collapse" data-bs-target="#users-collapse" aria-expanded="false">
+                        data-bs-toggle="collapse" data-bs-target="#users-collapse" aria-expanded="{{Str::contains(Request::url(), ['admin/dashboard/userProfile', 'admin/dashboard/userDisease', 'admin/dashboard/userHealthData', 'admin/dashboard/userIngredientPreference', 'admin/dashboard/userCaloricNeed']) ? 'true' : 'false' }}">
                         <i class="bi bi-people-fill me-2"></i>
                         Użytkownicy
                     </button>
@@ -85,7 +85,7 @@
                 <li class="nav-item mb-1">
                     <button
                         class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed fw-semibold"
-                        data-bs-toggle="collapse" data-bs-target="#diseases-collapse" aria-expanded="false">
+                        data-bs-toggle="collapse" data-bs-target="#diseases-collapse" aria-expanded="{{Str::contains(Request::url(), ['admin/dashboard/disease']) ? 'true' : 'false' }}">
                         <i class="bi bi-heart-pulse-fill me-2"></i>
                         Choroby
                     </button>
@@ -100,7 +100,7 @@
                 <li class="nav-item mb-1">
                     <button
                         class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed fw-semibold"
-                        data-bs-toggle="collapse" data-bs-target="#meal-collapse" aria-expanded="false">
+                        data-bs-toggle="collapse" data-bs-target="#meal-collapse" aria-expanded="{{Str::contains(Request::url(), ['admin/dashboard/meal', 'admin/dashboard/mealCategory', 'admin/dashboard/nutritionalvalue', 'admin/dashboard/mealIngredient']) ? 'true' : 'false' }}">
                         <i class="bi bi-egg-fried me-2"></i>
                         Dania
                     </button>
@@ -126,7 +126,7 @@
                 <li class="nav-item mb-1">
                     <button
                         class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed fw-semibold"
-                        data-bs-toggle="collapse" data-bs-target="#ingredients-collapse" aria-expanded="false">
+                        data-bs-toggle="collapse" data-bs-target="#ingredients-collapse" aria-expanded="{{Str::contains(Request::url(), ['admin/dashboard/ingredient', 'admin/dashboard/ingredientCategory']) ? 'true' : 'false' }}">
                         <i class="bi bi-egg-fill me-2"></i>
                         Składniki
                     </button>
@@ -145,7 +145,7 @@
                 <li class="nav-item">
                     <button
                         class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed fw-semibold"
-                        data-bs-toggle="collapse" data-bs-target="#menu-collapse" aria-expanded="false">
+                        data-bs-toggle="collapse" data-bs-target="#menu-collapse" aria-expanded="{{Str::contains(Request::url(), ['admin/dashboard/userMenu', 'admin/dashboard/userMenuMeal']) ? 'true' : 'false' }}">
                         <i class="bi bi-bag-fill me-2"></i>
                         Menu
                     </button>
