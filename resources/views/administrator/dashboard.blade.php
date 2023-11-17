@@ -1,54 +1,27 @@
 <!doctype html>
-<html>
+<html lang="pl">
 
-<head>
-    <meta charset="UTF-8">
-    <title>FoodieFix</title>
-</head>
+@include('includes.head')
 
 <body>
-{{ ('admin dashboard') }}
-<br>
-@if( auth()->guard('admin')->user()->role === 'admin')
-    <a href="{{ url('adminRegister') }}">Rejestracja pracownika</a>
-    <a href="{{ url('admin/dashboard/adminProfile') }}">Zarządzanie pracownikami</a>
-@endif
-@if( auth()->guard('admin')->user()->role !== 'admin')
-    <a href="{{ url('admin/dashboard/juniorProfile') }}">Twój profil</a>
-@endif
-<br>
-<a href="{{ url('admin/dashboard/userProfile') }}">Profil użytkownika</a>
-<br>
-<a href="{{ url('admin/dashboard/userDisease') }}">Choroby użytkownika</a>
-<br>
-<a href="{{ url('admin/dashboard/userHealthData') }}">Dane zdrowotne użytkownika</a>
-<br>
-<a href="{{ url('admin/dashboard/userIngredientPreference') }}">Preferencje składników użytkownika</a>
-<br>
-<a href="{{ url('admin/dashboard/userCaloricNeed') }}">Zapotrzebowanie kaloryczne użytkownika</a>
-<br>
-<a href="{{ url('admin/dashboard/disease') }}">Choroby</a>
-<br>
-<a href="{{ url('admin/dashboard/mealCategory') }}">Kategorie dań</a>
-<br>
-<a href="{{ url('admin/dashboard/meal') }}">Dania</a>
-<br>
-<a href="{{ url('admin/dashboard/mealIngredient') }}">Składniki w daniach</a>
-<br>
-<a href="{{ url('admin/dashboard/nutritionalvalue') }}">Wartości odżywcze w daniach</a>
-<br>
-<a href="{{ url('admin/dashboard/ingredientCategory') }}">Kategorie składników</a>
-<br>
-<a href="{{ url('admin/dashboard/ingredient') }}">Składniki</a>
-<br>
-<a href="{{ url('admin/dashboard/userMenu') }}">Menu</a>
-<br>
-<a href="{{ url('admin/dashboard/userMenuMeal') }}">Dania w Menu</a>
 
-<form method="POST" action="{{ route('admin.logout') }}">
-    @csrf
-    <button type="submit">Wyloguj się</button>
-</form>
+@include('includes.admin-header')
+
+<div class="container-fluid">
+    <div class="row">
+
+        @include('includes.admin-sidebar')
+
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Admin dashboard</h1>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
 </body>
-
 </html>
