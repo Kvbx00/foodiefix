@@ -40,7 +40,7 @@ class AdministratorController extends Controller
             });
         }
 
-        $user = $user->paginate(10);
+        $user = $user->paginate(20);
 
         return view('administrator.userProfile', compact('user', 'search', 'sort', 'order'));
     }
@@ -92,23 +92,23 @@ class AdministratorController extends Controller
         $user = User::find($userId);
 
         if ($user->caloric_needs()->count() > 0) {
-            return redirect()->route('administrator.userProfile')->with('error', 'Nie można usunąć użytkownika z przypisanym zapotrzebowaniem kalorycznym.');
+            return back()->withErrors('Nie można usunąć użytkownika z przypisanym zapotrzebowaniem kalorycznym.');
         }
 
         if ($user->health_data()->count() > 0) {
-            return redirect()->route('administrator.userProfile')->with('error', 'Nie można usunąć użytkownika z przypisanym danymi zdrowotnymi.');
+            return back()->withErrors( 'Nie można usunąć użytkownika z przypisanym danymi zdrowotnymi.');
         }
 
         if ($user->ingredient_preferences()->count() > 0) {
-            return redirect()->route('administrator.userProfile')->with('error', 'Nie można usunąć użytkownika z przypisanym preferencjami składników.');
+            return back()->withErrors( 'Nie można usunąć użytkownika z przypisanym preferencjami składników.');
         }
 
         if ($user->menus()->count() > 0) {
-            return redirect()->route('administrator.userProfile')->with('error', 'Nie można usunąć użytkownika z przypisanym jadłospisem.');
+            return back()->withErrors( 'Nie można usunąć użytkownika z przypisanym jadłospisem.');
         }
 
         if ($user->diseases()->count() > 0) {
-            return redirect()->route('administrator.userProfile')->with('error', 'Nie można usunąć użytkownika z przypisanymi chorobami.');
+            return back()->withErrors( 'Nie można usunąć użytkownika z przypisanymi chorobami.');
         }
 
         $user->delete();
@@ -139,7 +139,7 @@ class AdministratorController extends Controller
             });
         }
 
-        $userDisease = $userDisease->paginate(10);
+        $userDisease = $userDisease->paginate(20);
 
         return view('administrator.userDisease', compact('userDisease', 'search', 'sort', 'order'));
     }
@@ -199,7 +199,7 @@ class AdministratorController extends Controller
             });
         }
 
-        $healthData = $healthData->paginate(10);
+        $healthData = $healthData->paginate(20);
 
         return view('administrator.userHealthData', compact('healthData', 'search', 'sort', 'order'));
     }
@@ -259,7 +259,7 @@ class AdministratorController extends Controller
             });
         }
 
-        $ingredientPreference = $ingredientPreference->paginate(10);
+        $ingredientPreference = $ingredientPreference->paginate(20);
 
         return view('administrator.userIngredientPreference', compact('ingredientPreference', 'search', 'sort', 'order'));
     }
@@ -321,7 +321,7 @@ class AdministratorController extends Controller
             });
         }
 
-        $caloricNeed = $caloricNeed->paginate(10);
+        $caloricNeed = $caloricNeed->paginate(20);
 
         return view('administrator.userCaloricNeed', compact('caloricNeed', 'search', 'sort', 'order'));
     }
@@ -372,7 +372,7 @@ class AdministratorController extends Controller
             });
         }
 
-        $disease = $disease->paginate(10);
+        $disease = $disease->paginate(20);
 
         return view('administrator.disease', compact('disease', 'search', 'sort', 'order'));
     }
@@ -478,7 +478,7 @@ class AdministratorController extends Controller
         $mealCategory = MealCategory::find($mealCategoryId);
 
         if ($mealCategory->meals()->count() > 0) {
-            return redirect()->route('administrator.mealCategory')->with('error', 'Nie można usunąć kategorii dań z przypisanymi daniami.');
+            return back()->withErrors( 'Nie można usunąć kategorii dań z przypisanymi daniami.');
         }
 
         $mealCategory->delete();
@@ -555,7 +555,7 @@ class AdministratorController extends Controller
             if ($newMealName !== $meal->name) {
                 $existingMeal = Meal::where('name', $newMealName)->first();
                 if ($existingMeal) {
-                    return redirect()->route('administrator.meal')->with('error', 'Danie o podanej nazwie już istnieje.');
+                    return back()->withErrors(  'Danie o podanej nazwie już istnieje.');
                 }
             }
         }
@@ -608,7 +608,7 @@ class AdministratorController extends Controller
         $existingMeal = Meal::where('name', $mealName)->first();
 
         if ($existingMeal) {
-            return redirect()->route('administrator.meal')->with('error', 'Danie o podanej nazwie już istnieje.');
+            return back()->withErrors(  'Danie o podanej nazwie już istnieje.');
         }
 
         $mealCategory = MealCategory::where('name', $mealCategoryName)->first();
@@ -628,15 +628,15 @@ class AdministratorController extends Controller
         $meal = Meal::find($mealId);
 
         if ($meal->ingredients()->count() > 0) {
-            return redirect()->route('administrator.meal')->with('error', 'Nie można usunąć dania z przypisanymi składnikami.');
+            return back()->withErrors(  'Nie można usunąć dania z przypisanymi składnikami.');
         }
 
         if ($meal->menus()->count() > 0) {
-            return redirect()->route('administrator.meal')->with('error', 'Nie można usunąć dania przypisanego do menu użytkownika.');
+            return back()->withErrors(  'Nie można usunąć dania przypisanego do menu użytkownika.');
         }
 
         if ($meal->nutritionalvalues()->count() > 0) {
-            return redirect()->route('administrator.meal')->with('error', 'Nie można usunąć dania z przypisanymi wartościami odżywczymi.');
+            return back()->withErrors(  'Nie można usunąć dania z przypisanymi wartościami odżywczymi.');
         }
 
         $meal->delete();
@@ -666,7 +666,7 @@ class AdministratorController extends Controller
             });
         }
 
-        $mealIngredient = $mealIngredient->paginate(10);
+        $mealIngredient = $mealIngredient->paginate(20);
 
         return view('administrator.mealIngredient', compact('mealIngredient', 'search', 'sort', 'order'));
     }
@@ -710,7 +710,7 @@ class AdministratorController extends Controller
                     ->first();
 
                 if ($existingMealIngredient) {
-                    return redirect()->route('administrator.mealIngredient')->with('error', 'Ten składnik już istnieje w danym daniu.');
+                    return back()->withErrors(  'Ten składnik już istnieje w danym daniu.');
                 }
 
                 $mealIngredient->ingredient_id = $ingredient->id;
@@ -755,7 +755,7 @@ class AdministratorController extends Controller
             ->first();
 
         if ($existingMealIngredient) {
-            return redirect()->route('administrator.mealIngredient')->with('error', 'Ten składnik już istnieje w danym daniu.');
+            return back()->withErrors(  'Ten składnik już istnieje w danym daniu.');
         }
 
         $mealIngredient = new MealIngredient();
@@ -796,7 +796,7 @@ class AdministratorController extends Controller
             });
         }
 
-        $nutritionalvalue = $nutritionalvalue->paginate(10);
+        $nutritionalvalue = $nutritionalvalue->paginate(20);
 
         return view('administrator.nutritionalvalue', compact('nutritionalvalue', 'search', 'sort', 'order'));
     }
@@ -814,7 +814,7 @@ class AdministratorController extends Controller
         $nutritionalvalue = Nutritionalvalue::findOrFail($id);
 
         $validatedData = $request->validate([
-            'calories' => 'required|regex:"^(?!0{2,})[0-9]{1,4}$"',
+            'calories' => 'required|regex:"^(?!0{2,})\d{1,4}(\.\d+)?$"',
             'protein' => 'required|regex:"^\d{1,3}(\.\d{1,2})?$"',
             'fats' => 'required|regex:"^\d{1,3}(\.\d{1,2})?$"',
             'carbohydrates' => 'required|regex:"^\d{1,3}(\.\d{1,2})?$"',
@@ -862,7 +862,7 @@ class AdministratorController extends Controller
     public function addNutritionalvalue(Request $request)
     {
         $validatedData = $request->validate([
-            'calories' => 'required|regex:"^(?!0{2,})[0-9]{1,4}$"',
+            'calories' => 'required|regex:"^(?!0{2,})\d{1,4}(\.\d+)?$"',
             'protein' => 'required|regex:"^\d{1,3}(\.\d{1,2})?$"',
             'fats' => 'required|regex:"^\d{1,3}(\.\d{1,2})?$"',
             'carbohydrates' => 'required|regex:"^\d{1,3}(\.\d{1,2})?$"',
@@ -888,7 +888,7 @@ class AdministratorController extends Controller
         $existingNutritionalvalue = Nutritionalvalue::where('meal_id', $meal->id)->first();
 
         if ($existingNutritionalvalue) {
-            return redirect()->route('administrator.nutritionalvalue')->with('error', 'Wartość odżywcza dla danego dania już istnieje.');
+            return back()->withErrors('Wartość odżywcza dla danego dania już istnieje.');
         }
 
         $nutritionalvalue = new Nutritionalvalue();
@@ -927,7 +927,7 @@ class AdministratorController extends Controller
             });
         }
 
-        $ingredientCategory = $ingredientCategory->paginate(10);
+        $ingredientCategory = $ingredientCategory->paginate(20);
 
         return view('administrator.ingredientCategory', compact('ingredientCategory', 'search', 'sort', 'order'));
     }
@@ -981,7 +981,7 @@ class AdministratorController extends Controller
         $ingredientCategory = IngredientCategory::find($ingredientCategoryId);
 
         if ($ingredientCategory->ingredients()->count() > 0) {
-            return redirect()->route('administrator.ingredientCategory')->with('error', 'Nie można usunąć kategorii z przypisanymi składnikami.');
+            return back()->withErrors(  'Nie można usunąć kategorii z przypisanymi składnikami.');
         }
 
         $ingredientCategory->delete();
@@ -1008,7 +1008,7 @@ class AdministratorController extends Controller
             });
         }
 
-        $ingredient = $ingredient->paginate(10);
+        $ingredient = $ingredient->paginate(20);
 
         return view('administrator.ingredient', compact('ingredient', 'search', 'sort', 'order'));
     }
@@ -1038,7 +1038,7 @@ class AdministratorController extends Controller
             if ($newIngredientName !== $ingredient->name) {
                 $existingIngredient = Ingredient::where('name', $newIngredientName)->first();
                 if ($existingIngredient) {
-                    return redirect()->route('administrator.ingredient')->with('error', 'Składnik o podanej nazwie już istnieje.');
+                    return back()->withErrors(  'Składnik o podanej nazwie już istnieje.');
                 }
             }
         }
@@ -1083,7 +1083,7 @@ class AdministratorController extends Controller
         $existingIngredient = Ingredient::where('name', $ingredientName)->first();
 
         if ($existingIngredient) {
-            return redirect()->route('administrator.ingredient')->with('error', 'Składnik o podanej nazwie już istnieje.');
+            return back()->withErrors(  'Składnik o podanej nazwie już istnieje.');
         }
 
         $ingredientCategory = IngredientCategory::where('name', $ingredientCategoryName)->first();
@@ -1102,11 +1102,11 @@ class AdministratorController extends Controller
         $ingredient = Ingredient::find($ingredientId);
 
         if ($ingredient->ingredient_preferences()->count() > 0) {
-            return redirect()->route('administrator.ingredient')->with('error', 'Nie można usunąć składnika przypisanego do preferencji użytkownika.');
+            return back()->withErrors(  'Nie można usunąć składnika przypisanego do preferencji użytkownika.');
         }
 
         if ($ingredient->meals()->count() > 0) {
-            return redirect()->route('administrator.ingredient')->with('error', 'Nie można usunąć składnika przypisanego do dania.');
+            return back()->withErrors(  'Nie można usunąć składnika przypisanego do dania.');
         }
 
         $ingredient->delete();
@@ -1132,7 +1132,7 @@ class AdministratorController extends Controller
                 });
             }
 
-            $administrator = $administrator->paginate(10);
+            $administrator = $administrator->paginate(20);
 
             return view('administrator.adminProfile', compact('administrator', 'search', 'sort', 'order'));
         }
@@ -1255,7 +1255,7 @@ class AdministratorController extends Controller
             });
         }
 
-        $menu = $menu->paginate(10);
+        $menu = $menu->paginate(20);
 
         return view('administrator.userMenu', compact('menu', 'search', 'sort', 'order'));
     }
@@ -1265,7 +1265,7 @@ class AdministratorController extends Controller
         $menu = Menu::find($menuId);
 
         if ($menu->menuMeals()->count() > 0) {
-            return redirect()->route('administrator.userMenu')->with('error', 'Nie można usunąć jadłospisu z przypisanymi daniami.');
+            return back()->withErrors(  'Nie można usunąć jadłospisu z przypisanymi daniami.');
         }
 
         $menu->delete();
@@ -1305,7 +1305,7 @@ class AdministratorController extends Controller
             ->exists();
 
         if ($existingMenu) {
-            return redirect()->route('administrator.userMenu')->with('error', 'Użytkownik ma już menu dla tego dnia w tym tygodniu.');
+            return back()->withErrors(  'Użytkownik ma już menu dla tego dnia w tym tygodniu.');
         }
 
         $menu->save();
@@ -1337,7 +1337,7 @@ class AdministratorController extends Controller
             ->exists();
 
         if ($existingMenu) {
-            return redirect()->route('administrator.userMenu')->with('error', 'Użytkownik ma już menu dla tego dnia w tym tygodniu.');
+            return back()->withErrors(  'Użytkownik ma już menu dla tego dnia w tym tygodniu.');
         }
 
         $menu = new Menu();
@@ -1372,7 +1372,7 @@ class AdministratorController extends Controller
             });
         }
 
-        $menuMeal = $menuMeal->paginate(10);
+        $menuMeal = $menuMeal->paginate(20);
 
         return view('administrator.userMenuMeal', compact('menuMeal', 'search', 'sort', 'order'));
     }
@@ -1413,7 +1413,7 @@ class AdministratorController extends Controller
                 foreach ($existingMenuMeals as $existingMenuMeal) {
                     $existingMeal = $existingMenuMeal->meal;
                     if ($existingMeal->meal_category_id === $meal->meal_category_id) {
-                        return redirect()->route('administrator.userMenuMeal')->with('error', 'Istnieje już danie z tej samej kategorii w tym menu.');
+                        return back()->withErrors(  'Istnieje już danie z tej samej kategorii w tym menu.');
                     }
                 }
 
@@ -1453,7 +1453,7 @@ class AdministratorController extends Controller
             ->first();
 
         if ($existingMenuMeal) {
-            return redirect()->route('administrator.userMenuMeal')->with('error', 'Istnieje już danie z tej samej kategorii w tym menu.');
+            return back()->withErrors(  'Istnieje już danie z tej samej kategorii w tym menu.');
         }
 
         $menuMeal = new MenuMeal();
