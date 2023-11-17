@@ -2,7 +2,7 @@
 <html lang="pl">
 
 @include('includes.head')
-
+<link rel="stylesheet" href="{{ asset('css/admin.css') }}">
 <body>
 
 @include('includes.admin-header')
@@ -103,51 +103,3 @@
         crossorigin="anonymous"></script>
 </body>
 </html>
-
-<style>
-    .pagination a, .pagination span {
-        height: 25px;
-        width: 25px;
-        text-align: center;
-        justify-content: center;
-        display: flex;
-        margin-left: 7px;
-        text-decoration: none;
-        color: #000000;
-    }
-
-    .pagination .pagination-middle {
-        border-radius: 20px;
-        height: 25px;
-        width: 105px;
-        background-color: #F2F2F2;
-        font-weight: 500;
-        text-align: center;
-        margin-left: 7px;
-        color: #7F7F7F;
-    }
-
-    .delete {
-        background: none !important;
-        border: none;
-        padding: 0 !important;
-        color: #069;
-        cursor: pointer;
-    }
-
-    .search {
-        border: 1px solid grey;
-        border-left: 5px solid grey;
-        width: 150px;
-    }
-
-    .search:focus {
-        outline: none;
-    }
-
-    .add {
-        font-weight: 500;
-        text-decoration: none;
-        color: #000000;
-    }
-</style>

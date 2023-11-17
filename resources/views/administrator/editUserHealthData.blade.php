@@ -2,7 +2,7 @@
 <html lang="pl">
 
 @include('includes.head')
-
+<link rel="stylesheet" href="{{ asset('css/admin.css') }}">
 <body>
 
 @include('includes.admin-header')
@@ -95,65 +95,3 @@
         $('#pulse').select2();
     });
 </script>
-<style>
-    .input {
-        width: 400px;
-    }
-
-    .select2-selection {
-        border: none !important;
-    }
-
-    .select2 {
-        width: 100% !important;
-        padding: 0.375rem 2.25rem 0.375rem 0 !important;
-        -moz-padding-start: calc(0.75rem - 3px) !important;
-        font-size: 1rem !important;
-        font-weight: 400 !important;
-        line-height: 1.5 !important;
-        color: #212529 !important;
-        border: 1px solid #dee2e6 !important;
-        border-radius: 0.25rem !important;
-        transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out !important;
-        -webkit-appearance: none !important;
-        -moz-appearance: none !important;
-        appearance: none !important;
-    }
-
-    .select2-dropdown {
-        border: 1px solid #ced4da !important;
-        border-radius: 0.25rem !important;
-        padding: 0.375rem 0 0.375rem 0.75rem;
-    }
-
-    .select2-results__option {
-        font-weight: normal !important;
-        display: block !important;
-        min-height: 1.2em !important;
-        padding: 0 2px 1px !important;
-    }
-
-    .select2-search {
-        background-color: #fff !important;
-        -webkit-box-shadow: none !important;
-        -moz-box-shadow: none !important;
-        box-shadow: none !important;
-        border: none !important;
-        padding-right: 0.75rem;
-    }
-
-    .select2-search__field {
-        outline: none !important;
-        border: 1px solid #ced4da !important;
-        border-radius: 0.25rem !important;
-    }
-
-    .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
-        background-color: #0d6efd !important;
-        color: white !important;
-    }
-
-    .select2-selection__arrow b{
-        display:none !important;
-    }
-</style>

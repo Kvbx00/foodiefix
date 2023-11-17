@@ -2,7 +2,7 @@
 <html lang="pl">
 
 @include('includes.head')
-
+<link rel="stylesheet" href="{{ asset('css/admin.css') }}">
 <body>
 
 @include('includes.admin-header')

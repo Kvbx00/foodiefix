@@ -15,7 +15,7 @@
             <p class="fs-1 fw-bold" id="first-sub-main-text-primary">to nasza pasja</p>
             <p class="fs-4" id="first-sub-main-text-primary">Nasze przepisy są starannie dobierane przez naszych
                 wyspecjalizowanych dietetyków w oparciu o najlepsze produkty.</p>
-            <form action="{{ route('login') }}" class="align-self-center">
+            <form action="{{ route('menu.show') }}" class="align-self-center">
                 <button class="mt-3 fw-bold" id="first-sub-main-button">Sprawdź teraz</button>
             </form>
         </div>
@@ -65,7 +65,7 @@
             </div>
         </div>
 
-        <div id="myCarousel" class="carousel slide mb-5 mt-5" data-bs-ride="carousel">
+        <div id="myCarousel" class="carousel slide carousel-fade mb-5 mt-5" data-bs-ride="carousel">
             <div class="carousel-indicators">
                 <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active"
                         aria-label="Slide 1"></button>
@@ -164,12 +164,12 @@
         text-align: center;
         transition: 0.3s;
         padding: 20px 55px;
-        box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.4);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
     }
 
     #first-sub-main-button:hover {
         background-color: #fdcc56;
-        box-shadow: 0px 15px 20px rgba(253, 204, 86, 0.4);
+        box-shadow: 0 15px 20px rgba(253, 204, 86, 0.4);
         color: #000000;
         transform: translateY(-7px);
     }
