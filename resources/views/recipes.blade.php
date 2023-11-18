@@ -85,6 +85,7 @@
         nav: true,
         navText: ["<i class='bi bi-caret-left'></i>", "<i class='bi bi-caret-right'></i>"],
         dots: false,
+        mouseDrag: false,
         responsive: {
             0: {
                 items: 1
