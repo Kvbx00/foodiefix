@@ -2,7 +2,7 @@
 <html lang="pl">
 
 @include('includes.head')
-
+<link rel="stylesheet" href="{{ asset('css/administrator/login.css') }}">
 <body>
 
 <div class="container">
@@ -43,27 +43,3 @@
         crossorigin="anonymous"></script>
 </body>
 </html>
-
-<style>
-    body{
-        background: rgb(56,56,56);
-        background: linear-gradient(90deg, rgba(56,56,56,1) 0%, rgba(0,0,0,1) 50%, rgba(56,56,56,1) 100%);
-    }
-
-    .card{
-        background-color: #000000;
-        border: 1px solid #FFFFFF;
-        box-shadow: 0 4px 16px 0 rgba(255, 255, 255, .5);
-    }
-
-    .btn{
-        background-color: #000000;
-        border: 1px solid #FFFFFF;
-    }
-
-    .btn:hover{
-        background-color: #FFFFFF;
-        color: #000000;
-        border: 1px solid #000000;
-    }
-</style>
