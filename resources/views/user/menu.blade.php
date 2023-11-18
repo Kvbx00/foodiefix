@@ -9,7 +9,7 @@
 <body class="pt-5">
 
 @include('includes.header')
-
+@include('includes.error')
 @if($menuCheck)
 
     <div class="container my-5">

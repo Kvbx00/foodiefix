@@ -56,7 +56,7 @@ class MenuController extends Controller
             ->first();
 
         if ($existingMenu) {
-            return redirect()->route('menu.show')->with('error', 'Masz już utworzone menu na ten tydzień.');
+            return back()->withErrors('Masz już utworzone menu na ten tydzień.');
         }
 
         Menu::where('user_id', $user->id)

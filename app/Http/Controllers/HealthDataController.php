@@ -105,7 +105,7 @@ class HealthDataController extends Controller
             HealthData::create($dataToUpdate);
         }
 
-        return redirect()->back()->with('success', 'Dane zostały zapisane.');
+        return redirect()->route('userPanel')->with('success', 'Dane zostały zapisane.');
     }
 
     private function calculateActivityFactor($activity)

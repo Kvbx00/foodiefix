@@ -6,7 +6,7 @@
 <body class="pt-5">
 
 @include('includes.header')
-
+@include('includes.success')
 <div class="container-fluid">
     <div class="mt-5">
         <div class="row ps-5 pe-5 d-flex justify-content-center">

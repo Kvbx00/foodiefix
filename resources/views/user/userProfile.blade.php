@@ -8,7 +8,7 @@
 @include('includes.header')
 
 <div class="container-fluid mt-5">
-
+    @include('includes.success')
     @include('includes.error')
 
     <div class="container py-5 h-100">
