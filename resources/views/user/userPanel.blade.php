@@ -2,7 +2,7 @@
 <html lang="pl">
 
 @include('includes.head')
-
+<link rel="stylesheet" href="{{ asset('css/user/userPanel.css') }}">
 <body class="pt-5">
 
 @include('includes.header')
@@ -350,116 +350,4 @@
         }
     });
 </script>
-
-<style>
-    .card {
-        border: none;
-        box-shadow: 0 3px 6px 0 rgba(0, 0, 0, .2);
-    }
-
-    .table > tbody > tr:nth-child(even) > td, .table-striped > tbody > tr:nth-child(even) > th {
-        background-color: rgba(167, 201, 117, 0.1);
-    }
-
-    th {
-        background-color: #6FAD55 !important;
-        color: #FFFFFF !important;
-        font-weight: 500 !important;
-        letter-spacing: 1px;
-    }
-
-    td {
-        font-weight: 400 !important;
-        color: #7F7F7F !important;
-    }
-
-    .pagination a, .pagination span {
-        height: 25px;
-        width: 25px;
-        text-align: center;
-        justify-content: center;
-        display: flex;
-        margin-left: 7px;
-        text-decoration: none;
-        color: #000000;
-    }
-
-    .pagination .pagination-middle {
-        border-radius: 20px;
-        height: 25px;
-        width: 105px;
-        background-color: rgba(167, 201, 117, 0.2);
-        font-weight: 500;
-        text-align: center;
-        margin-left: 7px;
-        color: #7F7F7F;
-    }
-
-    .select2-selection {
-        border: none !important;
-    }
-
-    .select2 {
-        width: 180px !important;
-        padding: 0.375rem 2.25rem 0.375rem 0.75rem !important;
-        -moz-padding-start: calc(0.75rem - 3px) !important;
-        font-size: 1rem !important;
-        font-weight: 400 !important;
-        line-height: 1.5 !important;
-        color: #212529 !important;
-        border: 1px solid #ced4da !important;
-        border-radius: 0.25rem !important;
-        transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out !important;
-        -webkit-appearance: none !important;
-        -moz-appearance: none !important;
-        appearance: none !important;
-    }
-
-    .select2-dropdown {
-        border: 1px solid #ced4da !important;
-        border-radius: 0.25rem !important;
-        padding: 0.375rem 0 0.375rem 0.75rem;
-    }
-
-    .select2-results__option {
-        font-weight: normal !important;
-        display: block !important;
-        min-height: 1.2em !important;
-        padding: 0 2px 1px !important;
-    }
-
-    .select2-search {
-        background-color: #fff !important;
-        -webkit-box-shadow: none !important;
-        -moz-box-shadow: none !important;
-        box-shadow: none !important;
-        border: none !important;
-        padding-right: 0.75rem;
-    }
-
-    .select2-search__field {
-        outline: none !important;
-        border: 1px solid #ced4da !important;
-        border-radius: 0.25rem !important;
-    }
-
-    .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
-        background-color: #0d6efd !important;
-        color: white !important;
-    }
-
-    .select2-container--default .select2-selection--single .select2-selection__arrow {
-        height: 26px !important;
-        position: absolute !important;
-        top: 8px !important;
-        right: 10px !important;
-        width: 20px !important;
-    }
-
-    @media (max-width: 767px) {
-        #health-table {
-            margin-top: 50px;
-        }
-    }
-</style>
 

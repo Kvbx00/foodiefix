@@ -2,7 +2,7 @@
 <html lang="pl">
 
 @include('includes.head')
-
+<link rel="stylesheet" href="{{ asset('css/user/meal.css') }}">
 <body class="pt-5">
 
 @include('includes.header')
@@ -78,54 +78,3 @@
         crossorigin="anonymous"></script>
 </body>
 </html>
-<style>
-    .menu {
-        border: 1px solid gold;
-        border-left: 6px solid gold;
-        background-color: #FFFFFF;
-        padding: 5px;
-    }
-
-    .menu button {
-        border: none;
-        background-color: transparent;
-    }
-
-    .card {
-        border: none;
-        box-shadow: 0 3px 6px 0 rgba(0, 0, 0, .2);
-    }
-
-    ol {
-        counter-reset: section;
-        list-style: none;
-    }
-
-    ol li:before {
-        content: counter(section);
-        counter-increment: section;
-        display: inline-block;
-        background-color: #ffea00;
-        border-radius: 100%;
-        width: 30px;
-        height: 30px;
-        text-align: center;
-        margin: 0 20px 0 0;
-        font-weight: 500;
-    }
-
-    ol li {
-        display: list-item;
-        position: relative;
-        padding: .1em .4em 0 0;
-        line-height: 30px;
-        margin: .5em 0;
-        background: #FFFFFF;
-        border-radius: 20px;
-        transition: .3s ease-out;
-    }
-
-    ol li:hover {
-        background: #fefae0;
-    }
-</style>

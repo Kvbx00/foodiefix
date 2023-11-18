@@ -2,7 +2,7 @@
 <html lang="pl">
 
 @include('includes.head')
-
+<link rel="stylesheet" href="{{ asset('css/recipes.css') }}">
 <link rel="stylesheet" href="{{ asset('owlcarousel/owl.carousel.min.css') }}"/>
 <link rel="stylesheet" href="{{ asset('owlcarousel/owl.theme.default.min.css') }}">
 
@@ -101,77 +101,3 @@
         }
     })
 </script>
-<style>
-    .card {
-        border: none;
-        box-shadow: 0 3px 6px 0 rgba(0, 0, 0, .2);
-    }
-
-    .card a {
-        text-decoration: none;
-        color: #000000;
-    }
-
-    .pagination a, .pagination span {
-        height: 25px;
-        width: 25px;
-        text-align: center;
-        justify-content: center;
-        display: flex;
-        margin-left: 7px;
-        text-decoration: none;
-        color: #000000;
-    }
-
-    .pagination .pagination-middle {
-        border-radius: 20px;
-        height: 25px;
-        width: 105px;
-        background-color: rgba(167, 201, 117, 0.3);
-        font-weight: 500;
-        text-align: center;
-        margin-left: 7px;
-        color: #7F7F7F;
-    }
-
-    .categories {
-        text-decoration: none;
-        color: #000000;
-        letter-spacing: 1px;
-    }
-
-    .categories.active-category {
-        color: #fdc056 !important;
-        border-bottom: 2px solid #fdc056;
-    }
-
-    .owl-prev, .owl-next {
-        position: absolute;
-        bottom: -18%;
-        background-color: transparent !important;
-        color: #000000 !important;
-    }
-
-    .owl-prev {
-        left: 0;
-    }
-
-    .owl-next {
-        right: 0;
-    }
-
-    .owl-next.disabled, .owl-prev.disabled {
-        cursor: not-allowed !important;
-    }
-
-    .search {
-        border: 1px solid gold;
-        border-right: 6px solid gold;
-        background-color: #FFFFFF;
-        padding: 5px;
-    }
-
-    .search:focus {
-        outline: none;
-    }
-</style>

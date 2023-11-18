@@ -2,7 +2,7 @@
 <html lang="pl">
 
 @include('includes.head')
-
+<link rel="stylesheet" href="{{ asset('css/welcome.css') }}">
 <body>
 
 @include('includes.header')
@@ -139,60 +139,3 @@
         crossorigin="anonymous"></script>
 </body>
 </html>
-
-<style>
-    #first-main {
-        background-image: url({{ asset('images/welcome.png') }});
-        background-size: cover;
-    }
-
-    #first-sub-main-text-primary {
-        margin-left: 100px;
-    }
-
-    #first-sub-main-text-secondary {
-        margin-left: 100px;
-        color: #941b0c;
-    }
-
-    #first-sub-main-button {
-        margin-left: 100px;
-        border: none;
-        background-color: #000000;
-        border-radius: 70px;
-        color: white;
-        text-align: center;
-        transition: 0.3s;
-        padding: 20px 55px;
-        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
-    }
-
-    #first-sub-main-button:hover {
-        background-color: #fdcc56;
-        box-shadow: 0 15px 20px rgba(253, 204, 86, 0.4);
-        color: #000000;
-        transform: translateY(-7px);
-    }
-
-    #carousel1 {
-        height: 65vh;
-        background-size: cover;
-        background-position: center center;
-        background-image: linear-gradient(rgba(0, 0, 0, 0.60), rgba(0, 0, 0, 0.60)), url({{ asset('images/carousel1.jpg') }});
-    }
-
-    #carousel2 {
-        height: 65vh;
-        background-size: cover;
-        background-position: center center;
-        background-image: linear-gradient(rgba(0, 0, 0, 0.60), rgba(0, 0, 0, 0.60)), url({{ asset('images/carousel2.jpg') }});
-    }
-
-    #carousel3 {
-        height: 65vh;
-        background-size: cover;
-        background-position: center center;
-        background-image: linear-gradient(rgba(0, 0, 0, 0.60), rgba(0, 0, 0, 0.60)), url({{ asset('images/carousel3.jpg') }});
-    }
-
-</style>

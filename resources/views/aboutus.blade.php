@@ -2,7 +2,7 @@
 <html lang="pl">
 
 @include('includes.head')
-
+<link rel="stylesheet" href="{{ asset('css/aboutus.css') }}">
 <body>
 
 @include('includes.header')
@@ -66,26 +66,3 @@
         crossorigin="anonymous"></script>
 </body>
 </html>
-
-<style>
-    .img1 {
-        background-image: url('{{ asset('images/aboutus1.jpg') }}');
-        background-size: cover;
-        background-position: center;
-        min-height: 40vh
-    }
-
-    .img2 {
-        background-image: url('{{ asset('images/aboutus2.jpg') }}');
-        background-size: cover;
-        background-position: center;
-        min-height: 40vh
-    }
-
-    .img3 {
-        background-image: url('{{ asset('images/aboutus3.jpg') }}');
-        background-size: cover;
-        background-position: center;
-        min-height: 40vh
-    }
-</style>
