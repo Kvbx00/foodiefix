@@ -157,7 +157,7 @@ class HealthDataController extends Controller
             ]);
         }
 
-        return redirect()->route('userPanel');
+        return redirect()->route('userPanel')->with('success', 'Choroba została dodana do preferencji.');
     }
 
     public function destroyDiseases($id)
@@ -169,7 +169,7 @@ class HealthDataController extends Controller
             $userDisease->delete();
         }
 
-        return redirect()->route('userPanel');
+        return back()->withErrors( 'Choroba została usunięta z preferencji.');
     }
 
     private function getAvailableDiseases($user, $allDiseases)
@@ -198,7 +198,7 @@ class HealthDataController extends Controller
             ]);
         }
 
-        return redirect()->route('userPanel');
+        return redirect()->route('userPanel')->with('success', 'Składnik został dodany do preferencji.');
     }
 
     public function destroyIngredients($id)
@@ -210,7 +210,7 @@ class HealthDataController extends Controller
             $userIngredient->delete();
         }
 
-        return redirect()->route('userPanel')->with('success', 'Składnik został usunięty z preferencji.');
+        return back()->withErrors( 'Składnik został usunięty z preferencji.');
     }
 
     private function getAvailableIngredients($user, $allIngredients)
