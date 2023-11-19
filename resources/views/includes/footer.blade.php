@@ -6,19 +6,19 @@
                     <img src="{{ asset('images/logo.png') }}" alt="logo" width="70" height="64">
                 </a>
             </div>
-            <div class="col-sm-2 my-2 d-flex flex-column align-items-center justify-content-center">
+            <div class="col-sm-2 my-2 d-flex flex-column align-items-center justify-content-center text-center">
                 <h5>Foodie fix</h5>
                 <li><a href="/" class="nav-link px-2 text-body-secondary">Strona domowa</a></li>
                 <li><a href="/recipes" class="nav-link px-2 text-body-secondary">Przepisy</a></li>
                 <li><a href="/register" class="nav-link px-2 text-body-secondary">Rejestracja</a></li>
             </div>
-            <div class="col-sm-2 my-2 d-flex flex-column align-items-center justify-content-center">
+            <div class="col-sm-2 my-2 d-flex flex-column align-items-center justify-content-center text-center">
                 <h5>Konto</h5>
                 <li><a href="/userPanel" class="nav-link px-2 text-body-secondary">Profil</a></li>
                 <li><a href="/user/menu" class="nav-link px-2 text-body-secondary">Menu</a></li>
                 <li><a href="/userPanel/profile" class="nav-link px-2 text-body-secondary">Ustawienia konta</a></li>
             </div>
-            <div class="col-sm-2 my-2 d-flex flex-column align-items-center justify-content-center">
+            <div class="col-sm-2 my-2 d-flex flex-column align-items-center justify-content-center text-center">
                 <h5>O nas</h5>
                 <li class="nav-item"><a href="/aboutus#whoweare" class="nav-link px-2 text-body-secondary">Kim jesteśmy</a></li>
                 <li><a href="/aboutus#history" class="nav-link px-2 text-body-secondary">Historia</a></li>
