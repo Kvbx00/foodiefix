@@ -112,7 +112,7 @@
 </html>
 <script>
     $(document).ready(function () {
-        var today = new Date().getDay();
+        let today = new Date().getDay();
 
         today = (today - 1 + 7) % 7;
 
@@ -123,7 +123,7 @@
         $('#day-' + today).removeClass('hidden');
 
         $('.day-button').click(function () {
-            var day = $(this).data('day');
+            let day = $(this).data('day');
             $('.menu-day').addClass('hidden');
             $('#day-' + day).removeClass('hidden');
 
@@ -158,22 +158,27 @@
 </script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        var countdownRunning = true;
+        let countdownRunning = @json($menuCheckWeek) ===
+        true;
 
         function updateCountdown() {
-            var now = new Date();
-            var monday = new Date();
+            if (!countdownRunning) {
+                return;
+            }
+
+            let now = new Date();
+            let monday = new Date();
             monday.setHours(0, 0, 0, 0);
-            var daysUntilMonday = (1 + 7 - monday.getDay()) % 7;
+            let daysUntilMonday = (1 + 7 - monday.getDay()) % 7;
             monday.setDate(monday.getDate() + daysUntilMonday);
 
-            var timeRemaining = monday.getTime() - now.getTime();
-            var days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-            var hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            var minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+            let timeRemaining = monday.getTime() - now.getTime();
+            let days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+            let hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            let minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+            let seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
 
-            document.getElementById("countdown").innerHTML = days + ":" + hours + ":" + minutes + ":" + seconds;
+            document.getElementById("countdown").innerHTML = `${days}:${hours}:${minutes}:${seconds}`;
 
             if (timeRemaining <= 0) {
                 countdownRunning = false;

@@ -44,7 +44,11 @@ class MenuController extends Controller
 
         $menuCheck = Menu::where('user_id', $user->id)->exists();
 
-        return view('user.menu', compact('groupedMenuMeals', 'daysOfWeek', 'menuDates', 'menuCheck'));
+        $menuCheckWeek = Menu::where('user_id', $user->id)
+            ->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()])
+            ->exists();
+
+        return view('user.menu', compact('groupedMenuMeals', 'daysOfWeek', 'menuDates', 'menuCheck', 'menuCheckWeek'));
     }
 
     public function createMenu()
