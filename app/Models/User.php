@@ -66,4 +66,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Ingredient::class, 'ingredient_preferences', 'user_id', 'ingredient_id');
     }
+
+    public function userDiseases()
+    {
+        return $this->hasMany(UserDisease::class, 'user_id');
+    }
 }

@@ -34,6 +34,12 @@ class Ingredient extends Model
 					->withPivot('quantity', 'unit');
 	}
 
+    public function diseases()
+    {
+        return $this->belongsToMany(Disease::class, 'diseases_ingredient', 'ingredient_id', 'diseases_id')
+            ->withPivot('ingredient_category_id');
+    }
+
     protected $appends = ['ingredient_category_name',];
 
     public function getIngredientCategoryNameAttribute()

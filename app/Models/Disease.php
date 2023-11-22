@@ -17,5 +17,11 @@ class Disease extends Model
         return $this->hasMany(UserDisease::class, 'diseases_id');
     }
 
+    public function ingredients()
+    {
+        return $this->belongsToMany(Ingredient::class, 'diseases_ingredient', 'diseases_id', 'ingredient_id')
+            ->withPivot('ingredient_category_id');
+    }
+
     public $timestamps = false;
 }

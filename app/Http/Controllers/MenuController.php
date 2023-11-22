@@ -55,6 +55,9 @@ class MenuController extends Controller
     {
         $user = auth()->user();
 
+        $userDiseases = $user->userDiseases()->pluck('diseases_id');
+        $userIngredientPreferences = $user->ingredient_preferences()->pluck('ingredient_id');
+
         $existingMenu = Menu::where('user_id', $user->id)
             ->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()])
             ->first();
@@ -96,8 +99,15 @@ class MenuController extends Controller
             $currentDate = $startDate->copy()->addDays($index);
 
             while ($tries < $maxTries) {
-                $mealsByCategory = Meal::whereDoesntHave('ingredients', function ($query) use ($user) {
-                    $query->whereIn('ingredient_id', $user->ingredient_preferences->pluck('ingredient_id'));
+                $mealsByCategory = Meal::whereDoesntHave('ingredients', function ($query) use ($userDiseases, $userIngredientPreferences) {
+                    $query->where(function ($query) use ($userDiseases, $userIngredientPreferences) {
+                        $query->whereIn('ingredient_id', function ($query) use ($userDiseases) {
+                            $query->select('ingredient_id')
+                                ->from('diseases_ingredient')
+                                ->whereIn('diseases_id', $userDiseases);
+                        })
+                            ->orWhereIn('ingredient_id', $userIngredientPreferences);
+                    });
                 })
                     ->where('used', 0)
                     ->inRandomOrder()
