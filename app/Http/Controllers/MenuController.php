@@ -69,7 +69,7 @@ class MenuController extends Controller
         Menu::where('user_id', $user->id)
             ->whereBetween('created_at', [now()->startOfWeek()->subWeek(), now()->endOfWeek()->subWeek()])
             ->get()
-            ->each(function ($menu){
+            ->each(function ($menu) {
                 $menu->menuMeals()->delete();
                 $menu->delete();
             });
@@ -148,19 +148,5 @@ class MenuController extends Controller
             }
         }
         return redirect()->route('menu.show');
-    }
-
-    //funkcja do zliczania kalorii z danego dnia
-    public function calculateTotalCalories($menuMeals)
-    {
-        $totalCalories = 0;
-
-        foreach ($menuMeals as $menuMeal) {
-            if (isset($menuMeal->meal)) {
-                $totalCalories += $menuMeal->meal->nutritionalvalues->calories;
-            }
-        }
-
-        return $totalCalories;
     }
 }
