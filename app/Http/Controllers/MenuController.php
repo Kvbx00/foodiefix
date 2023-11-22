@@ -37,7 +37,6 @@ class MenuController extends Controller
                 ->get();
 
             $groupedMenuMeals[$day] = $menuMeals;
-            $groupedMenuMeals[$day]['totalCalories'] = $this->calculateTotalCalories($menuMeals);
         }
 
         $menuDates = $menus->pluck('date');
