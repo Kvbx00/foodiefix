@@ -167,7 +167,7 @@
             <ul class="nav flex-column mb-auto">
                 <li class="nav-item">
                     <div class="nav-link d-flex align-items-center gap-2">
-                        <form method="POST" action="{{ route('admin.logout') }}">
+                        <form method="GET" action="{{ route('admin.logout') }}">
                             @csrf
                             <button type="submit" class="logout">Wyloguj się</button>
                         </form>

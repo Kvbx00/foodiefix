@@ -34,7 +34,7 @@
             </li>
             <li class="nav-item me-5 ms-5" id="login-button">
                 @if(auth()->check())
-                    <form method="POST" action="{{ route('logout') }}">
+                    <form method="GET" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit" class="nav-link active fw-semibold d-inline">Wyloguj się</button>
                     </form>

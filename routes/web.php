@@ -27,7 +27,7 @@ Route::post('/register', [AuthController::class, 'register']);
 
 Route::get('/login', [AuthController::class, 'showLoginView'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/recipes', [MealController::class, 'showRecipesView'])->name('recipes');
 Route::get('/recipes/meal/{id}', [MealController::class, 'showRecipesMeal'])->name('recipes.meal');
@@ -51,7 +51,7 @@ Route::put('/userPanel/profile/{id}', [UserController::class, 'updateProfile'])-
 
 Route::get('/adminLogin', [AdministratorAuthController::class, 'showAdminLoginView'])->name('admin.login');
 Route::post('/adminLogin', [AdministratorAuthController::class, 'adminLogin']);
-Route::post('/adminLogout', [AdministratorAuthController::class, 'adminLogout'])->name('admin.logout');
+Route::get('/adminLogout', [AdministratorAuthController::class, 'adminLogout'])->name('admin.logout');
 
 Route::get('/adminRegister', [AdministratorAuthController::class, 'showAdminRegistrationView'])->name('admin.register')->middleware('admin');
 Route::post('/adminRegister', [AdministratorAuthController::class, 'adminRegister'])->middleware('admin');
