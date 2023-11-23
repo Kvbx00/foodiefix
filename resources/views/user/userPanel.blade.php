@@ -151,7 +151,7 @@
         <div class="card py-5">
             <div class="row my-3 align-items-center">
                 <div class="col-md-6 mb-5 mb-md-0 d-flex flex-column align-items-center">
-                    @if ($availableDiseases->count() > 0)
+                    @if (auth()->user()->diseases->count() < 3)
                         <div>
                             <p class="fw-normal text-center" style="font-size:30px; letter-spacing: 1px">Dostępne
                                 choroby</p>
@@ -170,7 +170,7 @@
                             </div>
                         </form>
                     @else
-                        <p>Wszystkie dostępne choroby zostały już dodane.</p>
+                        <p>Osiągnąłeś limit wybranych chorób (maksymalnie 3).</p>
                     @endif
                 </div>
                 <div class="col-md-6 d-flex flex-column align-items-center">
@@ -212,7 +212,7 @@
         <div class="card py-5">
             <div class="row my-3 align-items-center">
                 <div class="col-md-6 mb-5 mb-md-0 d-flex flex-column align-items-center">
-                    @if (auth()->user()->ingredientPreferences->count() < 5)
+                    @if (auth()->user()->ingredientPreferences->count() < 3)
                         <div>
                             <p class="fw-normal text-center" style="font-size:30px; letter-spacing: 1px">Dostępne
                                 składniki</p>
@@ -231,7 +231,7 @@
                             </div>
                         </form>
                     @else
-                        <p>Osiągnąłeś limit wybranych składników (maksymalnie 5).</p>
+                        <p>Osiągnąłeś limit wybranych składników (maksymalnie 3).</p>
                     @endif
                 </div>
                 <div class="col-md-6 d-flex flex-column align-items-center">
