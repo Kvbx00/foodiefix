@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Administrator;
 use App\Models\CaloricNeed;
 use App\Models\Disease;
+use App\Models\DiseaseIngredient;
 use App\Models\HealthData;
 use App\Models\Ingredient;
 use App\Models\IngredientCategory;
@@ -1465,6 +1466,126 @@ class AdministratorController extends Controller
         $menuMeal->save();
 
         return redirect()->route('administrator.userMenuMeal')->with('success', 'Danie zostało dodane do menu.');
+    }
+
+    public function showDiseaseIngredient(Request $request)
+    {
+        $search = request('search');
+        $sort = $request->input('sort', 'id');
+        $order = $request->input('order', 'asc');
+
+        $diseaseIngredient = DiseaseIngredient::with(['disease', 'ingredient'])
+            ->orderBy($sort, $order);
+
+        if ($search) {
+            $diseaseIngredient->where(function ($query) use ($search) {
+                $query->whereHas('disease', function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%');
+                })->orWhereHas('ingredient', function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%');
+                })->orWhere('id', $search)
+                    ->orWhere('diseases_id', $search)
+                    ->orWhere('ingredient_id', $search);
+            });
+        }
+
+        $diseaseIngredient = $diseaseIngredient->paginate(20);
+
+        return view('administrator.diseaseIngredient', compact('diseaseIngredient', 'search', 'sort', 'order'));
+    }
+
+    public function showAddDiseaseIngredientView()
+    {
+        $diseases = Disease::all();
+        $ingredients = Ingredient::all();
+
+        return view('administrator.addDiseaseIngredient', compact('diseases', 'ingredients'));
+    }
+
+    public function addDiseaseIngredient(Request $request)
+    {
+        $validatedData = $request->validate([
+            'disease_name' => 'required',
+            'ingredient_name' => 'required',
+        ]);
+
+        $diseaseName = $validatedData['disease_name'];
+        $ingredientName = $validatedData['ingredient_name'];
+
+        $disease = Disease::where('name', $diseaseName)->first();
+        $ingredient = Ingredient::where('name', $ingredientName)->first();
+
+        $existingDiseaseIngredient = DiseaseIngredient::where('diseases_id', $disease->id)
+            ->where('ingredient_id', $ingredient->id)
+            ->first();
+
+        if ($existingDiseaseIngredient) {
+            return back()->withErrors( 'Ta choroba zawiera już ten składnik.');
+        }
+
+        $diseaseIngredient = new DiseaseIngredient();
+        $diseaseIngredient->diseases_id = $disease->id;
+        $diseaseIngredient->ingredient_id = $ingredient->id;
+        $diseaseIngredient->ingredient_category_id = $ingredient->ingredient_category->id;
+
+        $diseaseIngredient->save();
+
+        return redirect()->route('administrator.diseaseIngredient')->with('success', 'Składnik został dodany do choroby.');
+    }
+
+    public function editDiseaseIngredient($id)
+    {
+        $diseaseIngredient = DiseaseIngredient::findOrFail($id);
+        $diseases = Disease::all();
+        $ingredients = Ingredient::all();
+
+        return view('administrator.editDiseaseIngredient', compact('diseaseIngredient', 'ingredients', 'diseases'));
+    }
+
+    public function updateDiseaseIngredient(Request $request, $id)
+    {
+        $diseaseIngredient = DiseaseIngredient::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'disease_name' => 'required',
+            'ingredient_name' => 'required',
+        ]);
+
+        if ($request->has('disease_name')) {
+            $diseaseName = $validatedData['disease_name'];
+            $disease = Disease::where('name', $diseaseName)->first();
+
+            $diseaseIngredient->diseases_id = $disease->id;
+        }
+
+        if ($request->has('ingredient_name')) {
+            $ingredientName = $validatedData['ingredient_name'];
+            $ingredient = Ingredient::where('name', $ingredientName)->first();
+            if ($ingredient) {
+                $existingDiseaseIngredient = DiseaseIngredient::where('diseases_id', $disease->id)
+                    ->where('ingredient_id', $ingredient->id)
+                    ->first();
+
+                if ($existingDiseaseIngredient) {
+                    return back()->withErrors( 'Ta choroba zawiera już ten składnik.');
+                }
+
+                $diseaseIngredient->ingredient_id = $ingredient->id;
+            }
+        }
+
+        $diseaseIngredient->save();
+
+        return redirect()->route('administrator.diseaseIngredient')->with('success', 'Dane niechcianych składników zostały zaktualizowane.');
+    }
+
+    public function removeDiseaseIngredient($diseaseIngredientId)
+    {
+        $diseaseIngredient = DiseaseIngredient::find($diseaseIngredientId);
+
+        $diseaseIngredient->delete();
+
+        return redirect()->route('administrator.diseaseIngredient')->with('success', 'Składnik został usunięty');
     }
 
 }

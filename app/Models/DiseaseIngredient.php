@@ -27,5 +27,17 @@ class DiseaseIngredient extends Model
         return $this->belongsTo(IngredientCategory::class, 'ingredient_category_id');
     }
 
+    protected $appends = ['disease_name', 'ingredient_name'];
+
+    public function getDiseaseNameAttribute()
+    {
+        return $this->disease->name;
+    }
+
+    public function getIngredientNameAttribute()
+    {
+        return $this->ingredient->name;
+    }
+
     public $timestamps = false;
 }

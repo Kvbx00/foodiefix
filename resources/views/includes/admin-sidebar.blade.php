@@ -85,14 +85,17 @@
                 <li class="nav-item mb-1">
                     <button
                         class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed fw-semibold"
-                        data-bs-toggle="collapse" data-bs-target="#diseases-collapse" aria-expanded="{{Str::contains(Request::url(), ['admin/dashboard/disease']) ? 'true' : 'false' }}">
+                        data-bs-toggle="collapse" data-bs-target="#diseases-collapse" aria-expanded="{{Str::contains(Request::url(), ['admin/dashboard/disease', 'admin/dashboard/diseaseIngredient']) ? 'true' : 'false' }}">
                         <i class="bi bi-heart-pulse-fill me-2"></i>
                         Choroby
                     </button>
                     <div class="collapse {{ Str::contains(Request::url(), ['admin/dashboard/disease']) ? 'show' : '' }}" id="diseases-collapse" style="">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small ms-3">
                             <li><a href="{{ url('admin/dashboard/disease') }}"
-                                   class="nav-link link-dark d-flex align-items-center gap-2 {{ Str::contains(Request::url(), 'admin/dashboard/disease') ? 'active' : '' }}">Lista chorób</a>
+                                   class="nav-link link-dark d-flex align-items-center gap-2 {{ Request::is('admin/dashboard/disease') || Request::is('admin/dashboard/disease/addDisease') || Request::is('admin/dashboard/disease/*/edit') ? 'active' : '' }}">Lista chorób</a>
+                            </li>
+                            <li><a href="{{ url('admin/dashboard/diseaseIngredient') }}"
+                                   class="nav-link link-dark d-flex align-items-center gap-2 {{ Str::contains(Request::url(), 'admin/dashboard/diseaseIngredient') ? 'active' : '' }}">Niechciane składniki</a>
                             </li>
                         </ul>
                     </div>
