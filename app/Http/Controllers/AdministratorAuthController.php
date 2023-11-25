@@ -65,7 +65,7 @@ class AdministratorAuthController extends Controller
                 'role' => $request->role,
             ]);
 
-            return redirect('/admin/dashboard');
+            return redirect()->route('administrator.adminProfile')->with('success', 'Konto pracownika zostało utworzone.');
         }
         return redirect('/admin/dashboard');
     }
