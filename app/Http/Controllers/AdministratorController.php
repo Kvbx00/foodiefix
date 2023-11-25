@@ -618,6 +618,7 @@ class AdministratorController extends Controller
         $meal->name = $mealName;
         $meal->recipe = $mealRecipe;
         $meal->meal_category_id = $mealCategory->id;
+        $meal->used = 0;
 
         $meal->save();
 
@@ -1300,13 +1301,16 @@ class AdministratorController extends Controller
         }
 
         $dayOfTheWeek = $validatedData['dayOfTheWeek'];
-        $existingMenu = Menu::where('dayOfTheWeek', $dayOfTheWeek)
+        $userId = $menu->user_id;
+
+        $existingMenu = Menu::where('user_id', $userId)
+            ->where('dayOfTheWeek', $dayOfTheWeek)
             ->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()])
             ->where('id', '!=', $id)
             ->exists();
 
         if ($existingMenu) {
-            return back()->withErrors(  'Użytkownik ma już menu dla tego dnia w tym tygodniu.');
+            return back()->withErrors(  'Użytkownik już posiada menu.');
         }
 
         $menu->save();
@@ -1331,14 +1335,17 @@ class AdministratorController extends Controller
 
         $date = $validatedData['date'];
         $dayOfTheWeek = $validatedData['dayOfTheWeek'];
-        $user = User::findOrFail($validatedData['user_id']);
+        $userId = $validatedData['user_id'];
 
-        $existingMenu = Menu::where('dayOfTheWeek', $dayOfTheWeek)
+        $user = User::findOrFail($userId);
+
+        $existingMenu = Menu::where('user_id', $userId)
+            ->where('dayOfTheWeek', $dayOfTheWeek)
             ->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()])
             ->exists();
 
         if ($existingMenu) {
-            return back()->withErrors(  'Użytkownik ma już menu dla tego dnia w tym tygodniu.');
+            return back()->withErrors(  'Użytkownik już posiada menu.');
         }
 
         $menu = new Menu();
