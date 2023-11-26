@@ -39,20 +39,6 @@
                         <input type="date" class="form-control" id="date" name="date" required>
                     </div>
                 </div>
-                <div class="row g-3 align-items-center">
-                    <div class="input">
-                        <label for="dayOfTheWeek" class="col-form-label">Dzień tygodnia</label>
-                        <select name="dayOfTheWeek" id="dayOfTheWeek" class="form-control">
-                            <option value="Poniedziałek">Poniedziałek</option>
-                            <option value="Wtorek">Wtorek</option>
-                            <option value="Środa">Środa</option>
-                            <option value="Czwartek">Czwartek</option>
-                            <option value="Piątek">Piątek</option>
-                            <option value="Sobota">Sobota</option>
-                            <option value="Niedziela">Niedziela</option>
-                        </select>
-                    </div>
-                </div>
                 <button type="submit" class="btn btn-secondary my-3">Dodaj menu</button>
             </form>
 

@@ -19,6 +19,7 @@ use App\Models\Nutritionalvalue;
 use App\Models\UserDisease;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class AdministratorController extends Controller
@@ -1289,18 +1290,14 @@ class AdministratorController extends Controller
 
         $validatedData = $request->validate([
             'date' => 'required',
-            'dayOfTheWeek' => 'required',
         ]);
 
-        if ($request->has('date')) {
-            $menu->date = $validatedData['date'];
-        }
+        $menu->date = $validatedData['date'];
 
-        if ($request->has('dayOfTheWeek')) {
-            $menu->dayOfTheWeek = $validatedData['dayOfTheWeek'];
-        }
+        $dayOfTheWeek = Carbon::parse($validatedData['date'])->locale('pl')->dayName;
+        $dayOfTheWeek = ucfirst($dayOfTheWeek);
+        $menu->dayOfTheWeek = $dayOfTheWeek;
 
-        $dayOfTheWeek = $validatedData['dayOfTheWeek'];
         $userId = $menu->user_id;
 
         $existingMenu = Menu::where('user_id', $userId)
@@ -1330,12 +1327,13 @@ class AdministratorController extends Controller
         $validatedData = $request->validate([
             'user_id' => 'required',
             'date' => 'required',
-            'dayOfTheWeek' => 'required',
         ]);
 
         $date = $validatedData['date'];
-        $dayOfTheWeek = $validatedData['dayOfTheWeek'];
         $userId = $validatedData['user_id'];
+
+        $dayOfTheWeek = Carbon::parse($validatedData['date'])->locale('pl')->dayName;
+        $dayOfTheWeek = ucfirst($dayOfTheWeek);
 
         $user = User::findOrFail($userId);
 

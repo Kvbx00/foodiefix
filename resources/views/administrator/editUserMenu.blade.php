@@ -25,13 +25,8 @@
                 @method('PUT')
                 <div class="row g-3 align-items-center">
                     <div class="input">
-                        <label for="user_id" class="col-form-label">Użytkownik</label>
-                        <select name="user_id" id="user_id" class="form-control" disabled>
-                            @foreach($users as $user)
-                                <option value="{{ $user->id }}">
-                                    id: {{ $user->id }} | {{ $user->name }} {{ $user->lastName }}</option>
-                            @endforeach
-                        </select>
+                        <label for="user_id" class="col-form-label">Id użytkownika</label>
+                        <input type="text" class="form-control" id="user_id" name="user_id" value="{{ $menu->user_id }}" disabled>
                     </div>
                 </div>
                 <div class="row g-3 align-items-center">
@@ -39,24 +34,6 @@
                         <label for="date" class="col-form-label">Data</label>
                         <input type="date" class="form-control" id="date" name="date"
                                value="{{ \Carbon\Carbon::parse($menu->date)->format('Y-m-d') }}">
-                    </div>
-                </div>
-                <div class="row g-3 align-items-center">
-                    <div class="input">
-                        <label for="dayOfTheWeek" class="col-form-label">Dzień tygodnia</label>
-                        <select name="dayOfTheWeek" id="dayOfTheWeek" class="form-control">
-                            <option value="Poniedziałek" @if($menu->dayOfTheWeek === "Poniedziałek") selected @endif>
-                                Poniedziałek
-                            </option>
-                            <option value="Wtorek" @if($menu->dayOfTheWeek === "Wtorek") selected @endif>Wtorek</option>
-                            <option value="Środa" @if($menu->dayOfTheWeek === "Środa") selected @endif>Środa</option>
-                            <option value="Czwartek" @if($menu->dayOfTheWeek === "Czwartek") selected @endif>Czwartek
-                            </option>
-                            <option value="Piątek" @if($menu->dayOfTheWeek === "Piątek") selected @endif>Piątek</option>
-                            <option value="Sobota" @if($menu->dayOfTheWeek === "Sobota") selected @endif>Sobota</option>
-                            <option value="Niedziela" @if($menu->dayOfTheWeek === "Niedziela") selected @endif>Niedziela
-                            </option>
-                        </select>
                     </div>
                 </div>
                 <button type="submit" class="btn btn-secondary my-3">Zapisz zmiany</button>
