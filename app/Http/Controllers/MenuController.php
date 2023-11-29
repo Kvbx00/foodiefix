@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Meal;
 use App\Models\Menu;
 use App\Models\MenuMeal;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use App\Models\ShoppingList;
 
 class MenuController extends Controller
 {
@@ -140,6 +139,25 @@ class MenuController extends Controller
 
                         $meal->used = 1;
                         $meal->save();
+
+                        foreach ($meal->mealIngredients as $mealIngredient) {
+                            $existingItem = ShoppingList::where([
+                                'user_id' => $user->id,
+                                'ingredient_name' => $mealIngredient->ingredient_name,
+                            ])->first();
+
+                            if ($existingItem) {
+                                $existingItem->quantity += $mealIngredient->quantity;
+                                $existingItem->save();
+                            } else {
+                                $shoppingListItem = new ShoppingList();
+                                $shoppingListItem->user_id = $user->id;
+                                $shoppingListItem->ingredient_name = $mealIngredient->ingredient_name;
+                                $shoppingListItem->quantity = $mealIngredient->quantity;
+                                $shoppingListItem->unit = $mealIngredient->unit;
+                                $shoppingListItem->save();
+                            }
+                        }
                     }
                     break;
                 }

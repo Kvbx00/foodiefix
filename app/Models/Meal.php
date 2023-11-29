@@ -46,6 +46,11 @@ class Meal extends Model
         return $this->hasMany(MenuMeal::class, 'meal_id', 'id');
     }
 
+    public function mealIngredients()
+    {
+        return $this->hasMany(MealIngredient::class, 'meal_id', 'id');
+    }
+
     protected $appends = ['meal_category_name',];
 
     public function getMealCategoryNameAttribute()

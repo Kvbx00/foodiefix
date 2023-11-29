@@ -71,4 +71,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserDisease::class, 'user_id');
     }
+
+    public function shoppingLists()
+    {
+        return $this->hasMany(ShoppingList::class);
+    }
 }
