@@ -165,3 +165,10 @@ Route::post('/admin/dashboard/addDiseaseIngredient/add', [AdministratorControlle
 Route::get('/admin/dashboard/diseaseIngredient/{id}/edit', [AdministratorController::class, 'editDiseaseIngredient'])->name('administrator.editDiseaseIngredient')->middleware('admin');
 Route::put('/admin/dashboard/diseaseIngredient/{id}', [AdministratorController::class, 'updateDiseaseIngredient'])->name('administrator.updateDiseaseIngredient')->middleware('admin');
 Route::delete('/admin/dashboard/diseaseIngredient/removeDiseaseIngredient/{diseaseIngredientId}', [AdministratorController::class, 'removeDiseaseIngredient'])->name('administrator.removeDiseaseIngredient')->middleware('admin');
+
+Route::get('/admin/dashboard/userShoppingList', [AdministratorController::class, 'showUserShoppingList'])->name('administrator.userShoppingList')->middleware('admin');
+Route::get('/admin/dashboard/userShoppingList/{id}/edit', [AdministratorController::class, 'editUserShoppingList'])->name('administrator.editUserShoppingList')->middleware('admin');
+Route::put('/admin/dashboard/userShoppingList/{id}', [AdministratorController::class, 'updateUserShoppingList'])->name('administrator.updateUserShoppingList')->middleware('admin');
+Route::delete('/admin/dashboard/userShoppingList/removeUserShoppingList/{shoppingListId}', [AdministratorController::class, 'removeUserShoppingList'])->name('administrator.removeUserShoppingList')->middleware('admin');
+Route::get('/admin/dashboard/userShoppingList/addUserShoppingList', [AdministratorController::class, 'showAddUserShoppingListView'])->name('administrator.addUserShoppingList')->middleware('admin');
+Route::post('/admin/dashboard/userShoppingList/add', [AdministratorController::class, 'addUserShoppingList'])->name('administrator.saveUserShoppingList')->middleware('admin');

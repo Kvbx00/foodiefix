@@ -57,12 +57,12 @@
                 <li class="nav-item mb-1">
                     <button
                         class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed fw-semibold"
-                        data-bs-toggle="collapse" data-bs-target="#users-collapse" aria-expanded="{{Str::contains(Request::url(), ['admin/dashboard/userProfile', 'admin/dashboard/userDisease', 'admin/dashboard/userHealthData', 'admin/dashboard/userIngredientPreference', 'admin/dashboard/userCaloricNeed']) ? 'true' : 'false' }}">
+                        data-bs-toggle="collapse" data-bs-target="#users-collapse" aria-expanded="{{Str::contains(Request::url(), ['admin/dashboard/userProfile', 'admin/dashboard/userDisease', 'admin/dashboard/userHealthData', 'admin/dashboard/userIngredientPreference', 'admin/dashboard/userCaloricNeed', 'admin/dashboard/userShoppingList']) ? 'true' : 'false' }}">
                         <i class="bi bi-people-fill me-2"></i>
                         Użytkownicy
                     </button>
                     <div
-                        class="collapse {{ Str::contains(Request::url(), ['admin/dashboard/userProfile', 'admin/dashboard/userDisease', 'admin/dashboard/userHealthData', 'admin/dashboard/userIngredientPreference', 'admin/dashboard/userCaloricNeed']) ? 'show' : '' }}"
+                        class="collapse {{ Str::contains(Request::url(), ['admin/dashboard/userProfile', 'admin/dashboard/userDisease', 'admin/dashboard/userHealthData', 'admin/dashboard/userIngredientPreference', 'admin/dashboard/userCaloricNeed', 'admin/dashboard/userShoppingList']) ? 'show' : '' }}"
                         id="users-collapse">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small ms-3">
                             <li><a href="{{ url('admin/dashboard/userProfile') }}"
@@ -79,6 +79,8 @@
                             <li><a href="{{ url('admin/dashboard/userCaloricNeed') }}"
                                    class="nav-link link-dark d-flex align-items-center gap-2 {{ Str::contains(Request::url(), 'admin/dashboard/userCaloricNeed') ? 'active' : '' }}">Zapotrzebowania
                                     kaloryczne</a></li>
+                            <li><a href="{{ url('admin/dashboard/userShoppingList') }}"
+                                   class="nav-link link-dark d-flex align-items-center gap-2 {{ Str::contains(Request::url(), 'admin/dashboard/userShoppingList') ? 'active' : '' }}">Listy zakupów</a></li>
                         </ul>
                     </div>
                 </li>

@@ -16,6 +16,7 @@ use App\Models\MealIngredient;
 use App\Models\Menu;
 use App\Models\MenuMeal;
 use App\Models\Nutritionalvalue;
+use App\Models\ShoppingList;
 use App\Models\UserDisease;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -98,19 +99,19 @@ class AdministratorController extends Controller
         }
 
         if ($user->health_data()->count() > 0) {
-            return back()->withErrors( 'Nie można usunąć użytkownika z przypisanym danymi zdrowotnymi.');
+            return back()->withErrors('Nie można usunąć użytkownika z przypisanym danymi zdrowotnymi.');
         }
 
         if ($user->ingredient_preferences()->count() > 0) {
-            return back()->withErrors( 'Nie można usunąć użytkownika z przypisanym preferencjami składników.');
+            return back()->withErrors('Nie można usunąć użytkownika z przypisanym preferencjami składników.');
         }
 
         if ($user->menus()->count() > 0) {
-            return back()->withErrors( 'Nie można usunąć użytkownika z przypisanym jadłospisem.');
+            return back()->withErrors('Nie można usunąć użytkownika z przypisanym jadłospisem.');
         }
 
         if ($user->diseases()->count() > 0) {
-            return back()->withErrors( 'Nie można usunąć użytkownika z przypisanymi chorobami.');
+            return back()->withErrors('Nie można usunąć użytkownika z przypisanymi chorobami.');
         }
 
         $user->delete();
@@ -480,7 +481,7 @@ class AdministratorController extends Controller
         $mealCategory = MealCategory::find($mealCategoryId);
 
         if ($mealCategory->meals()->count() > 0) {
-            return back()->withErrors( 'Nie można usunąć kategorii dań z przypisanymi daniami.');
+            return back()->withErrors('Nie można usunąć kategorii dań z przypisanymi daniami.');
         }
 
         $mealCategory->delete();
@@ -557,7 +558,7 @@ class AdministratorController extends Controller
             if ($newMealName !== $meal->name) {
                 $existingMeal = Meal::where('name', $newMealName)->first();
                 if ($existingMeal) {
-                    return back()->withErrors(  'Danie o podanej nazwie już istnieje.');
+                    return back()->withErrors('Danie o podanej nazwie już istnieje.');
                 }
             }
         }
@@ -610,7 +611,7 @@ class AdministratorController extends Controller
         $existingMeal = Meal::where('name', $mealName)->first();
 
         if ($existingMeal) {
-            return back()->withErrors(  'Danie o podanej nazwie już istnieje.');
+            return back()->withErrors('Danie o podanej nazwie już istnieje.');
         }
 
         $mealCategory = MealCategory::where('name', $mealCategoryName)->first();
@@ -631,15 +632,15 @@ class AdministratorController extends Controller
         $meal = Meal::find($mealId);
 
         if ($meal->ingredients()->count() > 0) {
-            return back()->withErrors(  'Nie można usunąć dania z przypisanymi składnikami.');
+            return back()->withErrors('Nie można usunąć dania z przypisanymi składnikami.');
         }
 
         if ($meal->menus()->count() > 0) {
-            return back()->withErrors(  'Nie można usunąć dania przypisanego do menu użytkownika.');
+            return back()->withErrors('Nie można usunąć dania przypisanego do menu użytkownika.');
         }
 
         if ($meal->nutritionalvalues()->count() > 0) {
-            return back()->withErrors(  'Nie można usunąć dania z przypisanymi wartościami odżywczymi.');
+            return back()->withErrors('Nie można usunąć dania z przypisanymi wartościami odżywczymi.');
         }
 
         $meal->delete();
@@ -713,7 +714,7 @@ class AdministratorController extends Controller
                     ->first();
 
                 if ($existingMealIngredient) {
-                    return back()->withErrors(  'Ten składnik już istnieje w danym daniu.');
+                    return back()->withErrors('Ten składnik już istnieje w danym daniu.');
                 }
 
                 $mealIngredient->ingredient_id = $ingredient->id;
@@ -758,7 +759,7 @@ class AdministratorController extends Controller
             ->first();
 
         if ($existingMealIngredient) {
-            return back()->withErrors(  'Ten składnik już istnieje w danym daniu.');
+            return back()->withErrors('Ten składnik już istnieje w danym daniu.');
         }
 
         $mealIngredient = new MealIngredient();
@@ -984,7 +985,7 @@ class AdministratorController extends Controller
         $ingredientCategory = IngredientCategory::find($ingredientCategoryId);
 
         if ($ingredientCategory->ingredients()->count() > 0) {
-            return back()->withErrors(  'Nie można usunąć kategorii z przypisanymi składnikami.');
+            return back()->withErrors('Nie można usunąć kategorii z przypisanymi składnikami.');
         }
 
         $ingredientCategory->delete();
@@ -1041,7 +1042,7 @@ class AdministratorController extends Controller
             if ($newIngredientName !== $ingredient->name) {
                 $existingIngredient = Ingredient::where('name', $newIngredientName)->first();
                 if ($existingIngredient) {
-                    return back()->withErrors(  'Składnik o podanej nazwie już istnieje.');
+                    return back()->withErrors('Składnik o podanej nazwie już istnieje.');
                 }
             }
         }
@@ -1086,7 +1087,7 @@ class AdministratorController extends Controller
         $existingIngredient = Ingredient::where('name', $ingredientName)->first();
 
         if ($existingIngredient) {
-            return back()->withErrors(  'Składnik o podanej nazwie już istnieje.');
+            return back()->withErrors('Składnik o podanej nazwie już istnieje.');
         }
 
         $ingredientCategory = IngredientCategory::where('name', $ingredientCategoryName)->first();
@@ -1105,11 +1106,11 @@ class AdministratorController extends Controller
         $ingredient = Ingredient::find($ingredientId);
 
         if ($ingredient->ingredient_preferences()->count() > 0) {
-            return back()->withErrors(  'Nie można usunąć składnika przypisanego do preferencji użytkownika.');
+            return back()->withErrors('Nie można usunąć składnika przypisanego do preferencji użytkownika.');
         }
 
         if ($ingredient->meals()->count() > 0) {
-            return back()->withErrors(  'Nie można usunąć składnika przypisanego do dania.');
+            return back()->withErrors('Nie można usunąć składnika przypisanego do dania.');
         }
 
         $ingredient->delete();
@@ -1268,7 +1269,7 @@ class AdministratorController extends Controller
         $menu = Menu::find($menuId);
 
         if ($menu->menuMeals()->count() > 0) {
-            return back()->withErrors(  'Nie można usunąć jadłospisu z przypisanymi daniami.');
+            return back()->withErrors('Nie można usunąć jadłospisu z przypisanymi daniami.');
         }
 
         $menu->delete();
@@ -1307,7 +1308,7 @@ class AdministratorController extends Controller
             ->exists();
 
         if ($existingMenu) {
-            return back()->withErrors(  'Użytkownik już posiada menu.');
+            return back()->withErrors('Użytkownik już posiada menu.');
         }
 
         $menu->save();
@@ -1343,7 +1344,7 @@ class AdministratorController extends Controller
             ->exists();
 
         if ($existingMenu) {
-            return back()->withErrors(  'Użytkownik już posiada menu.');
+            return back()->withErrors('Użytkownik już posiada menu.');
         }
 
         $menu = new Menu();
@@ -1419,7 +1420,7 @@ class AdministratorController extends Controller
                 foreach ($existingMenuMeals as $existingMenuMeal) {
                     $existingMeal = $existingMenuMeal->meal;
                     if ($existingMeal->meal_category_id === $meal->meal_category_id) {
-                        return back()->withErrors(  'Istnieje już danie z tej samej kategorii w tym menu.');
+                        return back()->withErrors('Istnieje już danie z tej samej kategorii w tym menu.');
                     }
                 }
 
@@ -1459,7 +1460,7 @@ class AdministratorController extends Controller
             ->first();
 
         if ($existingMenuMeal) {
-            return back()->withErrors(  'Istnieje już danie z tej samej kategorii w tym menu.');
+            return back()->withErrors('Istnieje już danie z tej samej kategorii w tym menu.');
         }
 
         $menuMeal = new MenuMeal();
@@ -1525,7 +1526,7 @@ class AdministratorController extends Controller
             ->first();
 
         if ($existingDiseaseIngredient) {
-            return back()->withErrors( 'Ta choroba zawiera już ten składnik.');
+            return back()->withErrors('Ta choroba zawiera już ten składnik.');
         }
 
         $diseaseIngredient = new DiseaseIngredient();
@@ -1572,7 +1573,7 @@ class AdministratorController extends Controller
                     ->first();
 
                 if ($existingDiseaseIngredient) {
-                    return back()->withErrors( 'Ta choroba zawiera już ten składnik.');
+                    return back()->withErrors('Ta choroba zawiera już ten składnik.');
                 }
 
                 $diseaseIngredient->ingredient_id = $ingredient->id;
@@ -1591,6 +1592,121 @@ class AdministratorController extends Controller
         $diseaseIngredient->delete();
 
         return redirect()->route('administrator.diseaseIngredient')->with('success', 'Składnik został usunięty');
+    }
+
+    public function showUserShoppingList(Request $request)
+    {
+        $search = request('search');
+        $sort = $request->input('sort', 'id');
+        $order = $request->input('order', 'asc');
+
+        $shoppingList = ShoppingList::orderBy($sort, $order);
+
+        if ($search) {
+            $shoppingList->where(function ($query) use ($search) {
+                $query->where('ingredient_name', 'like', '%' . $search . '%')
+                    ->orWhere('id', $search)
+                    ->orWhere('quantity', 'like', '%' . $search . '%')
+                    ->orWhere('unit', 'like', '%' . $search . '%')
+                    ->orWhere('user_id', $search);
+            });
+        }
+
+        $shoppingList = $shoppingList->paginate(20);
+
+        return view('administrator.userShoppingList', compact('shoppingList', 'search', 'sort', 'order'));
+    }
+
+    public function editUserShoppingList($id)
+    {
+        $shoppingList = ShoppingList::findOrFail($id);
+
+        return view('administrator.editUserShoppingList', compact('shoppingList'));
+    }
+
+    public function updateUserShoppingList(Request $request, $id)
+    {
+        $shoppingList = ShoppingList::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'ingredient_name' => '',
+            'quantity' => 'nullable|regex:"^(?!0+$)[0-9]{1,4}$"',
+            'unit' => 'nullable',
+            'checked' => 'regex:"^[01]$"',
+        ], [
+            'quantity' => 'Pole ilość dopuszcza tylko cyrfy oraz nie może się składać z samych zer. Maksymalna długość to 4 znaki.',
+            'checked' => 'Pole checked dopuszcza tylko cyfry 0 lub 1',
+            'checked.required' => 'Pole nie może być puste.',
+        ]);
+
+        if ($request->has('ingredient_name')) {
+            $shoppingList->ingredient_name = $validatedData['ingredient_name'];
+        }
+
+        if ($request->has('quantity')) {
+            $shoppingList->quantity = $validatedData['quantity'];
+        }
+
+        if ($request->has('unit')) {
+            $shoppingList->unit = $validatedData['unit'];
+        }
+
+        if ($request->has('checked')) {
+            $shoppingList->checked = $validatedData['checked'];
+        }
+
+        $shoppingList->save();
+
+        return redirect()->route('administrator.userShoppingList')->with('success', 'Lista zakupów została zaktualizowana.');
+    }
+
+    public function showAddUserShoppingListView()
+    {
+        $users = User::all();
+        $shoppingList = ShoppingList::all();
+
+        return view('administrator.addUserShoppingList', compact('shoppingList', 'users'));
+    }
+
+    public function addUserShoppingList(Request $request)
+    {
+        $validatedData = $request->validate([
+            'ingredient_name' => '',
+            'quantity' => 'nullable|regex:"^(?!0+$)[0-9]{1,4}$"',
+            'unit' => 'nullable',
+            'checked' => 'regex:"^[01]$"',
+            'user_id' => 'required',
+        ], [
+            'quantity' => 'Pole ilość dopuszcza tylko cyrfy oraz nie może się składać z samych zer. Maksymalna długość to 4 znaki.',
+            'checked' => 'Pole checked dopuszcza tylko cyfry 0 lub 1',
+            'checked.required' => 'Pole nie może być puste.',
+        ]);
+
+        $user = User::findOrFail($validatedData['user_id']);
+        $ingredientName = $validatedData['ingredient_name'];
+        $quantity = $validatedData['quantity'];
+        $unit = $validatedData['unit'];
+        $checked = $validatedData['checked'];
+
+        $shoppingList = new ShoppingList();
+        $shoppingList->ingredient_name = $ingredientName;
+        $shoppingList->quantity = $quantity;
+        $shoppingList->unit = $unit;
+        $shoppingList->checked = $checked;
+        $shoppingList->user_id = $user->id;
+
+        $shoppingList->save();
+
+        return redirect()->route('administrator.userShoppingList')->with('success', 'Lista zakupów została dodana.');
+    }
+
+    public function removeUserShoppingList($shoppingListId)
+    {
+        $shoppingList = ShoppingList::find($shoppingListId);
+
+        $shoppingList->delete();
+
+        return redirect()->route('administrator.userShoppingList')->with('success', 'Lista zakupów została usunięta');
     }
 
 }
