@@ -28,6 +28,7 @@
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="/userPanel">Profil</a></li>
                         <li><a class="dropdown-item" href="/user/menu">Menu</a></li>
+                        <li><a class="dropdown-item" href="/user/shoppingList">Lista zakupów</a></li>
                         <li><a class="dropdown-item" href="/userPanel/profile">Ustawienia konta</a></li>
                     </ul>
                 @endif
@@ -120,6 +121,10 @@
 
         .navbar-nav .nav-item {
             margin: 0;
+        }
+
+        .dropdown-toggle::after{
+            display: none;
         }
 
         #login-button {

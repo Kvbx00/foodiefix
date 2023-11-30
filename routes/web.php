@@ -8,6 +8,7 @@ use App\Http\Controllers\AdministratorAuthController;
 use App\Http\Controllers\AdministratorController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\MealController;
+use App\Http\Controllers\ShoppingListController;
 
 
 Route::get('/', function () {
@@ -40,6 +41,12 @@ Route::post('/user/menu/create', [MenuController::class, 'createMenu'])->name('m
 
 Route::get('/user/menu/meal/{id}', [MealController::class, 'showMealView'])->name('meal.show')->middleware('auth');
 
+Route::get('/user/shoppingList', [ShoppingListController::class, 'showShoppingList'])->name('shoppingList.show')->middleware('auth');
+Route::delete('/user/shoppingList/{id}', [ShoppingListController::class, 'deleteItem'])->name('shoppingList.delete')->middleware('auth');
+Route::delete('/user/shoppingList', [ShoppingListController::class, 'deleteAllItems'])->name('shoppingList.deleteAll')->middleware('auth');
+Route::post('/user/shoppingList/add', [ShoppingListController::class, 'addItem'])->name('shoppingList.addItem')->middleware('auth');
+Route::post('/user/shoppingList/toggle/{id}', [ShoppingListController::class, 'toggleItem'])->name('shoppingList.toggleItem')->middleware('auth');
+
 Route::post('/userPanel/storeDiseases', [HealthDataController::class, 'storeDiseases'])->name('diseases.store')->middleware('auth');
 Route::delete('/userPanel/destroyDiseases/{id}', [HealthDataController::class, 'destroyDiseases'])->name('diseases.destroy')->middleware('auth');
 
@@ -60,7 +67,6 @@ Route::get('/admin/dashboard/userProfile', [AdministratorController::class, 'sho
 Route::get('/admin/dashboard/userProfile/{id}/edit', [AdministratorController::class, 'editUserProfile'])->name('administrator.editUserProfile')->middleware('admin');
 Route::put('/admin/dashboard/userProfile/{id}', [AdministratorController::class, 'updateUserProfile'])->name('administrator.updateUserProfile')->middleware('admin');
 Route::delete('/admin/dashboard/userProfile/removeUserProfile/{userId}', [AdministratorController::class, 'removeUserProfile'])->name('administrator.removeUserProfile')->middleware('admin');
-
 
 Route::get('/admin/dashboard/userDisease', [AdministratorController::class, 'showUserDisease'])->name('administrator.userDisease')->middleware('admin');
 Route::get('/admin/dashboard/userDisease/addUserDisease', [AdministratorController::class, 'showAddUserDiseaseView'])->name('administrator.addUserDisease')->middleware('admin');

@@ -15,6 +15,7 @@ class ShoppingList extends Model
         'ingredient_name',
         'quantity',
         'unit',
+        'checked',
     ];
 
     public function user()
