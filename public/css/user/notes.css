@@ -1,0 +1,68 @@
+.pagination a, .pagination span {
+    height: 25px;
+    width: 25px;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    margin-left: 7px;
+    text-decoration: none;
+    color: #000000;
+}
+
+.pagination .pagination-middle {
+    border-radius: 20px;
+    height: 25px;
+    width: 105px;
+    background-color: rgba(167, 201, 117, 0.3);
+    font-weight: 500;
+    text-align: center;
+    margin-left: 7px;
+    color: #7F7F7F;
+}
+
+.bi-file-earmark-plus-fill {
+    color: #fdc056;
+    font-size: 28px;
+}
+
+.bi-trash-fill {
+    color: #c1121f;
+}
+
+.delete-single{
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    z-index: 3;
+    position: relative;
+}
+
+.return {
+    border: 1px solid gold;
+    border-left: 6px solid gold;
+    background-color: #FFFFFF;
+    padding: 5px;
+}
+
+.return button {
+    border: none;
+    background-color: transparent;
+}
+
+.add {
+    border: none;
+    border-radius: 20px;
+    background-color: #6FAD55;
+}
+
+.search {
+    border: 1px solid gold;
+    border-left: 6px solid gold;
+    background-color: #FFFFFF;
+    padding: 5px;
+}
+
+.search:focus {
+    outline: none;
+}

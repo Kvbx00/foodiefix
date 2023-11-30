@@ -9,6 +9,7 @@ use App\Http\Controllers\AdministratorController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\MealController;
 use App\Http\Controllers\ShoppingListController;
+use App\Http\Controllers\NotesController;
 
 
 Route::get('/', function () {
@@ -46,6 +47,13 @@ Route::delete('/user/shoppingList/{id}', [ShoppingListController::class, 'delete
 Route::delete('/user/shoppingList', [ShoppingListController::class, 'deleteAllItems'])->name('shoppingList.deleteAll')->middleware('auth');
 Route::post('/user/shoppingList/add', [ShoppingListController::class, 'addItem'])->name('shoppingList.addItem')->middleware('auth');
 Route::post('/user/shoppingList/toggle/{id}', [ShoppingListController::class, 'toggleItem'])->name('shoppingList.toggleItem')->middleware('auth');
+
+Route::get('/user/notes', [NotesController::class, 'showNotes'])->name('notes.show')->middleware('auth');
+Route::delete('/user/notes/{id}', [NotesController::class, 'deleteNotes'])->name('notes.delete')->middleware('auth');
+Route::get('/user/notes/addNote', [NotesController::class, 'showAddNoteView'])->name('notes.add')->middleware('auth');
+Route::post('/user/notes/add', [NotesController::class, 'addNote'])->name('notes.save')->middleware('auth');
+Route::get('/user/notes/{id}/edit', [NotesController::class, 'editNote'])->name('note.edit')->middleware('auth');
+Route::put('/user/notes/{id}', [NotesController::class, 'updateNote'])->name('note.update')->middleware('auth');
 
 Route::post('/userPanel/storeDiseases', [HealthDataController::class, 'storeDiseases'])->name('diseases.store')->middleware('auth');
 Route::delete('/userPanel/destroyDiseases/{id}', [HealthDataController::class, 'destroyDiseases'])->name('diseases.destroy')->middleware('auth');
