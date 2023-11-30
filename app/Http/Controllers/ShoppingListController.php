@@ -36,7 +36,7 @@ class ShoppingListController extends Controller
         $shoppingListItem = ShoppingList::findOrFail($id);
         $shoppingListItem->delete();
 
-        return redirect()->back();
+        return redirect()->route('shoppingList.show');
     }
 
     public function deleteAllItems()
