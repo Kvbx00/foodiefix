@@ -68,12 +68,14 @@
     </div>
 
     <div class="row">
-        @foreach($shoppingList as $item)
+        @forelse($shoppingList as $item)
             <div class="col-md-4 mb-4">
                 <div class="card d-flex flex-row justify-content-between {{ $item->checked ? 'checked' : '' }}">
-                    <p id="item-{{ $item->id }}" class="fs-5 {{ $item->checked ? 'text-decoration-line-through' : '' }}">
-                        <input class="form-check-input me-3" type="checkbox" onchange="toggleItem({{ $item->id }})" {{ $item->checked ? 'checked' : '' }}>
-                        {{ $item->ingredient_name }} - {{ $item->quantity }} {{ $item->unit }}
+                    <p id="item-{{ $item->id }}"
+                       class="fs-5 {{ $item->checked ? 'text-decoration-line-through text-muted' : '' }}">
+                        <input class="form-check-input me-3" type="checkbox"
+                               onchange="toggleItem({{ $item->id }})" {{ $item->checked ? 'checked' : '' }}>
+                        {{ $item->ingredient_name }} {{ $item->quantity }} {{ $item->unit }}
                     </p>
                     <form action="{{ route('shoppingList.delete', $item->id) }}" method="post">
                         @csrf
@@ -82,7 +84,11 @@
                     </form>
                 </div>
             </div>
-        @endforeach
+        @empty
+            <div class="col-md-12 my-5">
+                <p class="text-center fs-5">Lista zakupów jest pusta.</p>
+            </div>
+        @endforelse
     </div>
     <div class="pagination d-flex justify-content-center mt-5">
         @if ($shoppingList->onFirstPage())
