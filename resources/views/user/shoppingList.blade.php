@@ -2,7 +2,7 @@
 <html lang="pl">
 
 @include('includes.head')
-<link rel="stylesheet" href="{{ asset('css/shoppingList.css') }}">
+<link rel="stylesheet" href="{{ asset('css/user/shoppingList.css') }}">
 
 <body>
 @include('includes.header')
