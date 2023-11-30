@@ -72,6 +72,8 @@ class ShoppingListController extends Controller
     {
         $shoppingListItem = ShoppingList::findOrFail($id);
         $shoppingListItem->update(['checked' => !$shoppingListItem->checked]);
+
+        return response()->json(['checked' => $shoppingListItem->checked]);
     }
 
 }

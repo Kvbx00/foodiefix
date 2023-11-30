@@ -71,7 +71,7 @@
         @foreach($shoppingList as $item)
             <div class="col-md-4 mb-4">
                 <div class="card d-flex flex-row justify-content-between {{ $item->checked ? 'checked' : '' }}">
-                    <p class="fs-5">
+                    <p id="item-{{ $item->id }}" class="fs-5 {{ $item->checked ? 'text-decoration-line-through' : '' }}">
                         <input class="form-check-input me-3" type="checkbox" onchange="toggleItem({{ $item->id }})" {{ $item->checked ? 'checked' : '' }}>
                         {{ $item->ingredient_name }} - {{ $item->quantity }} {{ $item->unit }}
                     </p>
@@ -127,5 +127,14 @@
             },
             body: JSON.stringify({}),
         })
+            .then(response => response.json())
+            .then(data => {
+                const itemElement = document.querySelector(`#item-${itemId}`);
+                if (data.checked) {
+                    itemElement.classList.add('text-decoration-line-through', 'text-muted');
+                } else {
+                    itemElement.classList.remove('text-decoration-line-through', 'text-muted');
+                }
+            });
     }
 </script>
