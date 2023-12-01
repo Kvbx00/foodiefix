@@ -113,3 +113,10 @@
 .select2-selection__arrow b {
     display: none !important;
 }
+
+.text {
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

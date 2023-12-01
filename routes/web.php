@@ -180,3 +180,10 @@ Route::put('/admin/dashboard/userShoppingList/{id}', [AdministratorController::c
 Route::delete('/admin/dashboard/userShoppingList/removeUserShoppingList/{shoppingListId}', [AdministratorController::class, 'removeUserShoppingList'])->name('administrator.removeUserShoppingList')->middleware('admin');
 Route::get('/admin/dashboard/userShoppingList/addUserShoppingList', [AdministratorController::class, 'showAddUserShoppingListView'])->name('administrator.addUserShoppingList')->middleware('admin');
 Route::post('/admin/dashboard/userShoppingList/add', [AdministratorController::class, 'addUserShoppingList'])->name('administrator.saveUserShoppingList')->middleware('admin');
+
+Route::get('/admin/dashboard/userNotes', [AdministratorController::class, 'showUserNotes'])->name('administrator.userNotes')->middleware('admin');
+Route::get('/admin/dashboard/userNotes/{id}/edit', [AdministratorController::class, 'editUserNotes'])->name('administrator.editUserNotes')->middleware('admin');
+Route::put('/admin/dashboard/userNotes/{id}', [AdministratorController::class, 'updateUserNotes'])->name('administrator.updateUserNotes')->middleware('admin');
+Route::delete('/admin/dashboard/userNotes/removeUserNotes/{noteId}', [AdministratorController::class, 'removeUserNotes'])->name('administrator.removeUserNotes')->middleware('admin');
+Route::get('/admin/dashboard/userNotes/addUserNotes', [AdministratorController::class, 'showAddUserNotesView'])->name('administrator.addUserNotes')->middleware('admin');
+Route::post('/admin/dashboard/userNotes/add', [AdministratorController::class, 'addUserNotes'])->name('administrator.saveUserNotes')->middleware('admin');

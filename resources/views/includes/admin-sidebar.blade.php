@@ -15,7 +15,8 @@
                     <li class="nav-item mb-1">
                         <button
                             class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed fw-semibold"
-                            data-bs-toggle="collapse" data-bs-target="#worker-collapse" aria-expanded="{{ Request::is('adminRegister') || Str::contains(Request::url(), 'admin/dashboard/adminProfile') ? 'true' : 'false' }}">
+                            data-bs-toggle="collapse" data-bs-target="#worker-collapse"
+                            aria-expanded="{{ Request::is('adminRegister') || Str::contains(Request::url(), 'admin/dashboard/adminProfile') ? 'true' : 'false' }}">
                             <i class="bi bi-person-fill-exclamation me-2"></i>
                             Pracownicy
                         </button>
@@ -39,7 +40,8 @@
                     <li class="nav-item mb-1">
                         <button
                             class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed fw-semibold"
-                            data-bs-toggle="collapse" data-bs-target="#profile-collapse" aria-expanded="{{ Request::is('admin/dashboard/juniorProfile') ? 'true' : 'false' }}">
+                            data-bs-toggle="collapse" data-bs-target="#profile-collapse"
+                            aria-expanded="{{ Request::is('admin/dashboard/juniorProfile') ? 'true' : 'false' }}">
                             <i class="bi bi-person-circle me-2"></i>
                             Twój profil
                         </button>
@@ -57,21 +59,24 @@
                 <li class="nav-item mb-1">
                     <button
                         class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed fw-semibold"
-                        data-bs-toggle="collapse" data-bs-target="#users-collapse" aria-expanded="{{Str::contains(Request::url(), ['admin/dashboard/userProfile', 'admin/dashboard/userDisease', 'admin/dashboard/userHealthData', 'admin/dashboard/userIngredientPreference', 'admin/dashboard/userCaloricNeed', 'admin/dashboard/userShoppingList']) ? 'true' : 'false' }}">
+                        data-bs-toggle="collapse" data-bs-target="#users-collapse"
+                        aria-expanded="{{Str::contains(Request::url(), ['admin/dashboard/userProfile', 'admin/dashboard/userDisease', 'admin/dashboard/userHealthData', 'admin/dashboard/userIngredientPreference', 'admin/dashboard/userCaloricNeed', 'admin/dashboard/userShoppingList', 'admin/dashboard/userNotes']) ? 'true' : 'false' }}">
                         <i class="bi bi-people-fill me-2"></i>
                         Użytkownicy
                     </button>
                     <div
-                        class="collapse {{ Str::contains(Request::url(), ['admin/dashboard/userProfile', 'admin/dashboard/userDisease', 'admin/dashboard/userHealthData', 'admin/dashboard/userIngredientPreference', 'admin/dashboard/userCaloricNeed', 'admin/dashboard/userShoppingList']) ? 'show' : '' }}"
+                        class="collapse {{ Str::contains(Request::url(), ['admin/dashboard/userProfile', 'admin/dashboard/userDisease', 'admin/dashboard/userHealthData', 'admin/dashboard/userIngredientPreference', 'admin/dashboard/userCaloricNeed', 'admin/dashboard/userShoppingList', 'admin/dashboard/userNotes']) ? 'show' : '' }}"
                         id="users-collapse">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small ms-3">
                             <li><a href="{{ url('admin/dashboard/userProfile') }}"
                                    class="nav-link link-dark d-flex align-items-center gap-2 {{ Str::contains(Request::url(), 'admin/dashboard/userProfile') ? 'active' : '' }}">Dane
                                     użytkowników</a></li>
                             <li><a href="{{ url('admin/dashboard/userDisease') }}"
-                                   class="nav-link link-dark d-flex align-items-center gap-2 {{ Str::contains(Request::url(), 'admin/dashboard/userDisease') ? 'active' : '' }}">Choroby</a></li>
+                                   class="nav-link link-dark d-flex align-items-center gap-2 {{ Str::contains(Request::url(), 'admin/dashboard/userDisease') ? 'active' : '' }}">Choroby</a>
+                            </li>
                             <li><a href="{{ url('admin/dashboard/userHealthData') }}"
-                                   class="nav-link link-dark d-flex align-items-center gap-2 {{ Str::contains(Request::url(), 'admin/dashboard/userHealthData') ? 'active' : '' }}">Dane zdrowotne</a>
+                                   class="nav-link link-dark d-flex align-items-center gap-2 {{ Str::contains(Request::url(), 'admin/dashboard/userHealthData') ? 'active' : '' }}">Dane
+                                    zdrowotne</a>
                             </li>
                             <li><a href="{{ url('admin/dashboard/userIngredientPreference') }}"
                                    class="nav-link link-dark d-flex align-items-center gap-2 {{ Str::contains(Request::url(), 'admin/dashboard/userIngredientPreference') ? 'active' : '' }}">Preferencje
@@ -80,24 +85,32 @@
                                    class="nav-link link-dark d-flex align-items-center gap-2 {{ Str::contains(Request::url(), 'admin/dashboard/userCaloricNeed') ? 'active' : '' }}">Zapotrzebowania
                                     kaloryczne</a></li>
                             <li><a href="{{ url('admin/dashboard/userShoppingList') }}"
-                                   class="nav-link link-dark d-flex align-items-center gap-2 {{ Str::contains(Request::url(), 'admin/dashboard/userShoppingList') ? 'active' : '' }}">Listy zakupów</a></li>
+                                   class="nav-link link-dark d-flex align-items-center gap-2 {{ Str::contains(Request::url(), 'admin/dashboard/userShoppingList') ? 'active' : '' }}">Listy
+                                    zakupów</a></li>
+                            <li><a href="{{ url('admin/dashboard/userNotes') }}"
+                                   class="nav-link link-dark d-flex align-items-center gap-2 {{ Str::contains(Request::url(), 'admin/dashboard/userNotes') ? 'active' : '' }}">Notatki</a>
+                            </li>
                         </ul>
                     </div>
                 </li>
                 <li class="nav-item mb-1">
                     <button
                         class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed fw-semibold"
-                        data-bs-toggle="collapse" data-bs-target="#diseases-collapse" aria-expanded="{{Str::contains(Request::url(), ['admin/dashboard/disease', 'admin/dashboard/diseaseIngredient']) ? 'true' : 'false' }}">
+                        data-bs-toggle="collapse" data-bs-target="#diseases-collapse"
+                        aria-expanded="{{Str::contains(Request::url(), ['admin/dashboard/disease', 'admin/dashboard/diseaseIngredient']) ? 'true' : 'false' }}">
                         <i class="bi bi-heart-pulse-fill me-2"></i>
                         Choroby
                     </button>
-                    <div class="collapse {{ Str::contains(Request::url(), ['admin/dashboard/disease']) ? 'show' : '' }}" id="diseases-collapse" style="">
+                    <div class="collapse {{ Str::contains(Request::url(), ['admin/dashboard/disease']) ? 'show' : '' }}"
+                         id="diseases-collapse" style="">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small ms-3">
                             <li><a href="{{ url('admin/dashboard/disease') }}"
-                                   class="nav-link link-dark d-flex align-items-center gap-2 {{ Request::is('admin/dashboard/disease') || Request::is('admin/dashboard/disease/addDisease') || Request::is('admin/dashboard/disease/*/edit') ? 'active' : '' }}">Lista chorób</a>
+                                   class="nav-link link-dark d-flex align-items-center gap-2 {{ Request::is('admin/dashboard/disease') || Request::is('admin/dashboard/disease/addDisease') || Request::is('admin/dashboard/disease/*/edit') ? 'active' : '' }}">Lista
+                                    chorób</a>
                             </li>
                             <li><a href="{{ url('admin/dashboard/diseaseIngredient') }}"
-                                   class="nav-link link-dark d-flex align-items-center gap-2 {{ Str::contains(Request::url(), 'admin/dashboard/diseaseIngredient') ? 'active' : '' }}">Niechciane składniki</a>
+                                   class="nav-link link-dark d-flex align-items-center gap-2 {{ Str::contains(Request::url(), 'admin/dashboard/diseaseIngredient') ? 'active' : '' }}">Niechciane
+                                    składniki</a>
                             </li>
                         </ul>
                     </div>
@@ -105,14 +118,18 @@
                 <li class="nav-item mb-1">
                     <button
                         class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed fw-semibold"
-                        data-bs-toggle="collapse" data-bs-target="#meal-collapse" aria-expanded="{{Str::contains(Request::url(), ['admin/dashboard/meal', 'admin/dashboard/mealCategory', 'admin/dashboard/nutritionalvalue', 'admin/dashboard/mealIngredient']) ? 'true' : 'false' }}">
+                        data-bs-toggle="collapse" data-bs-target="#meal-collapse"
+                        aria-expanded="{{Str::contains(Request::url(), ['admin/dashboard/meal', 'admin/dashboard/mealCategory', 'admin/dashboard/nutritionalvalue', 'admin/dashboard/mealIngredient']) ? 'true' : 'false' }}">
                         <i class="bi bi-egg-fried me-2"></i>
                         Dania
                     </button>
-                    <div class="collapse {{ Str::contains(Request::url(), ['admin/dashboard/meal', 'admin/dashboard/mealCategory', 'admin/dashboard/nutritionalvalue', 'admin/dashboard/mealIngredient']) ? 'show' : '' }}" id="meal-collapse" style="">
+                    <div
+                        class="collapse {{ Str::contains(Request::url(), ['admin/dashboard/meal', 'admin/dashboard/mealCategory', 'admin/dashboard/nutritionalvalue', 'admin/dashboard/mealIngredient']) ? 'show' : '' }}"
+                        id="meal-collapse" style="">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small ms-3">
                             <li><a href="{{ url('admin/dashboard/meal') }}"
-                                   class="nav-link link-dark d-flex align-items-center gap-2 {{ Request::is('admin/dashboard/meal') || Request::is('admin/dashboard/meal/addMeal') || Request::is('admin/dashboard/meal/*/edit')  ? 'active' : '' }}">Lista dań</a>
+                                   class="nav-link link-dark d-flex align-items-center gap-2 {{ Request::is('admin/dashboard/meal') || Request::is('admin/dashboard/meal/addMeal') || Request::is('admin/dashboard/meal/*/edit')  ? 'active' : '' }}">Lista
+                                    dań</a>
                             </li>
                             <li><a href="{{ url('admin/dashboard/mealCategory') }}"
                                    class="nav-link link-dark d-flex align-items-center gap-2 {{ Str::contains(Request::url(), 'admin/dashboard/mealCategory') ? 'active' : '' }}">Kategorie</a>
@@ -122,7 +139,8 @@
                                     odżywcze</a>
                             </li>
                             <li><a href="{{ url('admin/dashboard/mealIngredient') }}"
-                                   class="nav-link link-dark d-flex align-items-center gap-2 {{ Str::contains(Request::url(), 'admin/dashboard/mealIngredient') ? 'active' : '' }}">Składniki w
+                                   class="nav-link link-dark d-flex align-items-center gap-2 {{ Str::contains(Request::url(), 'admin/dashboard/mealIngredient') ? 'active' : '' }}">Składniki
+                                    w
                                     daniach</a>
                             </li>
                         </ul>
@@ -131,11 +149,14 @@
                 <li class="nav-item mb-1">
                     <button
                         class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed fw-semibold"
-                        data-bs-toggle="collapse" data-bs-target="#ingredients-collapse" aria-expanded="{{Str::contains(Request::url(), ['admin/dashboard/ingredient', 'admin/dashboard/ingredientCategory']) ? 'true' : 'false' }}">
+                        data-bs-toggle="collapse" data-bs-target="#ingredients-collapse"
+                        aria-expanded="{{Str::contains(Request::url(), ['admin/dashboard/ingredient', 'admin/dashboard/ingredientCategory']) ? 'true' : 'false' }}">
                         <i class="bi bi-egg-fill me-2"></i>
                         Składniki
                     </button>
-                    <div class="collapse {{ Str::contains(Request::url(), ['admin/dashboard/ingredient', 'admin/dashboard/ingredientCategory']) ? 'show' : '' }}" id="ingredients-collapse" style="">
+                    <div
+                        class="collapse {{ Str::contains(Request::url(), ['admin/dashboard/ingredient', 'admin/dashboard/ingredientCategory']) ? 'show' : '' }}"
+                        id="ingredients-collapse" style="">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small ms-3">
                             <li><a href="{{ url('admin/dashboard/ingredient') }}"
                                    class="nav-link link-dark d-flex align-items-center gap-2 {{ Request::is('admin/dashboard/ingredient') || Request::is('admin/dashboard/ingredient/addIngredient') || Request::is('admin/dashboard/ingredient/*/edit')  ? 'active' : '' }}">Lista
@@ -150,17 +171,22 @@
                 <li class="nav-item">
                     <button
                         class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed fw-semibold"
-                        data-bs-toggle="collapse" data-bs-target="#menu-collapse" aria-expanded="{{Str::contains(Request::url(), ['admin/dashboard/userMenu', 'admin/dashboard/userMenuMeal']) ? 'true' : 'false' }}">
+                        data-bs-toggle="collapse" data-bs-target="#menu-collapse"
+                        aria-expanded="{{Str::contains(Request::url(), ['admin/dashboard/userMenu', 'admin/dashboard/userMenuMeal']) ? 'true' : 'false' }}">
                         <i class="bi bi-bag-fill me-2"></i>
                         Menu
                     </button>
-                    <div class="collapse {{ Str::contains(Request::url(), ['admin/dashboard/userMenu', 'admin/dashboard/userMenuMeal']) ? 'show' : '' }}" id="menu-collapse" style="">
+                    <div
+                        class="collapse {{ Str::contains(Request::url(), ['admin/dashboard/userMenu', 'admin/dashboard/userMenuMeal']) ? 'show' : '' }}"
+                        id="menu-collapse" style="">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small ms-3">
                             <li><a href="{{ url('admin/dashboard/userMenu') }}"
-                                   class="nav-link link-dark d-flex align-items-center gap-2 {{ Request::is('admin/dashboard/userMenu') || Request::is('admin/dashboard/userMenu/addUserMenu') || Request::is('admin/dashboard/userMenu/*/edit')  ? 'active' : '' }}">Lista menu</a>
+                                   class="nav-link link-dark d-flex align-items-center gap-2 {{ Request::is('admin/dashboard/userMenu') || Request::is('admin/dashboard/userMenu/addUserMenu') || Request::is('admin/dashboard/userMenu/*/edit')  ? 'active' : '' }}">Lista
+                                    menu</a>
                             </li>
                             <li><a href="{{ url('admin/dashboard/userMenuMeal') }}"
-                                   class="nav-link link-dark d-flex align-items-center gap-2 {{ Str::contains(Request::url(), 'admin/dashboard/userMenuMeal') ? 'active' : '' }}">Dania w menu</a>
+                                   class="nav-link link-dark d-flex align-items-center gap-2 {{ Str::contains(Request::url(), 'admin/dashboard/userMenuMeal') ? 'active' : '' }}">Dania
+                                    w menu</a>
                             </li>
                         </ul>
                     </div>

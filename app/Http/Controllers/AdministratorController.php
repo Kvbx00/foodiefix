@@ -15,6 +15,7 @@ use App\Models\MealCategory;
 use App\Models\MealIngredient;
 use App\Models\Menu;
 use App\Models\MenuMeal;
+use App\Models\Notes;
 use App\Models\Nutritionalvalue;
 use App\Models\ShoppingList;
 use App\Models\UserDisease;
@@ -1709,4 +1710,91 @@ class AdministratorController extends Controller
         return redirect()->route('administrator.userShoppingList')->with('success', 'Lista zakupów została usunięta');
     }
 
+    public function showUserNotes(Request $request)
+    {
+        $search = request('search');
+        $sort = $request->input('sort', 'id');
+        $order = $request->input('order', 'asc');
+
+        $notes = Notes::orderBy($sort, $order);
+
+        if ($search) {
+            $notes->where(function ($query) use ($search) {
+                $query->where('title', 'like', '%' . $search . '%')
+                    ->orWhere('id', $search)
+                    ->orWhere('text', 'like', '%' . $search . '%')
+                    ->orWhere('user_id', $search);
+            });
+        }
+
+        $notes = $notes->paginate(20);
+
+        return view('administrator.userNotes', compact('notes', 'search', 'sort', 'order'));
+    }
+
+    public function editUserNotes($id)
+    {
+        $notes = Notes::findOrFail($id);
+
+        return view('administrator.editUserNotes', compact('notes'));
+    }
+
+    public function updateUserNotes(Request $request, $id)
+    {
+        $notes = Notes::findOrFail($id);
+
+        $validatedData = $request->validate([
+            'title' => 'max:200',
+            'text' => 'nullable|max:5000',
+        ]);
+
+        $notes->title = $validatedData['title'] ?: 'Bez tytułu';
+
+        if ($request->has('text')) {
+            $notes->text = $validatedData['text'];
+        }
+
+        $notes->save();
+
+        return redirect()->route('administrator.userNotes')->with('success', 'Notatka została zaktualizowana.');
+    }
+
+    public function showAddUserNotesView()
+    {
+        $users = User::all();
+        $notes = Notes::all();
+
+        return view('administrator.addUserNotes', compact('notes', 'users'));
+    }
+
+    public function addUserNotes(Request $request)
+    {
+        $validatedData = $request->validate([
+            'title' => 'max:200',
+            'text' => 'nullable|max:5000',
+            'user_id' => 'required',
+        ]);
+
+        $user = User::findOrFail($validatedData['user_id']);
+        $title = $validatedData['title'] ?: 'Bez tytułu';
+        $text = $validatedData['text'];
+
+        $notes = new Notes();
+        $notes->title = $title;
+        $notes->text = $text;
+        $notes->user_id = $user->id;
+
+        $notes->save();
+
+        return redirect()->route('administrator.userNotes')->with('success', 'Notatka została dodana.');
+    }
+
+    public function removeUserNotes($noteId)
+    {
+        $notes = Notes::find($noteId);
+
+        $notes->delete();
+
+        return redirect()->route('administrator.userNotes')->with('success', 'Notatka została usunięta');
+    }
 }
