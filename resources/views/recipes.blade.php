@@ -79,26 +79,33 @@
             $(".categories").removeClass("active-category");
             $(".categories[href*='category=" + selectedCategory + "']").addClass("active-category");
         }
-    });
 
-    $("#owl").owlCarousel({
-        nav: true,
-        navText: ["<i class='bi bi-caret-left'></i>", "<i class='bi bi-caret-right'></i>"],
-        dots: false,
-        mouseDrag: false,
-        responsive: {
-            0: {
-                items: 1
-            },
-            600: {
-                items: 3
-            },
-            1000: {
-                items: 5
-            },
-            1200: {
-                items: 5
+        var owl = $("#owl");
+        owl.owlCarousel({
+            nav: true,
+            navText: ["<i class='bi bi-caret-left'></i>", "<i class='bi bi-caret-right'></i>"],
+            dots: false,
+            mouseDrag: false,
+            responsive: {
+                0: {
+                    items: 1
+                },
+                600: {
+                    items: 3
+                },
+                1000: {
+                    items: 5
+                },
+                1200: {
+                    items: 5
+                }
             }
-        }
-    })
+        });
+
+        var activeCategoryIndex = $(".categories").index($(".active-category"));
+        var visibleItems = owl.data('owl.carousel').options.items;
+        var centerIndex = Math.floor(visibleItems / 2);
+        var scrollToIndex = activeCategoryIndex - centerIndex;
+        owl.trigger('to.owl.carousel', [scrollToIndex, 0, true]);
+    });
 </script>
