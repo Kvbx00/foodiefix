@@ -30,7 +30,7 @@
                 <div class="row g-3 align-items-center">
                     <div class="input">
                         <label for="name" class="col-form-label">Przepis</label>
-                        <textarea id="recipe" name="recipe" class="form-control" required>
+                        <textarea id="recipe" name="recipe" class="form-control" rows="12" required>
                         </textarea>
                     </div>
                 </div>

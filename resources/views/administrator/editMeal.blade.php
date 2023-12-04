@@ -33,7 +33,7 @@
                     <div class="input">
                         <label for="recipe" class="col-form-label">Przepis</label>
                         <textarea id="recipe" name="recipe" required
-                                  class="form-control">{{$meal->recipe}}
+                                  class="form-control" rows="12">{{$meal->recipe}}
                         </textarea>
                     </div>
                 </div>
