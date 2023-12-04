@@ -173,6 +173,9 @@
             monday.setDate(monday.getDate() + daysUntilMonday);
 
             let timeRemaining = monday.getTime() - now.getTime();
+            if (now > monday) {
+                timeRemaining += 7 * 24 * 60 * 60 * 1000;
+            }
             let days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
             let hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             let minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
