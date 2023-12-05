@@ -28,7 +28,7 @@
                 <p class="fw-normal" style="font-size:50px; letter-spacing: 1px">Składniki. <span
                         class="text-body-secondary">Wszystko tak jak lubisz.</span></p>
                 <p class="lead">Dostosujemy jadłospis
-                    do twoich potrzeb! Możesz wybrać do 5-ciu składników których nie lubisz, a my wykluczymy je z twoich
+                    do twoich potrzeb! Możesz wybrać jakich składników nie lubisz, a my wykluczymy je z twoich
                     dań!</p>
             </div>
             <div class="col-md-5 d-flex justify-content-center">
