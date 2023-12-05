@@ -38,14 +38,14 @@
                         </div>
                         <div class="d-flex align-items-center justify-content-center mb-2">
                             <div class="col-6 d-flex justify-content-center">
-                                <label for="diastolicBloodPressure">Rozkurczowe ciśnienie krwi</label>
+                                <label for="systolicBloodPressure">Skurczowe ciśnienie krwi</label>
                             </div>
                             <div class="col-6 d-flex justify-content-center">
-                                <select name="diastolicBloodPressure" id="diastolicBloodPressure" class="select2"
+                                <select name="systolicBloodPressure" id="systolicBloodPressure" class="select2"
                                         data-select-search="true">
                                     @for ($i = 70; $i <= 160; $i++)
                                         <option
-                                            value="{{ $i }}" {{ old('diastolicBloodPressure', $lastValues['diastolicBloodPressure']) == $i ? 'selected' : '' }}>{{ $i }}
+                                            value="{{ $i }}" {{ old('systolicBloodPressure', $lastValues['systolicBloodPressure']) == $i ? 'selected' : '' }}>{{ $i }}
                                             mmHG
                                         </option>
                                     @endfor
@@ -54,14 +54,14 @@
                         </div>
                         <div class="d-flex align-items-center justify-content-center mb-2">
                             <div class="col-6 d-flex justify-content-center">
-                                <label for="systolicBloodPressure">Skurczowe ciśnienie krwi</label>
+                                <label for="diastolicBloodPressure">Rozkurczowe ciśnienie krwi</label>
                             </div>
                             <div class="col-6 d-flex justify-content-center">
-                                <select name="systolicBloodPressure" id="systolicBloodPressure" class="select2"
+                                <select name="diastolicBloodPressure" id="diastolicBloodPressure" class="select2"
                                         data-select-search="true">
                                     @for ($i = 50; $i <= 110; $i++)
                                         <option
-                                            value="{{ $i }}" {{ old('systolicBloodPressure', $lastValues['systolicBloodPressure']) == $i ? 'selected' : '' }}>{{ $i }}
+                                            value="{{ $i }}" {{ old('diastolicBloodPressure', $lastValues['diastolicBloodPressure']) == $i ? 'selected' : '' }}>{{ $i }}
                                             mmHG
                                         </option>
                                     @endfor
@@ -97,8 +97,8 @@
                         <tr class="d-flex">
                             <th class="col-2">Data</th>
                             <th class="col-2">Waga</th>
-                            <th class="col-3">Ciśnienie roz.</th>
                             <th class="col-3">Ciśnienie skur.</th>
+                            <th class="col-3">Ciśnienie roz.</th>
                             <th class="col-2">Puls</th>
                         </tr>
                         </thead>
@@ -107,8 +107,8 @@
                             <tr class="d-flex">
                                 <td class="col-2">{{ $measurement->date }}</td>
                                 <td class="col-2">{{ $measurement->weight }}</td>
-                                <td class="col-3">{{ $measurement->diastolicBloodPressure }}</td>
                                 <td class="col-3">{{ $measurement->systolicBloodPressure }}</td>
+                                <td class="col-3">{{ $measurement->diastolicBloodPressure }}</td>
                                 <td class="col-2">{{ $measurement->pulse }}</td>
                             </tr>
                         @endforeach

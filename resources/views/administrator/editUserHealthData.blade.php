@@ -20,61 +20,61 @@
                 <h1 class="h2">Edycja danych zdrowotnych użytkownika</h1>
             </div>
 
-                <form method="POST" action="{{ route('administrator.updateUserHealthData', $healthData->id) }}">
-                    @csrf
-                    @method('PUT')
+            <form method="POST" action="{{ route('administrator.updateUserHealthData', $healthData->id) }}">
+                @csrf
+                @method('PUT')
 
-                    <div class="row g-3 align-items-center">
-                        <div class="input">
-                            <label for="weight" class="col-form-label">Waga</label>
-                            <select name="weight" id="weight" class="form-control">
-                                @for ($i = 30; $i <= 200; $i++)
-                                    <option value="{{ $i }}" {{ $healthData->weight == $i ? 'selected' : '' }}>{{ $i }}
-                                        kg
-                                    </option>
-                                @endfor
-                            </select>
-                        </div>
+                <div class="row g-3 align-items-center">
+                    <div class="input">
+                        <label for="weight" class="col-form-label">Waga</label>
+                        <select name="weight" id="weight" class="form-control">
+                            @for ($i = 30; $i <= 200; $i++)
+                                <option value="{{ $i }}" {{ $healthData->weight == $i ? 'selected' : '' }}>{{ $i }}
+                                    kg
+                                </option>
+                            @endfor
+                        </select>
                     </div>
-                    <div class="row g-3 align-items-center">
-                        <div class="input">
-                            <label for="diastolicBloodPressure" class="col-form-label">Rozkurczowe ciśnienie krwi</label>
-                            <select name="diastolicBloodPressure" id="diastolicBloodPressure" class="form-control">
-                                @for ($i = 70; $i <= 160; $i++)
-                                    <option
-                                        value="{{ $i }}" {{ $healthData->diastolicBloodPressure == $i ? 'selected' : '' }}>{{ $i }}
-                                        mmHG
-                                    </option>
-                                @endfor
-                            </select>
-                        </div>
+                </div>
+                <div class="row g-3 align-items-center">
+                    <div class="input">
+                        <label for="systolicBloodPressure" class="col-form-label">Skurczowe ciśnienie krwi</label>
+                        <select name="systolicBloodPressure" id="systolicBloodPressure" class="form-control">
+                            @for ($i = 70; $i <= 160; $i++)
+                                <option
+                                    value="{{ $i }}" {{ $healthData->systolicBloodPressure == $i ? 'selected' : '' }}>{{ $i }}
+                                    mmHG
+                                </option>
+                            @endfor
+                        </select>
                     </div>
-                    <div class="row g-3 align-items-center">
-                        <div class="input">
-                            <label for="systolicBloodPressure" class="col-form-label">Skurczowe ciśnienie krwi</label>
-                            <select name="systolicBloodPressure" id="systolicBloodPressure" class="form-control">
-                                @for ($i = 50; $i <= 110; $i++)
-                                    <option
-                                        value="{{ $i }}" {{ $healthData->systolicBloodPressure == $i ? 'selected' : '' }}>{{ $i }}
-                                        mmHG
-                                    </option>
-                                @endfor
-                            </select>
-                        </div>
+                </div>
+                <div class="row g-3 align-items-center">
+                    <div class="input">
+                        <label for="diastolicBloodPressure" class="col-form-label">Rozkurczowe ciśnienie krwi</label>
+                        <select name="diastolicBloodPressure" id="diastolicBloodPressure" class="form-control">
+                            @for ($i = 50; $i <= 110; $i++)
+                                <option
+                                    value="{{ $i }}" {{ $healthData->diastolicBloodPressure == $i ? 'selected' : '' }}>{{ $i }}
+                                    mmHG
+                                </option>
+                            @endfor
+                        </select>
                     </div>
-                    <div class="row g-3 align-items-center">
-                        <div class="input">
-                            <label for="pulse" class="col-form-label">Puls</label>
-                            <select name="pulse" id="pulse" class="form-control">
-                                @for ($i = 40; $i <= 100; $i++)
-                                    <option
-                                        value="{{ $i }}" {{ $healthData->pulse == $i ? 'selected' : '' }}>{{ $i }}</option>
-                                @endfor
-                            </select>
-                        </div>
+                </div>
+                <div class="row g-3 align-items-center">
+                    <div class="input">
+                        <label for="pulse" class="col-form-label">Puls</label>
+                        <select name="pulse" id="pulse" class="form-control">
+                            @for ($i = 40; $i <= 100; $i++)
+                                <option
+                                    value="{{ $i }}" {{ $healthData->pulse == $i ? 'selected' : '' }}>{{ $i }}</option>
+                            @endfor
+                        </select>
                     </div>
-                    <button type="submit" class="btn btn-secondary my-3">Zapisz zmiany</button>
-                </form>
+                </div>
+                <button type="submit" class="btn btn-secondary my-3">Zapisz zmiany</button>
+            </form>
 
         </main>
     </div>

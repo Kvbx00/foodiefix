@@ -35,12 +35,12 @@
                                 Waga
                             </a></th>
                         <th scope="col">
-                            <a href="{{ route('administrator.userHealthData', ['sort' => 'diastolicBloodPressure', 'order' => $order === 'asc' ? 'desc' : 'asc']) }}">
-                                Rozkurczowe ciśnienie krwi
-                            </a></th>
-                        <th scope="col">
                             <a href="{{ route('administrator.userHealthData', ['sort' => 'systolicBloodPressure', 'order' => $order === 'asc' ? 'desc' : 'asc']) }}">
                                 Skurczowe ciśnienie krwi
+                            </a></th>
+                        <th scope="col">
+                            <a href="{{ route('administrator.userHealthData', ['sort' => 'diastolicBloodPressure', 'order' => $order === 'asc' ? 'desc' : 'asc']) }}">
+                                Rozkurczowe ciśnienie krwi
                             </a></th>
                         <th scope="col">
                             <a href="{{ route('administrator.userHealthData', ['sort' => 'pulse', 'order' => $order === 'asc' ? 'desc' : 'asc']) }}">
@@ -63,8 +63,8 @@
                         <tr>
                             <td>{{ $userHealthData->id }}</td>
                             <td>{{ $userHealthData->weight }}</td>
-                            <td>{{ $userHealthData->diastolicBloodPressure }}</td>
                             <td>{{ $userHealthData->systolicBloodPressure }}</td>
+                            <td>{{ $userHealthData->diastolicBloodPressure }}</td>
                             <td>{{ $userHealthData->pulse }}</td>
                             <td>{{ $userHealthData->date }}</td>
                             <td>{{ $userHealthData->user_id }}</td>
