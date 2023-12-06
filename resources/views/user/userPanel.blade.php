@@ -145,7 +145,7 @@
     <div class="row px-5 justify-content-center">
 
         <div class="col-12 d-flex justify-content-center mb-2">
-            <p class="fw-normal text-center" style="font-size:40px; letter-spacing: 1px">Choroby</p>
+            <p class="fw-normal text-center" style="font-size:40px; letter-spacing: 1px">Preferencje żywieniowe / choroby</p>
         </div>
 
         <div class="card py-5">
@@ -154,7 +154,7 @@
                     @if (auth()->user()->diseases->count() < 3)
                         <div>
                             <p class="fw-normal text-center" style="font-size:30px; letter-spacing: 1px">Dostępne
-                                choroby</p>
+                                opcje</p>
                         </div>
                         <form method="post" action="{{ route('diseases.store') }}">
                             <div class="mt-3">
@@ -170,13 +170,13 @@
                             </div>
                         </form>
                     @else
-                        <p>Osiągnąłeś limit wybranych chorób (maksymalnie 3).</p>
+                        <p>Osiągnąłeś limit wybranych preferencji (maksymalnie 3).</p>
                     @endif
                 </div>
                 <div class="col-md-6 d-flex flex-column align-items-center">
                     <div>
                         <p class="fw-normal text-center" style="font-size:30px; letter-spacing: 1px">Twoje
-                            choroby</p>
+                            wybory</p>
                     </div>
                     <div>
                         @if(auth()->check() && auth()->user()->diseases->count() > 0)
