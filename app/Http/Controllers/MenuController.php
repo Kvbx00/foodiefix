@@ -65,7 +65,7 @@ class MenuController extends Controller
         }
 
         Menu::where('user_id', $user->id)
-            ->whereBetween('created_at', [now()->startOfWeek()->subWeek(), now()->endOfWeek()->subWeek()])
+            ->where('created_at', '<', now()->startOfWeek())
             ->get()
             ->each(function ($menu) {
                 $menu->menuMeals()->delete();
