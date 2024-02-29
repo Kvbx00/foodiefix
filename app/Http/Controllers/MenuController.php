@@ -90,6 +90,7 @@ class MenuController extends Controller
         ];
 
         $maxTries = 500;
+        $successfulDays = 0;
 
         foreach ($daysOfWeek as $index => $day) {
             $tries = 0;
@@ -159,10 +160,22 @@ class MenuController extends Controller
                             }
                         }
                     }
+                    $successfulDays++;
                     break;
                 }
                 $tries++;
             }
+        }
+        if ($successfulDays < count($daysOfWeek)) {
+            Menu::where('user_id', $user->id)
+                ->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()])
+                ->get()
+                ->each(function ($menu) {
+                    $menu->menuMeals()->delete();
+                    $menu->delete();
+                });
+
+            return back()->withErrors('Menu nie zostało utworzone dla twoich preferencji, spróbuj ponownie.');
         }
         return redirect()->route('menu.show');
     }
