@@ -337,6 +337,9 @@
         },
         options: {
             maintainAspectRatio: false,
+            onResize: function(chart, size) {
+                chart.canvas.parentNode.style.height = '600px';
+            },
             plugins: {
                 legend: {
                     labels: {
