@@ -21,62 +21,50 @@
                 <div class="card col-10 d-flex h-100 align-items-center justify-content-center">
                     <form class="col-10" method="POST" action="{{ route('measurements.store') }}">
                         @csrf
-                        <div class="d-flex align-items-center justify-content-center mb-2 mt-4">
-                            <div class="col-6 d-flex justify-content-center">
+                        <div class="d-flex flex-column flex-md-row align-items-center justify-content-center mb-2 mt-4">
+                            <div class="col-12 col-md-6 d-flex justify-content-center">
                                 <label for="weight">Waga</label>
                             </div>
-                            <div class="col-6 d-flex justify-content-center">
+                            <div class="col-12 col-md-6 d-flex justify-content-center">
                                 <select name="weight" id="weight" class="select2" data-select-search="true">
                                     @for ($i = 30; $i <= 200; $i++)
-                                        <option
-                                            value="{{ $i }}" {{ old('weight', $lastValues['weight']) == $i ? 'selected' : '' }}>{{ $i }}
-                                            kg
-                                        </option>
+                                        <option value="{{ $i }}" {{ old('weight', $lastValues['weight']) == $i ? 'selected' : '' }}>{{ $i }} kg</option>
                                     @endfor
                                 </select>
                             </div>
                         </div>
-                        <div class="d-flex align-items-center justify-content-center mb-2">
-                            <div class="col-6 d-flex justify-content-center">
+                        <div class="d-flex flex-column flex-md-row align-items-center justify-content-center mb-2">
+                            <div class="col-12 col-md-6 d-flex justify-content-center">
                                 <label for="systolicBloodPressure">Skurczowe ciśnienie krwi</label>
                             </div>
-                            <div class="col-6 d-flex justify-content-center">
-                                <select name="systolicBloodPressure" id="systolicBloodPressure" class="select2"
-                                        data-select-search="true">
+                            <div class="col-12 col-md-6 d-flex justify-content-center">
+                                <select name="systolicBloodPressure" id="systolicBloodPressure" class="select2" data-select-search="true">
                                     @for ($i = 70; $i <= 160; $i++)
-                                        <option
-                                            value="{{ $i }}" {{ old('systolicBloodPressure', $lastValues['systolicBloodPressure']) == $i ? 'selected' : '' }}>{{ $i }}
-                                            mmHG
-                                        </option>
+                                        <option value="{{ $i }}" {{ old('systolicBloodPressure', $lastValues['systolicBloodPressure']) == $i ? 'selected' : '' }}>{{ $i }} mmHG</option>
                                     @endfor
                                 </select>
                             </div>
                         </div>
-                        <div class="d-flex align-items-center justify-content-center mb-2">
-                            <div class="col-6 d-flex justify-content-center">
+                        <div class="d-flex flex-column flex-md-row align-items-center justify-content-center mb-2">
+                            <div class="col-12 col-md-6 d-flex justify-content-center">
                                 <label for="diastolicBloodPressure">Rozkurczowe ciśnienie krwi</label>
                             </div>
-                            <div class="col-6 d-flex justify-content-center">
-                                <select name="diastolicBloodPressure" id="diastolicBloodPressure" class="select2"
-                                        data-select-search="true">
+                            <div class="col-12 col-md-6 d-flex justify-content-center">
+                                <select name="diastolicBloodPressure" id="diastolicBloodPressure" class="select2" data-select-search="true">
                                     @for ($i = 50; $i <= 110; $i++)
-                                        <option
-                                            value="{{ $i }}" {{ old('diastolicBloodPressure', $lastValues['diastolicBloodPressure']) == $i ? 'selected' : '' }}>{{ $i }}
-                                            mmHG
-                                        </option>
+                                        <option value="{{ $i }}" {{ old('diastolicBloodPressure', $lastValues['diastolicBloodPressure']) == $i ? 'selected' : '' }}>{{ $i }} mmHG</option>
                                     @endfor
                                 </select>
                             </div>
                         </div>
-                        <div class="d-flex align-items-center justify-content-center">
-                            <div class="col-6 d-flex justify-content-center">
+                        <div class="d-flex flex-column flex-md-row align-items-center justify-content-center">
+                            <div class="col-12 col-md-6 d-flex justify-content-center">
                                 <label for="pulse">Puls</label>
                             </div>
-                            <div class="col-6 d-flex justify-content-center">
+                            <div class="col-12 col-md-6 d-flex justify-content-center">
                                 <select name="pulse" id="pulse" class="select2" data-select-search="true">
                                     @for ($i = 40; $i <= 100; $i++)
-                                        <option
-                                            value="{{ $i }}" {{ old('pulse', $lastValues['pulse']) == $i ? 'selected' : '' }}>{{ $i }}</option>
+                                        <option value="{{ $i }}" {{ old('pulse', $lastValues['pulse']) == $i ? 'selected' : '' }}>{{ $i }}</option>
                                     @endfor
                                 </select>
                             </div>
@@ -352,4 +340,3 @@
         }
     });
 </script>
-

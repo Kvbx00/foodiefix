@@ -107,3 +107,7 @@ td {
         margin-top: 50px;
     }
 }
+
+table{
+    min-height: 250px;
+}
