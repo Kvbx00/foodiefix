@@ -50,3 +50,7 @@
 .search:focus {
     outline: none;
 }
+
+.custom-select-width {
+    width: 150px !important;
+}

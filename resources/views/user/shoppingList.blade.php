@@ -41,30 +41,37 @@
         </form>
     </div>
 
-    <div class="d-flex justify-content-between mb-5 mt-5">
-        <form action="{{ route('shoppingList.show') }}" method="GET">
-            <input class="search text-center" type="text" name="search" placeholder="Szukaj"
-                   value="{{ request('search') }}">
-        </form>
-        <form action="{{ route('shoppingList.show') }}" method="get">
-            <select class="form-select" id="sort" name="sort" onchange="this.form.submit()">
-                <option
-                    value="ingredient_name|asc" {{ $sort === 'ingredient_name' && $order === 'asc' ? 'selected' : '' }}>
-                    Rosnąco
-                </option>
-                <option
-                    value="ingredient_name|desc" {{ $sort === 'ingredient_name' && $order === 'desc' ? 'selected' : '' }}>
-                    Malejąco
-                </option>
-                <option value="id|asc" {{ $sort === 'id' && $order === 'asc' ? 'selected' : '' }}>Najnowsze</option>
-                <option value="id|desc" {{ $sort === 'id' && $order === 'desc' ? 'selected' : '' }}>Najstarsze</option>
-            </select>
-        </form>
-        <form action="{{ route('shoppingList.deleteAll') }}" method="post">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn">Wyczyść wszystko <i class="bi bi-x-lg"></i></button>
-        </form>
+    <div class="d-flex mb-5 mt-5 flex-column flex-sm-row">
+        <div class="col-sm-4 mb-3 mb-sm-0">
+            <form action="{{ route('shoppingList.show') }}" method="GET">
+                <input class="search text-center" type="text" name="search" placeholder="Szukaj"
+                       value="{{ request('search') }}">
+            </form>
+        </div>
+        <div class="col-sm-4 mb-3 mb-sm-0 d-flex justify-content-sm-center justify-content-start">
+            <form action="{{ route('shoppingList.show') }}" method="get">
+                <select class="form-select custom-select-width" id="sort" name="sort" onchange="this.form.submit()">
+                    <option
+                        value="ingredient_name|asc" {{ $sort === 'ingredient_name' && $order === 'asc' ? 'selected' : '' }}>
+                        Rosnąco
+                    </option>
+                    <option
+                        value="ingredient_name|desc" {{ $sort === 'ingredient_name' && $order === 'desc' ? 'selected' : '' }}>
+                        Malejąco
+                    </option>
+                    <option value="id|asc" {{ $sort === 'id' && $order === 'asc' ? 'selected' : '' }}>Najnowsze</option>
+                    <option value="id|desc" {{ $sort === 'id' && $order === 'desc' ? 'selected' : '' }}>Najstarsze
+                    </option>
+                </select>
+            </form>
+        </div>
+        <div class="col-sm-4 ms-auto text-end">
+            <form action="{{ route('shoppingList.deleteAll') }}" method="post">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn">Wyczyść wszystko <i class="bi bi-x-lg"></i></button>
+            </form>
+        </div>
     </div>
 
     <div class="row">
